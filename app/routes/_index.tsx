@@ -1,4 +1,8 @@
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import {
+  MagnifyingGlassIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline";
+import { MicrophoneIcon } from "@heroicons/react/24/solid";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import type { MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
@@ -16,16 +20,16 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   return (
     <main className="bg-dark-950 h-screen w-screen">
-      <header className="px-6 flex justify-between items-center">
-        <div className="flex items-center">
-          <div>
+      <header className="px-6 flex justify-between items-center pr-3">
+        <div className="flex items-center py-2">
+          <div className="mr-6">
             <Bars3Icon className="h-10 w-6 text-white" />
           </div>
           <Link to="/">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               id="yt-logo-updated-svg_yt3"
-              className="external-icon w-20 h-"
+              className="external-icon w-24 "
               viewBox="0 0 90 20"
               focusable="false"
             >
@@ -60,7 +64,7 @@ export default function Index() {
             </svg>
           </Link>
         </div>
-        <div>
+        <div className="">
           <form action="" className="flex ">
             <input
               type="text"
@@ -72,16 +76,36 @@ export default function Index() {
             />
             <button
               type="submit"
-              className="bg-cyan-700 rounded-e-lg p-4 py-2 bg-dark-800"
+              className="rounded-e-lg p-4 py-2 bg-dark-800"
+              aria-label="Buscar"
             >
               <MagnifyingGlassIcon className="w-5 h-5 text-white " />
             </button>
-            <button type="button">Voz</button>
+            <button
+              type="button"
+              className="ml-5 rounded-full p-3 bg-dark-800 hover:bg-black"
+            >
+              <MicrophoneIcon className="w-5 h-5 text-white" />
+            </button>
           </form>
         </div>
-        <div>
-          <div>Menu</div>
-          <Link to="/login">Iniciar sesión</Link>
+        <div className="text-white flex gap-4">
+          <div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              className="fill-current h-full w-6 cursor-pointer"
+            >
+              <path d="M12 16.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5zM10.5 12c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5-1.5.67-1.5 1.5zm0-6c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5-1.5.67-1.5 1.5z"></path>
+            </svg>
+          </div>
+          <Link
+            to="/login"
+            className="flex gap-2 border border-dark-850 rounded-lg px-4 pl-2 py-1 text-blue-400 hover:bg-blue-400/30"
+          >
+            <UserCircleIcon className="h-6 w-6 " />
+            Iniciar sesión
+          </Link>
         </div>
       </header>
       <div>
