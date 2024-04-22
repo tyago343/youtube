@@ -1,9 +1,15 @@
-import icon from "../../assets/images/icons/google.svg";
-
-function Icon() {
+import google from '../../assets/images/icons/google.svg';
+import youtube from '../../assets/images/icons/youtube.svg';
+import verticalDots from '../../assets/images/icons/dots.svg';
+const icons = {
+  google,
+  youtube,
+  verticalDots,
+};
+function Icon({ name, className }: { name: keyof typeof icons; className?: string }) {
   return (
-    <svg className="size-12">
-      <use href={icon} />
+    <svg className={className}>
+      <use href={icons[name]} />
     </svg>
   );
 }

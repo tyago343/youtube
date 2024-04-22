@@ -1,21 +1,21 @@
-import { ActionFunctionArgs, redirect } from "@remix-run/node";
-import Icon from "../components/atoms/Icon";
-import { Form } from "@remix-run/react";
+import { ActionFunctionArgs, redirect } from '@remix-run/node';
+import Icon from '../components/atoms/Icon';
+import { Form } from '@remix-run/react';
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
-  const email = formData.get("email");
-  const password = formData.get("password");
+  const email = formData.get('email');
+  const password = formData.get('password');
   try {
-    const response = await fetch("http://localhost:3000/auth/login", {
-      method: "POST",
+    const response = await fetch('http://localhost:3000/auth/login', {
+      method: 'POST',
       body: JSON.stringify({ email, password }),
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     });
     if (response.ok) {
       const user = await response.json();
-      return redirect("/", {
+      return redirect('/', {
         headers: {
-          "Set-Cookie": `user=${JSON.stringify(user)}; HttpOnly;
+          'Set-Cookie': `user=${JSON.stringify(user)}; HttpOnly;
             Path=/`,
         },
       });
@@ -31,7 +31,7 @@ export default function Login() {
         className="bg-white container mx-auto min-h-[540px] max-w-md rounded-lg p-6 relative text-gray-800"
         method="POST"
       >
-        <Icon />
+        <Icon name="google" />
         <h1 className="text-lg my-4">Inicia sesión</h1>
         <p className="mb-4">Acceder a Youtube</p>
         <div className="flex flex-col gap-y-2 mb-4">
