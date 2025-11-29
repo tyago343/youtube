@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { User } from '../users/entities/users.entity';
 import { HashingService } from './hashing/hashing.service';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/createUserDto';
+import { CreateUserDto } from '../users/dto/createUser.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
