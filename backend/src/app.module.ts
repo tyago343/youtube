@@ -7,11 +7,13 @@ import { AuthenticationModule } from './authentication/authentication.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'admin',
-      password: 'root',
-      database: 'opentube',
+      host: process.env.DB_HOST || 'localhost',
+      port: parseInt(process.env.DB_PORT || '5432', 10),
+      username: process.env.DB_USER || 'admin',
+      password: process.env.DB_PASSWORD || 'root',
+      database: process.env.DB_NAME || 'opentube',
+      autoLoadEntities: true,
+      synchronize: true,
     }),
     UsersModule,
     AuthenticationModule,

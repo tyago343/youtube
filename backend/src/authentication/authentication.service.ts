@@ -15,12 +15,20 @@ export class AuthenticationService {
     try {
       const { email, username, password } = signUpDto;
       const hashedPassword = await this.hashingService.hash(password);
-      const user = this.userRepository.create({
+      const newUser = this.userRepository.create({
         email,
         username,
         password: hashedPassword,
       });
-      return await this.userRepository.save(user);
+
+      const savedUser = await this.userRepository.save(newUser);
+      return {
+        user: {
+          id: savedUser.id,
+          email: savedUser.email,
+          username: savedUser.username,
+        },
+      };
     } catch (error) {
       console.error(error);
       throw new InternalServerErrorException('Failed to create user');
