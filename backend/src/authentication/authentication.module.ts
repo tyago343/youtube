@@ -5,15 +5,29 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../users/entities/users.entity';
 import { AuthenticationController } from './authentication.controller';
 import { AuthenticationService } from './authentication.service';
-
+import { UsersModule } from '../users/users.module';
+import { LocalStrategy } from './strategies/local.strategy';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
+import jwtConfig from './config/jwt.config';
+import { ConfigModule } from '@nestjs/config';
+import { JwtStrategy } from './strategies/jwt.strategy';
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [
+    TypeOrmModule.forFeature([User]),
+    UsersModule,
+    PassportModule,
+    JwtModule.registerAsync(jwtConfig.asProvider()),
+    ConfigModule.forFeature(jwtConfig),
+  ],
   providers: [
     {
       provide: HashingService,
       useClass: BcryptService,
     },
     AuthenticationService,
+    LocalStrategy,
+    JwtStrategy,
   ],
   controllers: [AuthenticationController],
 })
