@@ -1,53 +1,45 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { User } from '../users/entities/users.entity';
 import { HashingService } from './hashing/hashing.service';
-import { Repository } from 'typeorm';
 import { CreateUserDto } from '../users/dto/createUser.dto';
-import { InjectRepository } from '@nestjs/typeorm';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthenticationService {
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly hashingService: HashingService,
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
   ) {}
 
-  // cambiar repository por users service
   async signUp(signUpDto: CreateUserDto) {
     try {
       const { email, username, password } = signUpDto;
       const hashedPassword = await this.hashingService.hash(password);
-      const newUser = this.userRepository.create({
+      const newUser = await this.usersService.createUser({
         email,
         username,
         password: hashedPassword,
       });
-
-      const savedUser = await this.userRepository.save(newUser);
       return {
         user: {
-          id: savedUser.id,
-          email: savedUser.email,
-          username: savedUser.username,
+          id: newUser.id,
+          email: newUser.email,
+          username: newUser.username,
         },
       };
     } catch (error) {
-      console.error(error);
-      throw new InternalServerErrorException('Failed to create user');
+      const pgUniqueViolationErrorCode = '23505';
+      if ((error as { code?: string })?.code === pgUniqueViolationErrorCode) {
+        throw new ConflictException('User already exists');
+      }
+      throw error;
     }
   }
-  async validateUser(
-    email: string,
-    pass: string,
-  ): Promise<Partial<User> | null> {
+  async validateUser(email: string, password: string): Promise<User | null> {
     const user = await this.usersService.findOne(email);
-    if (user && (await this.hashingService.compare(pass, user.password))) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, ...result } = user;
-      return result;
+    if (user && (await this.hashingService.compare(password, user.password))) {
+      return user;
     }
     return null;
   }

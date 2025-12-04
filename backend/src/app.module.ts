@@ -3,6 +3,8 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { ConfigModule } from '@nestjs/config';
+import { JwtAuthGuard } from '@authentication/guards/jwt-authentication.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -19,6 +21,12 @@ import { ConfigModule } from '@nestjs/config';
     }),
     UsersModule,
     AuthenticationModule,
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
   ],
 })
 export class AppModule {}

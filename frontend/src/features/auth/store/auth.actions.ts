@@ -24,7 +24,6 @@ export const registerUser = createAsyncThunk(
         headers: config.headers,
       });
       const data = await resp.json();
-      console.log(data);
       return data;
     } catch (error) {
       console.log(error);

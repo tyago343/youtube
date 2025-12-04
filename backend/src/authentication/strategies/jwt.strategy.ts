@@ -11,10 +11,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       secretOrKey: process.env.JWT_SECRET!,
     });
   }
-  // eslint-disable-next-line @typescript-eslint/require-await
-  async validate(payload: { sub: string; email: string }) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    console.log({ payload });
+  validate(payload: { sub: string; email: string }) {
     return { userId: payload.sub, email: payload.email };
   }
 }
