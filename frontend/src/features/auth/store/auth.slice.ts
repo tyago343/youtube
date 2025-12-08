@@ -45,8 +45,8 @@ export const authSlice = createSlice({
     builder.addCase(loginUser.fulfilled, (state, action) => {
       state.loading = false;
       state.success = true;
-      state.accessToken = action.payload.accessToken;
-      state.user = action.payload.user;
+      state.accessToken = action.payload?.accessToken ?? null;
+      state.user = action.payload?.user as User | null;
     });
     builder.addCase(loginUser.rejected, (state, action) => {
       state.loading = false;

@@ -9,14 +9,16 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import Button from "@/components/ui/button";
 import { useAppDispatch } from "@/store";
 import { registerUser } from "../store/auth.actions";
 import {
   SignupFormSchema,
   type SignupFormSchemaType,
 } from "../schemas/SignupForm.schema";
-function Login() {
+import { useNavigate } from "react-router";
+
+function Signup() {
   const { control, handleSubmit } = useForm<SignupFormSchemaType>({
     resolver: zodResolver(SignupFormSchema),
     defaultValues: {
@@ -26,9 +28,16 @@ function Login() {
     },
   });
   const dispatch = useAppDispatch();
-  function onSubmit(data: SignupFormSchemaType) {
-    console.log(data);
-    dispatch(registerUser(data));
+  const navigate = useNavigate();
+  async function onSubmit(data: SignupFormSchemaType) {
+    try {
+      const response = await dispatch(registerUser(data)).unwrap();
+      if (response?.user) {
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <section className="flex justify-center items-center h-screen">
@@ -111,4 +120,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Signup;
