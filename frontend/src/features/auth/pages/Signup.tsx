@@ -1,9 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  LoginFormSchema,
-  type LoginFormSchemaType,
-} from "../schemas/LoginForm.schema";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import {
@@ -15,27 +11,24 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch } from "@/store";
-import { loginUser } from "../store/auth.actions";
-import { useNavigate } from "react-router";
+import { registerUser } from "../store/auth.actions";
+import {
+  SignupFormSchema,
+  type SignupFormSchemaType,
+} from "../schemas/SignupForm.schema";
 function Login() {
-  const { control, handleSubmit } = useForm<LoginFormSchemaType>({
-    resolver: zodResolver(LoginFormSchema),
+  const { control, handleSubmit } = useForm<SignupFormSchemaType>({
+    resolver: zodResolver(SignupFormSchema),
     defaultValues: {
       email: "",
       password: "",
+      username: "",
     },
   });
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  async function onSubmit(data: LoginFormSchemaType) {
-    try {
-      const response = await dispatch(loginUser(data)).unwrap();
-      if (response?.user) {
-        navigate("/");
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  function onSubmit(data: SignupFormSchemaType) {
+    console.log(data);
+    dispatch(registerUser(data));
   }
   return (
     <section className="flex justify-center items-center h-screen">
@@ -58,6 +51,26 @@ function Login() {
                       aria-invalid={fieldState.invalid}
                       placeholder="Enter your email address"
                       autoComplete="off"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </FieldGroup>
+            <FieldGroup className="mt-4">
+              <Controller
+                control={control}
+                name="username"
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor={field.name}>Username</FieldLabel>
+                    <Input
+                      {...field}
+                      id={field.name}
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Enter your username"
                     />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />

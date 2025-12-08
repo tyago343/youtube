@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit/react";
 import type { User } from "../types/user.type";
-import { registerUser } from "./auth.actions";
+import { loginUser, registerUser } from "./auth.actions";
 
 type AuthState = {
   loading: boolean;
@@ -34,6 +34,21 @@ export const authSlice = createSlice({
       state.success = true;
     });
     builder.addCase(registerUser.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+      state.success = false;
+    });
+    builder.addCase(loginUser.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(loginUser.fulfilled, (state, action) => {
+      state.loading = false;
+      state.success = true;
+      state.accessToken = action.payload.accessToken;
+      state.user = action.payload.user;
+    });
+    builder.addCase(loginUser.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as string;
       state.success = false;

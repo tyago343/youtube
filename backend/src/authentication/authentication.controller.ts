@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
+  HttpStatus,
   Post,
   Request,
   UseGuards,
@@ -21,6 +23,7 @@ export class AuthenticationController {
     return this.authenticationService.signUp(signUpDto);
   }
   @Public()
+  @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthenticationGuard)
   @Post('login')
   login(@Request() req: Request & { user: User }) {
