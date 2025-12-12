@@ -49,6 +49,7 @@ services:
       - MINIO_ACCESS_KEY=${MINIO_USER:-minioadmin}
       - MINIO_SECRET_KEY=${MINIO_PASSWORD:-minioadmin}
       - MINIO_BUCKET=videos
+      - AWS_REGION=us-east-1
     depends_on:
       - postgres
       - minio
