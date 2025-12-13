@@ -23,18 +23,17 @@ export class AwsService {
     file: Express.Multer.File,
     folder: string = '',
   ): Promise<string> {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
     const fileExtension = file.originalname.split('.').pop()!;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+
     const fileName = `${uuidv4()}.${fileExtension}`;
     const key = folder ? `${folder}/${fileName}` : fileName;
     await this.s3Client.send(
       new PutObjectCommand({
         Bucket: this.bucketName,
         Key: key,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+
         Body: file.buffer,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+
         ContentType: file.mimetype,
       }),
     );

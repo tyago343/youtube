@@ -48,7 +48,7 @@ services:
       - MINIO_PORT=9000
       - MINIO_ACCESS_KEY=${MINIO_USER:-minioadmin}
       - MINIO_SECRET_KEY=${MINIO_PASSWORD:-minioadmin}
-      - MINIO_BUCKET=videos
+      - MINIO_BUCKET=opentube
       - AWS_REGION=us-east-1
     depends_on:
       - postgres

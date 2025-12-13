@@ -30,7 +30,15 @@ export class UsersService {
     const user = this.userRepository.create(createUserDto);
     return this.userRepository.save(user);
   }
-  uploadAvatar(id: string, avatar: Express.Multer.File) {
-    return this.storageService.uploadFile(avatar, 'avatars');
+  async uploadAvatar(id: string, avatar: Express.Multer.File) {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const avatarUrl = await this.storageService.uploadFile(avatar, 'avatars');
+    return this.userRepository.update(id, { avatarUrl });
+  }
+  async getAllUsers() {
+    return this.userRepository.find();
   }
 }
