@@ -8,6 +8,8 @@ import { StorageService } from 'src/storage/storage.service';
 
 @Injectable()
 export class UsersService {
+  private readonly AVATAR_FOLDER = 'avatars';
+
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly storageService: StorageService,
@@ -30,13 +32,20 @@ export class UsersService {
     const user = this.userRepository.create(createUserDto);
     return this.userRepository.save(user);
   }
-  async uploadAvatar(id: string, avatar: Express.Multer.File) {
+  async uploadAvatar(
+    id: string,
+    avatar: Express.Multer.File,
+  ): Promise<{ avatarUrl: string }> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const avatarUrl = await this.storageService.uploadFile(avatar, 'avatars');
-    return this.userRepository.update(id, { avatarUrl });
+    const avatarUrl = await this.storageService.uploadFile(
+      avatar,
+      this.AVATAR_FOLDER,
+    );
+    await this.userRepository.update(id, { avatarUrl });
+    return { avatarUrl };
   }
   async getAllUsers() {
     return this.userRepository.find();

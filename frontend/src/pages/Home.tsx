@@ -1,11 +1,10 @@
-import SearchBarComponent from "@/features/search/component/search-bar.component";
+import { selectUser } from "@/features/user/selector/user.selector";
+import UserMenuComponent from "@user/components/user-menu.component";
+import { useSelector } from "react-redux";
 
 function Home() {
-  return (
-    <div>
-      <SearchBarComponent />
-    </div>
-  );
+  const user = useSelector(selectUser);
+  return user ? <UserMenuComponent user={user} /> : null;
 }
 
 export default Home;

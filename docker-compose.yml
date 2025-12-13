@@ -44,7 +44,7 @@ services:
       - DB_USER=${DB_USER:-admin}
       - DB_PASSWORD=${DB_PASSWORD:-root}
       - DB_NAME=${DB_NAME:-opentube}
-      - MINIO_ENDPOINT=minio
+      - MINIO_ENDPOINT=localhost
       - MINIO_PORT=9000
       - MINIO_ACCESS_KEY=${MINIO_USER:-minioadmin}
       - MINIO_SECRET_KEY=${MINIO_PASSWORD:-minioadmin}

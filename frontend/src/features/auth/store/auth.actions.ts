@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import type { User } from "../types/user.type";
+import type { User } from "../../user/types/user.type";
 const baseUrl = import.meta.env.VITE_API_URL;
 
 export const registerUser = createAsyncThunk(

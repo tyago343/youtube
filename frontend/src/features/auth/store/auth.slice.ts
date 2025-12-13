@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit/react";
-import type { User } from "../types/user.type";
+import type { User } from "../../user/types/user.type";
 import { loginUser, registerUser } from "./auth.actions";
 
 type AuthState = {

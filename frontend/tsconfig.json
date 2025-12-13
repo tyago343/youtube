@@ -8,6 +8,9 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
+      "@user/*": ["./src/features/user/*"],
+      "@auth/*": ["./src/features/auth/*"],
+      "@search/*": ["./src/features/search/*"],
       "@features/*": ["./src/features/*"],
       "@components/*": ["./src/components/*"],
       "@hooks/*": ["./src/hooks/*"],

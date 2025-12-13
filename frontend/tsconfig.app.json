@@ -27,6 +27,9 @@
     "paths": {
       "@/*": ["./src/*"],
       "@features/*": ["./src/features/*"],
+      "@user/*": ["./src/features/user/*"],
+      "@auth/*": ["./src/features/auth/*"],
+      "@search/*": ["./src/features/search/*"],
       "@components/*": ["./src/components/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@lib/*": ["./src/lib/*"],

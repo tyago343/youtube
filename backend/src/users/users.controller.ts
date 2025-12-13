@@ -1,8 +1,11 @@
 import {
   Controller,
+  FileTypeValidator,
   ForbiddenException,
   Get,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   Post,
   Request,
   UploadedFile,
@@ -19,7 +22,17 @@ export class UsersController {
   @UseInterceptors(FileInterceptor('avatar'))
   @Post(':id/upload-avatar')
   uploadAvatar(
-    @UploadedFile() avatar: Express.Multer.File,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
+          new FileTypeValidator({
+            fileType: '.(png|jpg|jpeg)',
+          }),
+        ],
+      }),
+    )
+    avatar: Express.Multer.File,
     @Param('id') id: string,
     @Request() req: Request & { user: { userId: string; email: string } },
   ) {
