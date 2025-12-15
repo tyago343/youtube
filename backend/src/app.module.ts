@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtAuthGuard } from '@authentication/guards/jwt-authentication.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { StorageModule } from './storage/storage.module';
+import { VideosModule } from './videos/videos.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { StorageModule } from './storage/storage.module';
     UsersModule,
     AuthenticationModule,
     StorageModule,
+    VideosModule,
   ],
   providers: [
     {

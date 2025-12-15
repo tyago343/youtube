@@ -4,7 +4,11 @@ import { useSelector } from "react-redux";
 
 function Home() {
   const user = useSelector(selectUser);
-  return user ? <UserMenuComponent user={user} /> : null;
+  return (
+    <header className="flex justify-end items-center p-4">
+      {user ? <UserMenuComponent user={user} /> : null}
+    </header>
+  );
 }
 
 export default Home;
