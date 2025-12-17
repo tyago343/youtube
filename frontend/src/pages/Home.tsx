@@ -1,12 +1,17 @@
-import { selectUser } from "@/features/user/selector/user.selector";
-import UserMenuComponent from "@user/components/user-menu.component";
-import { useSelector } from "react-redux";
+import { Link } from "react-router";
+import Button from "@/components/ui/button";
 
 function Home() {
-  const user = useSelector(selectUser);
   return (
     <header className="flex justify-end items-center p-4">
-      {user ? <UserMenuComponent user={user} /> : null}
+      <div className="flex items-center gap-2">
+        <Link to="/login">
+          <Button variant="outline">Login</Button>
+        </Link>
+        <Link to="/signup">
+          <Button variant="outline">Signup</Button>
+        </Link>
+      </div>
     </header>
   );
 }
