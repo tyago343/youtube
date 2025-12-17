@@ -18,7 +18,7 @@ import {
   ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger';
-import { VideoResponseDto } from './dto/create-video.response';
+import { Video } from './entities/video.entity';
 
 @Controller('videos')
 export class VideosController {
@@ -50,7 +50,7 @@ export class VideosController {
   })
   @ApiOkResponse({
     description: 'Video created successfully',
-    type: VideoResponseDto,
+    type: Video,
   })
   @Post()
   @UseInterceptors(
@@ -102,7 +102,7 @@ export class VideosController {
   @Get()
   @ApiOkResponse({
     description: 'Videos fetched successfully',
-    type: [VideoResponseDto],
+    type: [Video],
   })
   findAll() {
     return this.videosService.findAll();
@@ -111,7 +111,7 @@ export class VideosController {
   @Get(':id')
   @ApiOkResponse({
     description: 'Video fetched successfully',
-    type: VideoResponseDto,
+    type: Video,
   })
   findOne(@Param('id') id: string) {
     return this.videosService.findOne(id);
