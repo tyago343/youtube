@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateVideoDto } from './dto/create-video.dto';
+import { CreateVideoDto } from './dto/create-video.request.dto';
 import { StorageService } from 'src/storage/storage.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Video } from './entities/video.entity';

@@ -9,8 +9,16 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { VideosService } from './videos.service';
-import { CreateVideoDto } from './dto/create-video.dto';
+import { CreateVideoDto } from './dto/create-video.request.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiOkResponse,
+  ApiOperation,
+} from '@nestjs/swagger';
+import { VideoResponseDto } from './dto/create-video.response';
 
 @Controller('videos')
 export class VideosController {
@@ -31,7 +39,19 @@ export class VideosController {
   ];
 
   constructor(private readonly videosService: VideosService) {}
-
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Create a new video',
+    description: 'Creates a new video. Requires valid JWT token.',
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    type: CreateVideoDto,
+  })
+  @ApiOkResponse({
+    description: 'Video created successfully',
+    type: VideoResponseDto,
+  })
   @Post()
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -80,11 +100,19 @@ export class VideosController {
   }
 
   @Get()
+  @ApiOkResponse({
+    description: 'Videos fetched successfully',
+    type: [VideoResponseDto],
+  })
   findAll() {
     return this.videosService.findAll();
   }
 
   @Get(':id')
+  @ApiOkResponse({
+    description: 'Video fetched successfully',
+    type: VideoResponseDto,
+  })
   findOne(@Param('id') id: string) {
     return this.videosService.findOne(id);
   }

@@ -23,6 +23,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { UploadAvatarResponseDto } from './dto/upload-avatar.response.dto';
+import { UserResponseDto } from './dto/create-user.response';
 
 @Controller('users')
 export class UsersController {
@@ -77,6 +78,15 @@ export class UsersController {
   }
   @Public()
   @Get()
+  @ApiOperation({
+    summary: 'Get all users (public endpoint) WILL BE ERASED',
+    description:
+      'Get all users. This public endpoint will be used for testing purposes. WILL BE ERASED',
+  })
+  @ApiOkResponse({
+    description: 'Users fetched successfully',
+    type: [UserResponseDto],
+  })
   getAllUsers() {
     return this.usersService.getAllUsers();
   }

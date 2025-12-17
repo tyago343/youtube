@@ -34,6 +34,12 @@ export class SignupResponseDto {
     type: UserResponseDto,
   })
   user: UserResponseDto;
+  // TODO: Add JWT access token in signup response
+  // @ApiProperty({
+  //   description: 'The JWT access token for authentication',
+  //   example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+  // })
+  // accessToken?: string;
 }
 
 export class LoginResponseDto {

@@ -20,8 +20,10 @@ import {
   ApiUnauthorizedResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiBody,
 } from '@nestjs/swagger';
 import {
+  LoginResponseDto,
   SignupResponseDto,
   UserResponseDto,
 } from '@users/dto/create-user.response';
@@ -41,11 +43,34 @@ export class AuthenticationController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthenticationGuard)
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        email: { type: 'string', description: 'The email of the user' },
+        password: { type: 'string', description: 'The password of the user' },
+      },
+    },
+  })
+  @ApiOkResponse({
+    description: 'User logged in successfully',
+    type: LoginResponseDto,
+  })
   @Post('login')
   login(@Request() req: Request & { user: User }) {
     return this.authenticationService.login(req.user);
   }
-  @UseGuards(LocalAuthenticationGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Logout a user',
+    description: 'Logs out a user and invalidates the JWT token',
+  })
+  @ApiOkResponse({
+    description: 'User logged out successfully',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Invalid or missing authentication token',
+  })
   @Post('logout')
   logout(@Request() req: Request & { logout: () => void }) {
     return req.logout();
