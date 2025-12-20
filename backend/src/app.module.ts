@@ -7,10 +7,14 @@ import { JwtAuthGuard } from '@authentication/guards/jwt-authentication.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { StorageModule } from './storage/storage.module';
 import { VideosModule } from './videos/videos.module';
+import { LoggerModule } from './logger/logger.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    LoggerModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST || 'localhost',

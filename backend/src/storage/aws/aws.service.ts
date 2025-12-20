@@ -5,17 +5,20 @@ import {
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
-import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { v4 as uuidv4 } from 'uuid';
+import { LoggerService } from '../../logger/logger.service';
 
 @Injectable()
 export class AwsService implements OnModuleInit {
   private readonly s3Client: S3Client;
   private readonly bucketName: string;
-  private readonly logger = new Logger(AwsService.name);
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly logger: LoggerService,
+  ) {
     this.bucketName = this.configService.getOrThrow('MINIO_BUCKET');
     this.s3Client = new S3Client({
       region: this.configService.getOrThrow('AWS_REGION'),
