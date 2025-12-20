@@ -12,6 +12,7 @@ import { JwtModule } from '@nestjs/jwt';
 import jwtConfig from './config/jwt.config';
 import { ConfigModule } from '@nestjs/config';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { LoggerModule } from '../logger/logger.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
@@ -19,6 +20,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     PassportModule,
     JwtModule.registerAsync(jwtConfig.asProvider()),
     ConfigModule.forFeature(jwtConfig),
+    LoggerModule,
   ],
   providers: [
     {
