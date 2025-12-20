@@ -4,15 +4,20 @@ const baseUrl = import.meta.env.VITE_API_URL;
 
 export const registerUser = createAsyncThunk(
   "auth/register",
-  async ({
-    username,
-    email,
-    password,
-  }: {
-    username: string;
-    email: string;
-    password: string;
-  }) => {
+  async (
+    {
+      username,
+      email,
+      password,
+    }: {
+      username: string;
+      email: string;
+      password: string;
+    },
+    { rejectWithValue }
+  ): Promise<
+    { user: User; accessToken: string } | ReturnType<typeof rejectWithValue>
+  > => {
     try {
       const config = {
         headers: {
@@ -28,19 +33,27 @@ export const registerUser = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
+      return rejectWithValue({
+        error: error instanceof Error ? error.message : "Unknown error",
+      });
     }
   }
 );
 
 export const loginUser = createAsyncThunk(
   "auth/login",
-  async ({
-    email,
-    password,
-  }: {
-    email: string;
-    password: string;
-  }): Promise<{ accessToken: string; user: User } | undefined> => {
+  async (
+    {
+      email,
+      password,
+    }: {
+      email: string;
+      password: string;
+    },
+    { rejectWithValue }
+  ): Promise<
+    { accessToken: string; user: User } | ReturnType<typeof rejectWithValue>
+  > => {
     try {
       const config = {
         headers: {
@@ -56,6 +69,9 @@ export const loginUser = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
+      return rejectWithValue({
+        error: String(error) || "Unknown error",
+      });
     }
   }
 );

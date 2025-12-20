@@ -29,13 +29,15 @@ export const authSlice = createSlice({
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(registerUser.fulfilled, (state) => {
+    builder.addCase(registerUser.fulfilled, (state, action) => {
       state.loading = false;
       state.success = true;
+      state.user = action.payload?.user as User | null;
+      state.accessToken = action.payload?.accessToken ?? null;
     });
     builder.addCase(registerUser.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.payload as string;
+      state.error = action.error.message ?? "Failed to register user";
       state.success = false;
     });
     builder.addCase(loginUser.pending, (state) => {
@@ -50,8 +52,10 @@ export const authSlice = createSlice({
     });
     builder.addCase(loginUser.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.payload as string;
+      state.error = action.error.message ?? "Failed to login user";
       state.success = false;
+      state.user = null;
+      state.accessToken = null;
     });
   },
 });

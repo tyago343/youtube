@@ -31,7 +31,7 @@ import {
 import { LoggerService } from '../logger/logger.service';
 
 @ApiTags('Authentication')
-@Controller('auth')
+@Controller('')
 export class AuthenticationController {
   constructor(
     private readonly logger: LoggerService,

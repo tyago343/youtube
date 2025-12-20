@@ -17,6 +17,7 @@ import Button from "@/components/ui/button";
 import { useAppDispatch } from "@/store";
 import { loginUser } from "../store/auth.actions";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 function Login() {
   const { control, handleSubmit } = useForm<LoginFormSchemaType>({
     resolver: zodResolver(LoginFormSchema),
@@ -34,7 +35,8 @@ function Login() {
         navigate("/");
       }
     } catch (error) {
-      console.log(error);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      toast.error((error as any).error);
     }
   }
   return (
