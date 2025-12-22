@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import type { User } from "../../user/types/user.type";
+import { toast } from "sonner";
 const baseUrl = import.meta.env.VITE_API_URL;
 
 export const registerUser = createAsyncThunk(
@@ -42,18 +43,13 @@ export const registerUser = createAsyncThunk(
 
 export const loginUser = createAsyncThunk(
   "auth/login",
-  async (
-    {
-      email,
-      password,
-    }: {
-      email: string;
-      password: string;
-    },
-    { rejectWithValue }
-  ): Promise<
-    { accessToken: string; user: User } | ReturnType<typeof rejectWithValue>
-  > => {
+  async ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }): Promise<{ accessToken: string; user: User } | undefined> => {
     try {
       const config = {
         headers: {
@@ -66,12 +62,13 @@ export const loginUser = createAsyncThunk(
         headers: config.headers,
       });
       const data = await resp.json();
-      return data;
-    } catch (error) {
-      console.log(error);
-      return rejectWithValue({
-        error: String(error) || "Unknown error",
-      });
+      if (resp.ok) {
+        return data;
+      }
+      toast.error(data.message);
+      return undefined;
+    } catch {
+      toast.error("Failed to login");
     }
   }
 );

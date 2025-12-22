@@ -29,15 +29,11 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   async function onSubmit(data: LoginFormSchemaType) {
-    try {
-      const response = await dispatch(loginUser(data)).unwrap();
-      if (response?.user) {
-        navigate("/");
-      }
-    } catch (error) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      toast.error((error as any).error);
+    const response = await dispatch(loginUser(data)).unwrap();
+    if (response?.user) {
+      return navigate("/");
     }
+    toast.error("Failed to login");
   }
   return (
     <section className="flex justify-center items-center h-screen">
