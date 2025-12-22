@@ -18,18 +18,20 @@ function MainLayout({
           {user ? (
             <UserMenuComponent user={user} />
           ) : (
-            <>
+            <div className="flex gap-2">
               <Link to="/login">
                 <Button variant="outline">Login</Button>
               </Link>
               <Link to="/signup">
                 <Button variant="outline">Signup</Button>
               </Link>
-            </>
+            </div>
           )}
         </header>
         <main className="flex">
-          <aside className="w-64 h-full bg-sidebar p-4 border-r">Sidebar</aside>
+          <aside className="w-64 bg-sidebar p-4 border-r hidden md:block h-screen">
+            Sidebar
+          </aside>
           <section className="flex-1 p-4">{children}</section>
         </main>
       </div>

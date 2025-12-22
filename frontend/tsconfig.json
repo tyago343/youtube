@@ -8,6 +8,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
+      "@video/*": ["./src/features/video/*"],
       "@user/*": ["./src/features/user/*"],
       "@auth/*": ["./src/features/auth/*"],
       "@search/*": ["./src/features/search/*"],
