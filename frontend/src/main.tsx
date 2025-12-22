@@ -1,17 +1,9 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
-import { BrowserRouter } from "react-router";
-import InitApp from "./index.tsx";
-import { Provider } from "react-redux";
-import store from "./store/index.ts";
+import InitApp from "./app/index.tsx";
+import { AppProvider } from "./app/providers/app-provider.tsx";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <InitApp />
-      </BrowserRouter>
-    </Provider>
-  </StrictMode>
+  <AppProvider>
+    <InitApp />
+  </AppProvider>
 );

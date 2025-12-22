@@ -1,7 +1,7 @@
-import type { User } from "@/features/user/types/user.type";
-import UserMenuComponent from "@/features/user/components/user-menu.component";
+import type { User } from "@/modules/user/types/user.type";
+import UserMenuComponent from "@/modules/user/components/user-menu.component";
 import { Toaster } from "sonner";
-import Button from "@/components/ui/button";
+import Button from "@/shared/ui/button/button";
 import { Link } from "react-router";
 function MainLayout({
   children,
