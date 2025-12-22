@@ -15,7 +15,7 @@ import { registerUser } from "../store/auth.actions";
 import {
   SignupFormSchema,
   type SignupFormSchemaType,
-} from "../schemas/SignupForm.schema";
+} from "../schemas/signup-form.schema";
 import { useNavigate } from "react-router";
 
 function Signup() {

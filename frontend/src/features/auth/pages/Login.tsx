@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   LoginFormSchema,
   type LoginFormSchemaType,
-} from "../schemas/LoginForm.schema";
+} from "../schemas/login-form.schema";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import {
