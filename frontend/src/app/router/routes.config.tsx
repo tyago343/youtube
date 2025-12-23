@@ -39,7 +39,11 @@ export const routes: RouteObject[] = [
   },
   {
     path: "/",
-    element: <PrivateRoute />,
+    element: (
+      <MainLayout>
+        <PrivateRoute />
+      </MainLayout>
+    ),
     children: [
       {
         path: "/",
