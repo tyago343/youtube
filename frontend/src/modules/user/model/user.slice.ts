@@ -24,9 +24,15 @@ export const userSlice = createSlice({
         state.currentUser = { ...state.currentUser, ...action.payload };
       }
     },
+    updateUserAvatar: (state, action: PayloadAction<string>) => {
+      if (state.currentUser) {
+        state.currentUser.avatarUrl = action.payload;
+      }
+    },
   },
 });
 
-export const { setUser, clearUser, updateUser } = userSlice.actions;
+export const { setUser, clearUser, updateUser, updateUserAvatar } =
+  userSlice.actions;
 
 export default userSlice.reducer;

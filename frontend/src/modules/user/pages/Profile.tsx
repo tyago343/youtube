@@ -17,9 +17,11 @@ import { Input } from "@/shared/ui/input/input";
 import Button from "@/shared/ui/button/button";
 import { useSelector } from "react-redux";
 import { selectUser } from "@user/model/user.selectors";
+import { useUpdateAvatarMutation } from "../model/user.api";
 
 function Profile() {
   const user = useSelector(selectUser) as User;
+  const [updateAvatar] = useUpdateAvatarMutation();
   const { control, handleSubmit } = useForm<profileFormSchemaType>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
@@ -31,7 +33,13 @@ function Profile() {
     console.log(data);
   }
   async function onUploadAvatar(file: File | null) {
-    console.log(file);
+    if (file) {
+      try {
+        await updateAvatar({ id: user.id, file });
+      } catch (error) {
+        console.error(error);
+      }
+    }
   }
   return (
     <>
