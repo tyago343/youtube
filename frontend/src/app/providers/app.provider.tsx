@@ -4,13 +4,9 @@ import store from "@/app/store";
 import { RouterProvider } from "./router.provider";
 
 interface AppProviderProps {
-  children?: ReactNode; // Opcional si no lo usas
+  children?: ReactNode;
 }
 
-/**
- * Provider principal de la aplicación
- * Agrupa todos los providers necesarios
- */
 export function AppProvider({ children }: AppProviderProps) {
   return (
     <StrictMode>

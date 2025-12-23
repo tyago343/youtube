@@ -1,10 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { User } from "../types/user.type";
 
-/**
- * Estado del usuario
- * Solo maneja información del usuario
- */
 type UserState = {
   currentUser: User | null;
 };
