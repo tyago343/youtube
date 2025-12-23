@@ -4,7 +4,7 @@ import { Toaster } from "sonner";
 import Button from "@/shared/ui/button/button";
 import { Link } from "react-router";
 import { useSelector } from "react-redux";
-import { selectUser } from "@/modules/user/selector/user.selector";
+import { selectUser } from "@/modules/user/model/user.selectors";
 function MainLayout({ children }: { children: React.ReactNode }) {
   const user = useSelector(selectUser) as User;
   return (

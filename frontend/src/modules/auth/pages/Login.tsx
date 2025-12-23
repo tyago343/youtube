@@ -19,11 +19,12 @@ import {
 } from "@/shared/ui/field/field";
 import { Input } from "@/shared/ui/input/input";
 import Button from "@/shared/ui/button/button";
-import { useAppDispatch } from "@/app/store";
-import { loginUser } from "../store/auth.actions";
+import { useLoginMutation } from "@auth/model/auth.api";
 import { useNavigate } from "react-router";
-import { toast } from "sonner";
+
 function Login() {
+  const [loginUser] = useLoginMutation();
+  const navigate = useNavigate();
   const { control, handleSubmit } = useForm<LoginFormSchemaType>({
     resolver: zodResolver(LoginFormSchema),
     defaultValues: {
@@ -31,14 +32,13 @@ function Login() {
       password: "",
     },
   });
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   async function onSubmit(data: LoginFormSchemaType) {
-    const response = await dispatch(loginUser(data)).unwrap();
-    if (response?.user) {
-      return navigate("/");
+    try {
+      await loginUser(data);
+      navigate("/", { replace: true });
+    } catch (error) {
+      console.log(error);
     }
-    toast.error("Failed to login");
   }
   return (
     <section className="flex justify-center items-center h-screen">

@@ -1,4 +1,4 @@
-import { selectUser } from "@/modules/user/selector/user.selector";
+import { selectUser } from "@/modules/user/model/user.selectors";
 import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router";
 

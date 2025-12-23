@@ -16,7 +16,7 @@ import {
 import { Input } from "@/shared/ui/input/input";
 import Button from "@/shared/ui/button/button";
 import { useSelector } from "react-redux";
-import { selectUser } from "../selector/user.selector";
+import { selectUser } from "@user/model/user.selectors";
 
 function Profile() {
   const user = useSelector(selectUser) as User;

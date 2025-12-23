@@ -14,7 +14,7 @@
       "@video/*": ["src/modules/video/*"],
       "@user/*": ["src/modules/user/*"],
       "@auth/*": ["src/modules/auth/*"],
-      "@pages/*": ["./src/pages/*"],
+      "@pages/*": ["src/app/pages/*"],
     }
   }
 }

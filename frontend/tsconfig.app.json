@@ -29,7 +29,7 @@
       "@modules/*": ["src/modules/*"],
       "@shared/*": ["src/shared/*"],
       "@app/*": ["src/app/*"],
-      "@pages/*": ["./src/pages/*"],
+      "@pages/*": ["src/app/pages/*"],
       "@user/*": ["src/modules/user/*"],
       "@video/*": ["src/modules/video/*"],
       "@auth/*": ["src/modules/auth/*"],

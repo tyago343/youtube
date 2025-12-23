@@ -15,8 +15,7 @@ import {
 } from "@/shared/ui/field/field";
 import { Input } from "@/shared/ui/input/input";
 import Button from "@/shared/ui/button/button";
-import { useAppDispatch } from "@/app/store";
-import { registerUser } from "../store/auth.actions";
+import { useRegisterMutation } from "@auth/model/auth.api";
 import {
   SignupFormSchema,
   type SignupFormSchemaType,
@@ -32,12 +31,12 @@ function Signup() {
       username: "",
     },
   });
-  const dispatch = useAppDispatch();
+  const [registerUser] = useRegisterMutation();
   const navigate = useNavigate();
   async function onSubmit(data: SignupFormSchemaType) {
     try {
-      const response = await dispatch(registerUser(data)).unwrap();
-      if (response?.user) {
+      const response = await registerUser(data);
+      if (response?.data?.user) {
         navigate("/");
       }
     } catch (error) {
