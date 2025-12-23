@@ -3,13 +3,10 @@ import UserMenuComponent from "@/modules/user/components/user-menu.component";
 import { Toaster } from "sonner";
 import Button from "@/shared/ui/button/button";
 import { Link } from "react-router";
-function MainLayout({
-  children,
-  user,
-}: {
-  children: React.ReactNode;
-  user?: User;
-}) {
+import { useSelector } from "react-redux";
+import { selectUser } from "@/modules/user/selector/user.selector";
+function MainLayout({ children }: { children: React.ReactNode }) {
+  const user = useSelector(selectUser) as User;
   return (
     <>
       <Toaster richColors position="top-right" />
@@ -19,10 +16,10 @@ function MainLayout({
             <UserMenuComponent user={user} />
           ) : (
             <div className="flex gap-2">
-              <Link to="/login">
+              <Link to="/auth/login">
                 <Button variant="outline">Login</Button>
               </Link>
-              <Link to="/signup">
+              <Link to="/auth/signup">
                 <Button variant="outline">Signup</Button>
               </Link>
             </div>

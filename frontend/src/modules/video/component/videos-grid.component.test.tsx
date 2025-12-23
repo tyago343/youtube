@@ -2,7 +2,7 @@ import VideosGrid from "./videos-grid.component";
 import { render } from "@/shared/lib/test-utils";
 import { describe, it, expect } from "vitest";
 import { screen } from "@testing-library/react";
-import { videoMock } from "@/mocks/videos/video.mock";
+import { videoMock } from "@/modules/video/mocks/video.mock";
 
 describe("VideosGrid", () => {
   it("should render all videos", () => {

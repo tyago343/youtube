@@ -1,14 +1,11 @@
-import Login from "../../modules/auth/pages/Login";
-import Signup from "../../modules/auth/pages/Signup";
-import { Route, Routes } from "react-router";
-import Home from "@pages/Home";
-function PublicRoutes() {
-  return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/" element={<Home />} />
-    </Routes>
-  );
-}
-export default PublicRoutes;
+import { selectUser } from "@user/selector/user.selector";
+import { useSelector } from "react-redux";
+import { Navigate, Outlet } from "react-router";
+
+export const PublicRoute = () => {
+  const user = useSelector(selectUser);
+  if (user && window.location.pathname.startsWith("/auth")) {
+    return <Navigate to="/" replace />;
+  }
+  return <Outlet />;
+};

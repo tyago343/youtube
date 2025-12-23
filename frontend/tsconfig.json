@@ -8,18 +8,13 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
+      "@modules/*": ["src/modules/*"],
+      "@shared/*": ["src/shared/*"],
+      "@app/*": ["src/app/*"],
       "@video/*": ["src/modules/video/*"],
       "@user/*": ["src/modules/user/*"],
       "@auth/*": ["src/modules/auth/*"],
-      "@search/*": ["src/modules/search/*"],
-      "@features/*": ["src/modules/*"],
-      "@components/*": ["./src/components/*"],
-      "@hooks/*": ["./src/hooks/*"],
-      "@lib/*": ["src/shared/lib/*"],
       "@pages/*": ["./src/pages/*"],
-      "@routes/*": ["./src/routes/*"],
-      "@store/*": ["./src/store/*"],
-      "@types/*": ["./src/types/*"],
     }
   }
 }

@@ -15,8 +15,11 @@ import {
 } from "@/shared/ui/field/field";
 import { Input } from "@/shared/ui/input/input";
 import Button from "@/shared/ui/button/button";
+import { useSelector } from "react-redux";
+import { selectUser } from "../selector/user.selector";
 
-function Profile({ user }: { user: User }) {
+function Profile() {
+  const user = useSelector(selectUser) as User;
   const { control, handleSubmit } = useForm<profileFormSchemaType>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
