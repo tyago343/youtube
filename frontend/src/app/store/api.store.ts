@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { RootState } from "./index";
+import { API_BASE_URL, API_STORE_NAME, API_TAGS } from "./constants.store";
 
 export const baseApi = createApi({
-  reducerPath: "api",
+  reducerPath: API_STORE_NAME,
   baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_API_URL,
+    baseUrl: API_BASE_URL,
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.accessToken;
       if (token) {
@@ -14,5 +15,5 @@ export const baseApi = createApi({
     },
   }),
   endpoints: () => ({}),
-  tagTypes: ["User"],
+  tagTypes: API_TAGS,
 });
