@@ -2,13 +2,9 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
-
-  const logger = app.get(Logger);
-  app.useLogger(logger);
 
   const config = new DocumentBuilder()
     .setTitle('OpenTube API')
@@ -49,9 +45,6 @@ async function bootstrap() {
 
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
-
-  logger.log(`🚀 Application is running on: http://localhost:${port}`);
-  logger.log(`📚 Swagger docs available at: http://localhost:${port}/api/docs`);
 }
 
 void bootstrap();

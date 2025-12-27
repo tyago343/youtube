@@ -8,17 +8,13 @@ import {
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { v4 as uuidv4 } from 'uuid';
-import { LoggerService } from '../../logger/logger.service';
 
 @Injectable()
 export class AwsService implements OnModuleInit {
   private readonly s3Client: S3Client;
   private readonly bucketName: string;
 
-  constructor(
-    private readonly configService: ConfigService,
-    private readonly logger: LoggerService,
-  ) {
+  constructor(private readonly configService: ConfigService) {
     this.bucketName = this.configService.getOrThrow('MINIO_BUCKET');
     this.s3Client = new S3Client({
       region: this.configService.getOrThrow('AWS_REGION'),
@@ -40,19 +36,12 @@ export class AwsService implements OnModuleInit {
       await this.s3Client.send(
         new HeadBucketCommand({ Bucket: this.bucketName }),
       );
-      this.logger.log(`Bucket "${this.bucketName}" already exists.`);
     } catch {
-      this.logger.log(`Bucket "${this.bucketName}" not found. Creating...`);
-
       await this.s3Client.send(
         new CreateBucketCommand({ Bucket: this.bucketName }),
       );
 
       await this.setBucketPublicPolicy();
-
-      this.logger.log(
-        `Bucket "${this.bucketName}" created and configured as public.`,
-      );
     }
   }
 

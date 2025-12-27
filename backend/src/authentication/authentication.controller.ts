@@ -9,8 +9,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
-import { CreateUserDto } from '../users/dto/create-user.request.dto';
-import { User } from '@users/entities/users.entity';
 import { LocalAuthenticationGuard } from './guards/local-authentication.guard';
 import { JwtAuthGuard } from './guards/jwt-authentication.guard';
 import { Public } from '@authentication/decorators/authentication.decorator';
@@ -28,15 +26,13 @@ import {
   SignupResponseDto,
   UserResponseDto,
 } from '@users/dto/create-user.response';
-import { LoggerService } from '../logger/logger.service';
+import { CreateUserDto } from '../modules/users/presenters/http/dto/create-user.dto';
+import { User } from 'src/modules/users/domain/user.entity';
 
 @ApiTags('Authentication')
 @Controller('')
 export class AuthenticationController {
-  constructor(
-    private readonly logger: LoggerService,
-    private readonly authenticationService: AuthenticationService,
-  ) {}
+  constructor(private readonly authenticationService: AuthenticationService) {}
   @Public()
   @ApiCreatedResponse({
     type: SignupResponseDto,
@@ -44,7 +40,6 @@ export class AuthenticationController {
   })
   @Post('signup')
   async signUp(@Body() signUpDto: CreateUserDto) {
-    this.logger.info('POST /auth/signup - New signup request received');
     return this.authenticationService.signUp(signUpDto);
   }
   @Public()
@@ -65,10 +60,6 @@ export class AuthenticationController {
   })
   @Post('login')
   login(@Request() req: Request & { user: User }) {
-    this.logger.info(
-      '{ userId: req.user.id }',
-      'POST /auth/login - Login request received',
-    );
     return this.authenticationService.login(req.user);
   }
   @ApiBearerAuth()
@@ -84,10 +75,6 @@ export class AuthenticationController {
   })
   @Post('logout')
   logout(@Request() req: Request & { logout: () => void; user?: User }) {
-    this.logger.info(
-      '{ userId: req.user?.id  }',
-      'POST /auth/logout - User logged out',
-    );
     return req.logout();
   }
   @UseGuards(JwtAuthGuard)
@@ -106,10 +93,6 @@ export class AuthenticationController {
     description: 'Invalid or missing authentication token',
   })
   getProfile(@Request() req: Request & { user: User }) {
-    this.logger.debug(
-      '{ userId: req.user.id }',
-      'GET /auth/profile - Profile retrieved',
-    );
     return req.user;
   }
 }

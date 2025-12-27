@@ -1,4 +1,11 @@
-import { Entity, PrimaryColumn, Column, CreateDateColumn } from 'typeorm';
+import { Video } from 'src/videos/entities/video.entity';
+import {
+  Entity,
+  PrimaryColumn,
+  Column,
+  CreateDateColumn,
+  OneToMany,
+} from 'typeorm';
 
 @Entity('users')
 export class UserSchema {
@@ -19,4 +26,7 @@ export class UserSchema {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @OneToMany(() => Video, (video) => video.owner)
+  videos: Video[];
 }

@@ -12,6 +12,7 @@ export class User {
     private readonly _password: Password,
     private _avatarUrl?: string,
     private readonly _createdAt?: Date,
+    private readonly _videos?: any[],
   ) {}
 
   get id(): UserId {
@@ -51,6 +52,7 @@ export class User {
       Password.fromHashed(hashedPassword),
       undefined,
       new Date(),
+      [],
     );
   }
 
@@ -69,6 +71,7 @@ export class User {
       Password.fromHashed(hashedPassword),
       avatarUrl,
       createdAt,
+      [],
     );
   }
 

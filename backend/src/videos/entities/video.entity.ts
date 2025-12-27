@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { UserResponseDto } from '@users/dto/create-user.response';
-import { User } from '@users/entities/users.entity';
+import { UserSchema } from 'src/modules/users/infrastructure/persistence/typeorm/entities/user.schema';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -70,9 +70,9 @@ export class Video {
     description: 'The owner of the video',
     type: UserResponseDto,
   })
-  @ManyToOne(() => User, (owner) => owner.videos)
+  @ManyToOne(() => UserSchema, (owner) => owner.videos)
   @JoinColumn({ name: 'ownerId' })
-  owner: User;
+  owner: UserSchema;
 
   @ApiProperty({
     description: 'The views of the video',
