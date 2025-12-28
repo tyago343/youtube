@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserFactory } from '../../domain/factories/user.factory';
 import { User } from '../../domain/user.entity';
-import { HashingService } from '../ports/hashing.service.interface';
+import { PasswordHashingService } from 'src/modules/shared/application/ports/password-hashing.interface';
 import { UserRepository } from '../ports/user.repository';
 import { Email } from '../../domain/vo/email.vo';
 import { Username } from '../../domain/vo/username.vo';
@@ -14,7 +14,7 @@ export class CreateUserUseCase {
   constructor(
     private readonly userFactory: UserFactory,
     private readonly userRepository: UserRepository,
-    private readonly hashingService: HashingService,
+    private readonly passwordHashingService: PasswordHashingService,
   ) {}
 
   async execute(
@@ -38,7 +38,7 @@ export class CreateUserUseCase {
       throw new UserAlreadyExistsException('username', username);
     }
 
-    const hashedPassword = await this.hashingService.hash(password);
+    const hashedPassword = await this.passwordHashingService.hash(password);
 
     const user = this.userFactory.create(email, username, hashedPassword);
 

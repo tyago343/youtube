@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserSchema } from './persistence/typeorm/entities/user.schema';
 import { OrmUserRepository } from './persistence/typeorm/repositories/orm-user.repository';
-import { BcryptHashingService } from './services/bcrypt-hashing.service';
 import { UserRepository } from '../application/ports/user.repository';
-import { HashingService } from '../application/ports/hashing.service.interface';
+import { PasswordHashingService } from 'src/modules/shared/application/ports/password-hashing.interface';
+import { BcryptPasswordHashingService } from 'src/modules/shared/infrastructure/services/bcrypt-password-hashing.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserSchema])],
@@ -14,10 +14,10 @@ import { HashingService } from '../application/ports/hashing.service.interface';
       useClass: OrmUserRepository,
     },
     {
-      provide: HashingService,
-      useClass: BcryptHashingService,
+      provide: PasswordHashingService,
+      useClass: BcryptPasswordHashingService,
     },
   ],
-  exports: [UserRepository, HashingService],
+  exports: [UserRepository, PasswordHashingService],
 })
 export class UsersInfrastructureModule {}

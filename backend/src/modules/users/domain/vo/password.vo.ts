@@ -20,12 +20,10 @@ export class Password {
 
   private validate(password: string): void {
     if (!password || password.length === 0) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       throw new InvalidPasswordException('Password cannot be empty');
     }
 
     if (password.length < 8) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       throw new InvalidPasswordException(
         'Password must be at least 8 characters',
       );
@@ -36,7 +34,6 @@ export class Password {
     const hasNumber = /[0-9]/.test(password);
 
     if (!hasUpperCase || !hasLowerCase || !hasNumber) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       throw new InvalidPasswordException(
         'Password must contain at least one uppercase, lowercase and number',
       );

@@ -6,13 +6,13 @@ import jwtConfig from './config/jwt.config';
 import { JwtAuthGuard } from './guards/jwt-authentication.guard';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
-import { PasswordVerifier } from '../application/ports/password-verifier.interface';
 import { TokenService } from '../application/ports/token.service.interface';
-import { BcryptPasswordVerifierService } from './services/bcrypt-password-verifier.service';
 import { JwtTokenService } from './services/jwt-token.service';
 import { LocalAuthenticationGuard } from './guards/local-authentication.guard';
 import { ValidateUserUseCase } from '../application/use-cases/validate-user.use-case';
 import { UsersModule } from 'src/modules/users/users.module';
+import { PasswordHashingService } from 'src/modules/shared/application/ports/password-hashing.interface';
+import { BcryptPasswordHashingService } from 'src/modules/shared/infrastructure/services/bcrypt-password-hashing.service';
 
 @Module({
   imports: [
@@ -27,8 +27,8 @@ import { UsersModule } from 'src/modules/users/users.module';
       useClass: JwtTokenService,
     },
     {
-      provide: PasswordVerifier,
-      useClass: BcryptPasswordVerifierService,
+      provide: PasswordHashingService,
+      useClass: BcryptPasswordHashingService,
     },
     ValidateUserUseCase,
     LocalStrategy,
@@ -38,7 +38,7 @@ import { UsersModule } from 'src/modules/users/users.module';
   ],
   exports: [
     TokenService,
-    PasswordVerifier,
+    PasswordHashingService,
     LocalAuthenticationGuard,
     JwtAuthGuard,
   ],

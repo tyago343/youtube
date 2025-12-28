@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { User } from 'src/modules/users/domain/user.entity';
-import { PasswordVerifier } from '../ports/password-verifier.interface';
+import { PasswordHashingService } from 'src/modules/shared/application/ports/password-hashing.interface';
 import { UsersService } from 'src/modules/users/application/services/users.service';
 import { InvalidCredentialsException } from '../../domain/exceptions/invalid-crendetials.exception';
 
 @Injectable()
 export class ValidateUserUseCase {
   constructor(
-    private readonly passwordVerifier: PasswordVerifier,
+    private readonly passwordHashingService: PasswordHashingService,
     private readonly userService: UsersService,
   ) {}
 
@@ -16,7 +16,7 @@ export class ValidateUserUseCase {
     if (!user) {
       throw new InvalidCredentialsException();
     }
-    const isValid = await this.passwordVerifier.verify(
+    const isValid = await this.passwordHashingService.verify(
       password,
       user.password.value,
     );
