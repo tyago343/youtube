@@ -1,7 +1,7 @@
-import { UserId } from './value-objects/user-id.vo';
-import { Email } from './value-objects/email.vo';
-import { Username } from './value-objects/username.vo';
-import { Password } from './value-objects/password.vo';
+import { UserId } from './vo/user-id.vo';
+import { Email } from './vo/email.vo';
+import { Username } from './vo/username.vo';
+import { Password } from './vo/password.vo';
 import { InvalidAvatarUrlException } from './exceptions/invalid-avatar-url.exception';
 
 export class User {

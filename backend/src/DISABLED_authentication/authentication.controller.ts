@@ -11,7 +11,6 @@ import {
 import { AuthenticationService } from './authentication.service';
 import { LocalAuthenticationGuard } from './guards/local-authentication.guard';
 import { JwtAuthGuard } from './guards/jwt-authentication.guard';
-import { Public } from '@authentication/decorators/authentication.decorator';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -25,9 +24,10 @@ import {
   LoginResponseDto,
   SignupResponseDto,
   UserResponseDto,
-} from '@users/dto/create-user.response';
+} from 'src/DISABLED_users/dto/create-user.response';
 import { CreateUserDto } from '../modules/users/presenters/http/dto/create-user.dto';
 import { User } from 'src/modules/users/domain/user.entity';
+import { Public } from 'src/modules/authentication/presenters/http/decorators/public.decorator';
 
 @ApiTags('Authentication')
 @Controller('')

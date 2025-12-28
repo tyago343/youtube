@@ -13,7 +13,6 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Public } from '@authentication/decorators/authentication.decorator';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -24,6 +23,7 @@ import {
 } from '@nestjs/swagger';
 import { UploadAvatarResponseDto } from './dto/upload-avatar.response.dto';
 import { UserResponseDto } from './dto/create-user.response';
+import { Public } from 'src/modules/authentication/presenters/http/decorators/public.decorator';
 
 @Controller('users')
 export class UsersController {

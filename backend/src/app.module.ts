@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from './modules/users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthenticationModule } from './authentication/authentication.module';
+import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { ConfigModule } from '@nestjs/config';
-import { JwtAuthGuard } from '@authentication/guards/jwt-authentication.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { StorageModule } from './storage/storage.module';
 import { VideosModule } from './videos/videos.module';
+import { JwtAuthGuard } from './modules/authentication/infrastructure/guards/jwt-authentication.guard';
 
 @Module({
   imports: [

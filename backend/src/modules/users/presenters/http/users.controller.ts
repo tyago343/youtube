@@ -26,13 +26,13 @@ import {
   ApiBody,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { Public } from '@authentication/decorators/authentication.decorator';
 
 import { UsersService } from '../../application/services/users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserResponseDto } from './dto/user-response.dto';
 import { UploadAvatarResponseDto } from './dto/upload-avatar-response.dto';
+import { Public } from 'src/modules/authentication/presenters/http/decorators/public.decorator';
 
 @ApiTags('Users')
 @Controller('users')

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { UserResponseDto } from '@users/dto/create-user.response';
+import { UserResponseDto } from 'src/modules/users/presenters/http/dto/user-response.dto';
 import { UserSchema } from 'src/modules/users/infrastructure/persistence/typeorm/entities/user.schema';
 import {
   Entity,

@@ -21,9 +21,6 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
-    "paths": {
-      "@authentication/*": ["./src/authentication/*"],
-      "@users/*": ["./src/users/*"]
-    }
+    
   }
 }

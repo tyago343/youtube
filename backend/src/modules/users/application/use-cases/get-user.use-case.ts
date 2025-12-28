@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '../../domain/user.entity';
 import { UserRepository } from '../ports/user.repository';
-import { UserId } from '../../domain/value-objects/user-id.vo';
-import { Email } from '../../domain/value-objects/email.vo';
+import { UserId } from '../../domain/vo/user-id.vo';
+import { Email } from '../../domain/vo/email.vo';
 import { UserNotFoundException } from '../../domain/exceptions/user-not-found.exception';
 import { validate as uuidValidate } from 'uuid';
 

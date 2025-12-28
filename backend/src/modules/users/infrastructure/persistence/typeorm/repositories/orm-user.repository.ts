@@ -3,9 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../../../../domain/user.entity';
 import { UserRepository } from '../../../../application/ports/user.repository';
-import { UserId } from '../../../../domain/value-objects/user-id.vo';
-import { Email } from '../../../../domain/value-objects/email.vo';
-import { Username } from '../../../../domain/value-objects/username.vo';
+import { UserId } from '../../../../domain/vo/user-id.vo';
+import { Email } from '../../../../domain/vo/email.vo';
+import { Username } from '../../../../domain/vo/username.vo';
 import { UserSchema } from '../entities/user.schema';
 import { UserMapper } from '../mappers/user.mapper';
 

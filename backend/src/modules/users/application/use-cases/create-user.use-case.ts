@@ -3,8 +3,8 @@ import { UserFactory } from '../../domain/factories/user.factory';
 import { User } from '../../domain/user.entity';
 import { HashingService } from '../ports/hashing.service.interface';
 import { UserRepository } from '../ports/user.repository';
-import { Email } from '../../domain/value-objects/email.vo';
-import { Username } from '../../domain/value-objects/username.vo';
+import { Email } from '../../domain/vo/email.vo';
+import { Username } from '../../domain/vo/username.vo';
 import { UserAlreadyExistsException } from '../../domain/exceptions/user-already-exists.exceptions';
 
 @Injectable()
