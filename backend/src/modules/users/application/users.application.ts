@@ -15,7 +15,7 @@ import { UsersService } from './services/users.service';
 import { UserFactory } from '../domain/factories/user.factory';
 
 // Infrastructure
-import { StorageModule } from '../../../storage/storage.module';
+import { SharedModule } from '../../shared/shared.module';
 
 const useCases = [
   CreateUserUseCase,
@@ -36,7 +36,7 @@ export class UsersApplicationModule {
   ): DynamicModule {
     return {
       module: UsersApplicationModule,
-      imports: [infrastructureModule, StorageModule],
+      imports: [infrastructureModule, SharedModule],
       providers: [...useCases, UserFactory, UsersService],
       exports: [...useCases, UsersService],
     };

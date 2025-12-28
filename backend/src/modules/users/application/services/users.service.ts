@@ -18,7 +18,7 @@ import { InvalidEmailException } from '../../domain/exceptions/invalid-email.exc
 import { InvalidUsernameException } from '../../domain/exceptions/invalid-username.exception';
 import { InvalidPasswordException } from '../../domain/exceptions/invalid-password.exception';
 import { InvalidAvatarUrlException } from '../../domain/exceptions/invalid-avatar-url.exception';
-import { StorageService } from '../../../../storage/storage.service';
+import { FileStorageService } from 'src/modules/shared/application/ports/file-storage.interface';
 
 @Injectable()
 export class UsersService {
@@ -31,7 +31,7 @@ export class UsersService {
     private readonly updateUserUseCase: UpdateUserUseCase,
     private readonly uploadAvatarUseCase: UploadAvatarUseCase,
     private readonly deleteUserUseCase: DeleteUserUseCase,
-    private readonly storageService: StorageService,
+    private readonly storageService: FileStorageService,
   ) {}
 
   async create(
@@ -108,14 +108,13 @@ export class UsersService {
     this.ensureOwnership(id, currentUserId);
 
     try {
-      const avatarUrl = await this.storageService.uploadFile(
-        avatar,
-        this.AVATAR_FOLDER,
-      );
+      const avatarUrl = await this.storageService.uploadFile(avatar, {
+        folder: this.AVATAR_FOLDER,
+      });
 
-      const user = await this.uploadAvatarUseCase.execute(id, avatarUrl);
+      const user = await this.uploadAvatarUseCase.execute(id, avatarUrl.url);
 
-      return { avatarUrl: user.avatarUrl || avatarUrl };
+      return { avatarUrl: user.avatarUrl || avatarUrl.url };
     } catch (error) {
       if (error instanceof UserNotFoundException) {
         throw new NotFoundException(error.message);
