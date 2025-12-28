@@ -13,6 +13,7 @@ import { AuthenticationService } from '../../application/services/authentication
 import { User } from 'src/modules/users/domain/user.entity';
 import { Public } from './decorators/public.decorator';
 import { UserResponseDto } from 'src/modules/users/presenters/http/dto/user-response.dto';
+import { AuthResponseDto } from './dto/auth.response.dto';
 
 @ApiTags('Authentication')
 @Controller('')
@@ -46,10 +47,10 @@ export class AuthenticationController {
       loginDto.email,
       loginDto.password,
     );
-    return {
+    return AuthResponseDto.fromDomain({
       accessToken,
       user: UserResponseDto.fromDomain(user),
-    };
+    });
   }
 
   @Post('logout')
