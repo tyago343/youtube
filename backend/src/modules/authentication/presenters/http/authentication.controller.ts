@@ -12,6 +12,7 @@ import { LoginDto } from './dto/login.dto';
 import { AuthenticationService } from '../../application/services/authentication.service';
 import { User } from 'src/modules/users/domain/user.entity';
 import { Public } from './decorators/public.decorator';
+import { UserResponseDto } from 'src/modules/users/presenters/http/dto/user-response.dto';
 
 @ApiTags('Authentication')
 @Controller('')
@@ -24,11 +25,15 @@ export class AuthenticationController {
   @ApiCreatedResponse({ description: 'User signed up successfully' })
   @ApiBody({ type: SignupDto })
   async signup(@Body() signupDto: SignupDto) {
-    return this.authenticationService.signUp(
+    const { accessToken, user } = await this.authenticationService.signUp(
       signupDto.email,
       signupDto.username,
       signupDto.password,
     );
+    return {
+      accessToken,
+      user: UserResponseDto.fromDomain(user),
+    };
   }
 
   @Public()
@@ -37,7 +42,14 @@ export class AuthenticationController {
   @ApiOkResponse({ description: 'User logged in successfully' })
   @ApiBody({ type: LoginDto })
   async login(@Body() loginDto: LoginDto) {
-    return this.authenticationService.login(loginDto.email, loginDto.password);
+    const { accessToken, user } = await this.authenticationService.login(
+      loginDto.email,
+      loginDto.password,
+    );
+    return {
+      accessToken,
+      user: UserResponseDto.fromDomain(user),
+    };
   }
 
   @Post('logout')

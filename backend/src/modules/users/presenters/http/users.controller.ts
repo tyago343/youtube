@@ -159,4 +159,18 @@ export class UsersController {
   ): Promise<void> {
     await this.usersService.delete(id, req.user.userId);
   }
+
+  // This endpoint is public and must be removed later
+  // just for testing purposes
+  @Public()
+  @Get('me')
+  @ApiOperation({ summary: 'Get current user' })
+  @ApiOkResponse({
+    description: 'User fetched successfully',
+    type: UserResponseDto,
+  })
+  async getAllUsers(): Promise<UserResponseDto[]> {
+    const users = await this.usersService.findAll();
+    return users.map((user) => UserResponseDto.fromDomain(user));
+  }
 }
