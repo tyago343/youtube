@@ -2,7 +2,7 @@ import { Spinner } from "@/shared/ui/spinner/spinner";
 
 export const RouterFallback = () => {
   return (
-    <div className="dark min-h-screen bg-background text-white">
+    <div className="min-h-screen bg-background text-foreground">
       <header className="flex justify-end items-center p-4">
         <div className="flex gap-2">
           <div className="h-10 w-20 bg-muted animate-pulse rounded" />

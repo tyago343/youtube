@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is([data-theme="dark"] *));
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -42,7 +42,9 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-:root {
+/* Light theme (default) */
+:root,
+[data-theme="light"] {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -77,7 +79,8 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-.dark {
+/* Dark theme */
+[data-theme="dark"] {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);

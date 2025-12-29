@@ -4,7 +4,7 @@ import { RouteErrorBoundary } from "@/shared/error-boundary/RouteErrorBoundary";
 
 export default function AuthLayout() {
   return (
-    <div className="dark min-h-screen bg-background text-white ">
+    <div className="min-h-screen bg-background text-foreground">
       <Toaster richColors position="top-right" />
       <RouteErrorBoundary context="auth">
         <Outlet />

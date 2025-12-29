@@ -5,6 +5,7 @@ import type { User } from "@user/types/user.type";
 import { selectUser } from "@user/model/user.selectors";
 import { useSelector } from "react-redux";
 import SearchBarComponent from "@search/components/search-bar.component";
+import { ThemeToggle } from "@shared/components/theme-toggle/ThemeToggle";
 
 interface HeaderProps {
   showSearch?: boolean;
@@ -18,6 +19,7 @@ function Header({ showSearch = false }: HeaderProps) {
         {showSearch && <SearchBarComponent />}
       </div>
       <div className="flex items-center gap-2">
+        <ThemeToggle />
         {user ? (
           <UserMenuComponent user={user} />
         ) : (

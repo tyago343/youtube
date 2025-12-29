@@ -7,7 +7,7 @@ export function VideoLayout() {
   return (
     <>
       <Toaster richColors position="top-right" />
-      <div className="dark min-h-screen bg-background text-white">
+      <div className="min-h-screen bg-background text-foreground">
         <Header showSearch={true} />
         <main className="flex">
           <section className="flex-1">
