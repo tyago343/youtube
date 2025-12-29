@@ -1,16 +1,12 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  UseInterceptors,
-  UploadedFiles,
   BadRequestException,
+  Body,
+  Controller,
+  Post,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
-import { VideosService } from './videos.service';
-import { CreateVideoDto } from './dto/create-video.request.dto';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { VideosService } from '../../application/services/videos.service';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -18,7 +14,9 @@ import {
   ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger';
-import { Video } from './entities/video.entity';
+import { CreateVideoDto } from './dto/create-video.dto';
+import { VideoResponseDto } from './dto/video-response.dto';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
 @Controller('videos')
 export class VideosController {
@@ -39,6 +37,7 @@ export class VideosController {
   ];
 
   constructor(private readonly videosService: VideosService) {}
+
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Create a new video',
@@ -50,7 +49,7 @@ export class VideosController {
   })
   @ApiOkResponse({
     description: 'Video created successfully',
-    type: Video,
+    type: VideoResponseDto,
   })
   @Post()
   @UseInterceptors(
@@ -59,61 +58,53 @@ export class VideosController {
       { name: 'thumbnail', maxCount: 1 },
     ]),
   )
-  create(
+  async create(
     @Body() createVideoDto: CreateVideoDto,
     @UploadedFiles()
     files: {
-      video: Express.Multer.File[];
+      video?: Express.Multer.File[];
       thumbnail?: Express.Multer.File[];
     },
   ) {
+    if (!files.video || !files.video[0]) {
+      throw new BadRequestException('Video file is required');
+    }
+
     const video = files.video[0];
     const thumbnail = files.thumbnail?.[0];
 
-    if (video.size > this.MAX_VIDEO_SIZE) {
-      throw new BadRequestException(
-        `File exceeds the maximum size of ${this.MAX_VIDEO_SIZE / (1024 * 1024)}MB`,
-      );
-    }
-
     if (!this.ALLOWED_VIDEO_TYPES.includes(video.mimetype)) {
       throw new BadRequestException(
-        `File type not allowed. Allowed types: ${this.ALLOWED_VIDEO_TYPES.join(', ')}`,
+        `Invalid video type. Allowed types: ${this.ALLOWED_VIDEO_TYPES.join(', ')}`,
       );
     }
 
-    if (thumbnail) {
-      if (thumbnail.size > this.MAX_THUMBNAIL_SIZE) {
-        throw new BadRequestException(
-          `File exceeds the maximum size of ${this.MAX_THUMBNAIL_SIZE / (1024 * 1024)}MB`,
-        );
-      }
+    // Validar tamaño de video
+    if (video.size > this.MAX_VIDEO_SIZE) {
+      throw new BadRequestException(
+        `Video file size exceeds maximum allowed size of ${this.MAX_VIDEO_SIZE / 1024 / 1024}MB`,
+      );
+    }
 
+    // Validar thumbnail si está presente
+    if (thumbnail) {
       if (!this.ALLOWED_IMAGE_TYPES.includes(thumbnail.mimetype)) {
         throw new BadRequestException(
-          `File type not allowed. Allowed types: ${this.ALLOWED_IMAGE_TYPES.join(', ')}`,
+          `Invalid thumbnail type. Allowed types: ${this.ALLOWED_IMAGE_TYPES.join(', ')}`,
+        );
+      }
+      if (thumbnail.size > this.MAX_THUMBNAIL_SIZE) {
+        throw new BadRequestException(
+          `Thumbnail file size exceeds maximum allowed size of ${this.MAX_THUMBNAIL_SIZE / 1024 / 1024}MB`,
         );
       }
     }
 
-    return this.videosService.create(createVideoDto, video, thumbnail);
-  }
-
-  @Get()
-  @ApiOkResponse({
-    description: 'Videos fetched successfully',
-    type: [Video],
-  })
-  findAll() {
-    return this.videosService.findAll();
-  }
-
-  @Get(':id')
-  @ApiOkResponse({
-    description: 'Video fetched successfully',
-    type: Video,
-  })
-  findOne(@Param('id') id: string) {
-    return this.videosService.findOne(id);
+    const newVideo = await this.videosService.create(
+      video,
+      createVideoDto,
+      thumbnail,
+    );
+    return VideoResponseDto.fromDomain(newVideo);
   }
 }

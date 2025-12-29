@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsBoolean,
   IsNotEmpty,
-  IsNotEmptyObject,
+  IsOptional,
   IsString,
   IsUUID,
 } from 'class-validator';
@@ -30,16 +31,13 @@ export class CreateVideoDto {
   @IsUUID()
   @IsNotEmpty()
   ownerId: string;
+
   @ApiProperty({
-    description: 'The video file',
-    example: 'video.mp4',
+    description: 'Whether the video is public',
+    example: true,
+    required: false,
   })
-  @IsNotEmptyObject()
-  video: Express.Multer.File;
-  @ApiProperty({
-    description: 'The thumbnail file',
-    example: 'thumbnail.png',
-  })
-  @IsNotEmptyObject()
-  thumbnail: Express.Multer.File;
+  @IsOptional()
+  @IsBoolean()
+  isPublic?: boolean;
 }

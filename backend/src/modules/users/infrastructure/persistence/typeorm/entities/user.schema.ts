@@ -1,4 +1,4 @@
-import { Video } from 'src/videos/entities/video.entity';
+import { VideoSchema } from 'src/modules/videos/infrastructure/persistence/typeorm/entities/video.schema';
 import {
   Entity,
   PrimaryColumn,
@@ -27,6 +27,6 @@ export class UserSchema {
   @CreateDateColumn()
   createdAt: Date;
 
-  @OneToMany(() => Video, (video) => video.owner)
-  videos: Video[];
+  @OneToMany(() => VideoSchema, (video) => video.owner)
+  videos: VideoSchema[];
 }

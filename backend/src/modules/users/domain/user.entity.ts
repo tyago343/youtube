@@ -3,41 +3,19 @@ import { Email } from './vo/email.vo';
 import { Username } from './vo/username.vo';
 import { Password } from './vo/password.vo';
 import { InvalidAvatarUrlException } from './exceptions/invalid-avatar-url.exception';
+import { Video } from 'src/modules/videos/domain/video.entity';
 
 export class User {
-  private constructor(
-    private readonly _id: UserId,
-    private _email: Email,
-    private _username: Username,
-    private readonly _password: Password,
-    private _avatarUrl?: string,
-    private readonly _createdAt?: Date,
-    private readonly _videos?: any[],
+  public constructor(
+    public readonly id: UserId,
+    public email: Email,
+    public username: Username,
+    public password: Password,
+    public readonly createdAt: Date,
+    public avatarUrl?: string,
+    public videos?: Video[],
+    public updatedAt?: Date,
   ) {}
-
-  get id(): UserId {
-    return this._id;
-  }
-
-  get email(): Email {
-    return this._email;
-  }
-
-  get username(): Username {
-    return this._username;
-  }
-
-  get password(): Password {
-    return this._password;
-  }
-
-  get avatarUrl(): string | undefined {
-    return this._avatarUrl;
-  }
-
-  get createdAt(): Date | undefined {
-    return this._createdAt;
-  }
 
   static create(
     id: string,
@@ -50,28 +28,40 @@ export class User {
       Email.create(email),
       Username.create(username),
       Password.fromHashed(hashedPassword),
-      undefined,
       new Date(),
+      undefined,
       [],
     );
   }
 
-  static fromPersistence(
-    id: string,
-    email: string,
-    username: string,
-    hashedPassword: string,
-    avatarUrl?: string,
-    createdAt?: Date,
-  ): User {
+  static fromPersistence({
+    id,
+    email,
+    username,
+    hashedPassword,
+    createdAt,
+    avatarUrl,
+    videos,
+    updatedAt,
+  }: {
+    id: string;
+    email: string;
+    username: string;
+    hashedPassword: string;
+    createdAt: Date;
+    avatarUrl?: string;
+    videos?: Video[];
+    updatedAt?: Date;
+  }): User {
     return new User(
       UserId.create(id),
       Email.create(email),
       Username.create(username),
       Password.fromHashed(hashedPassword),
-      avatarUrl,
       createdAt,
-      [],
+      avatarUrl,
+      videos,
+      updatedAt,
     );
   }
 
@@ -88,33 +78,35 @@ export class User {
       );
     }
 
-    this._avatarUrl = newAvatarUrl;
+    this.avatarUrl = newAvatarUrl;
   }
 
   updateEmail(newEmail: string): void {
-    this._email = Email.create(newEmail);
+    this.email = Email.create(newEmail);
   }
 
   updateUsername(newUsername: string): void {
-    this._username = Username.create(newUsername);
+    this.username = Username.create(newUsername);
   }
 
   isOwnerOf(ownerId: string): boolean {
-    return this._id.value === ownerId;
+    return this.id.value === ownerId;
   }
 
   hasAvatar(): boolean {
-    return this._avatarUrl !== undefined && this._avatarUrl.length > 0;
+    return this.avatarUrl !== undefined && this.avatarUrl.length > 0;
   }
 
   toPrimitives() {
     return {
-      id: this._id.value,
-      email: this._email.value,
-      username: this._username.value,
-      password: this._password.value,
-      avatarUrl: this._avatarUrl,
-      createdAt: this._createdAt,
+      id: this.id.value,
+      email: this.email.value,
+      username: this.username.value,
+      password: this.password.value,
+      avatarUrl: this.avatarUrl,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+      videos: this.videos,
     };
   }
 }

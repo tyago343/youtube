@@ -1,21 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { UserResponseDto } from 'src/modules/users/presenters/http/dto/user-response.dto';
 import { UserSchema } from 'src/modules/users/infrastructure/persistence/typeorm/entities/user.schema';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, Column, ManyToOne, PrimaryColumn, JoinColumn } from 'typeorm';
 
-@Entity()
-export class Video {
+@Entity('videos')
+export class VideoSchema {
   @ApiProperty({
     description: 'The id of the video',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn('uuid')
   id: string;
   @ApiProperty({
     description: 'The title of the video',
@@ -51,13 +45,6 @@ export class Video {
   })
   @Column()
   createdAt: Date;
-
-  @ApiProperty({
-    description: 'The updated at date of the video',
-    example: '2021-01-01T00:00:00.000Z',
-  })
-  @Column()
-  updatedAt: Date;
 
   @ApiProperty({
     description: 'The owner id of the video',
@@ -107,5 +94,11 @@ export class Video {
     example: '2021-01-01T00:00:00.000Z',
   })
   @Column({ nullable: true })
-  published: Date;
+  published?: Date;
+  @ApiProperty({
+    description: 'The updated at date of the video',
+    example: '2021-01-01T00:00:00.000Z',
+  })
+  @Column({ nullable: true })
+  updatedAt?: Date;
 }

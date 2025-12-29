@@ -4,7 +4,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
-import { VideosModule } from './videos/videos.module';
+import { VideosModule } from './modules/videos/videos.module';
 import { JwtAuthGuard } from './modules/authentication/infrastructure/guards/jwt-authentication.guard';
 import { DatabaseConfigService } from './modules/shared/application/ports/database-config.interface';
 import { DatabaseInfrastructureModule } from './modules/shared/infrastructure/database/database.infrastructure';
