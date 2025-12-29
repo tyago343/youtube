@@ -1,3 +1,4 @@
+import { STORE_NAMES } from "@core/store/constants.store";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 type AuthState = {
@@ -11,7 +12,7 @@ const initialState: AuthState = {
 };
 
 export const authSlice = createSlice({
-  name: "auth",
+  name: STORE_NAMES.AUTH,
   initialState,
   reducers: {
     setCredentials: (

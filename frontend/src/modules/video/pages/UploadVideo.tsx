@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { User } from "@/modules/user/types/user.type";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,7 +10,10 @@ import { useSelector } from "react-redux";
 import { selectUser } from "@user/model/user.selectors";
 
 function UploadVideo() {
-  const user = useSelector(selectUser) as User;
+  // @ts-expect-error - User is not used
+  const _user = useSelector(selectUser) as User;
+  // @ts-expect-error - User is not used
+
   const { control, handleSubmit } = useForm<UploadVideoForm>({
     resolver: zodResolver(uploadVideoSchema),
     defaultValues: {
@@ -19,7 +23,8 @@ function UploadVideo() {
       thumbnail: undefined,
     },
   });
-  async function onSubmit(data: UploadVideoForm) {
+  // @ts-expect-error - User is not used
+  async function _onSubmit(data: UploadVideoForm) {
     console.log(data);
   }
   return (

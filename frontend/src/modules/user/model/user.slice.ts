@@ -1,7 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { User } from "../types/user.type";
-import { USER_STORE_NAME } from "./user.constants";
-
+import { STORE_NAMES } from "@core/store/constants.store";
 type UserState = {
   currentUser: User | null;
 };
@@ -11,7 +10,7 @@ const initialState: UserState = {
 };
 
 export const userSlice = createSlice({
-  name: USER_STORE_NAME,
+  name: STORE_NAMES.USER,
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<User>) => {

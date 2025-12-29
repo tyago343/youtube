@@ -89,8 +89,6 @@ export const authApi = baseApi.injectEndpoints({
           clearAuthStorage();
         } catch (error) {
           toast.error("Logout failed: " + error);
-          const { clearCredentials } = await import("./auth.slice");
-          const { clearUser } = await import("@user/model/user.slice");
 
           dispatch(clearCredentials());
           dispatch(clearUser());
