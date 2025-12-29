@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import Header from "@/shared/components/header/Header";
+import Header from "@shared/components/header/Header";
 import { Toaster } from "sonner";
 
 export default function MainLayout() {
@@ -7,7 +7,7 @@ export default function MainLayout() {
     <>
       <Toaster richColors position="top-right" />
       <div className="dark min-h-screen bg-background text-white">
-        <Header />
+        <Header showSearch={false} />
         <main className="flex">
           <aside className="w-64 bg-sidebar p-4 border-r hidden md:block h-[calc(100vh-73px)] sticky top-[73px]">
             Sidebar

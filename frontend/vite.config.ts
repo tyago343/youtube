@@ -11,13 +11,13 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      "@modules": path.resolve(__dirname, "./src/modules"),
+      "@core": path.resolve(__dirname, "./src/core"),
       "@shared": path.resolve(__dirname, "./src/shared"),
-      "@app": path.resolve(__dirname, "./src/core"),
-      "@pages": path.resolve(__dirname, "./src/core/pages"),
+      "@modules": path.resolve(__dirname, "./src/modules"),
       "@user": path.resolve(__dirname, "./src/modules/user"),
       "@video": path.resolve(__dirname, "./src/modules/video"),
       "@auth": path.resolve(__dirname, "./src/modules/auth"),
+      "@search": path.resolve(__dirname, "./src/modules/search"),
     },
   },
   test: {

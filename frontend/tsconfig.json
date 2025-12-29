@@ -8,13 +8,13 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@modules/*": ["src/modules/*"],
+      "@core/*": ["src/core/*"],
       "@shared/*": ["src/shared/*"],
-      "@app/*": ["src/core/*"],
+      "@modules/*": ["src/modules/*"],
       "@video/*": ["src/modules/video/*"],
       "@user/*": ["src/modules/user/*"],
       "@auth/*": ["src/modules/auth/*"],
-      "@pages/*": ["src/core/pages/*"],
+      "@search/*": ["src/modules/search/*"],
     }
   }
 }

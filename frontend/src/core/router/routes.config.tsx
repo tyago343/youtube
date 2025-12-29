@@ -1,65 +1,43 @@
 import { lazy } from "react";
 import type { RouteObject } from "react-router";
-import { PublicRoute } from "./public.routes";
-import { PrivateRoute } from "./private.routes";
 import MainLayout from "@/shared/layout/main.layout";
+import { PublicGuard } from "./guards/public.guard";
 
 const Home = lazy(() => import("@/core/pages/Home"));
+const NotFound = lazy(() => import("@/core/pages/NotFound"));
 
-const Login = lazy(() => import("@auth/pages/Login"));
-const Signup = lazy(() => import("@auth/pages/Signup"));
-const Profile = lazy(() => import("@user/pages/Profile"));
-const AuthLayout = lazy(() => import("@auth/layout/auth.layout"));
-const UploadVideo = lazy(() => import("@/modules/video/pages/UploadVideo"));
+import { authRoutes } from "@auth/routes";
+import { videoRoutes } from "@video/routes";
+import { searchRoutes } from "@search/routes";
+import { userRoutes } from "@user/routes";
+
 export const routes: RouteObject[] = [
   {
     path: "/",
-    element: (
-      <MainLayout>
-        <PublicRoute />
-      </MainLayout>
-    ),
+    element: <MainLayout />,
     children: [
       {
-        path: "/",
-        element: <Home />,
+        element: <PublicGuard />,
+        children: [
+          {
+            index: true,
+            element: <Home />,
+          },
+        ],
       },
     ],
   },
+
+  ...authRoutes,
+
+  ...searchRoutes,
+
+  ...videoRoutes,
+
+  ...userRoutes,
+
   {
-    path: "/auth",
-    element: <AuthLayout />,
-    children: [
-      {
-        path: "login",
-        element: <Login />,
-      },
-      {
-        path: "signup",
-        element: <Signup />,
-      },
-    ],
-  },
-  {
-    path: "/",
-    element: (
-      <MainLayout>
-        <PrivateRoute />
-      </MainLayout>
-    ),
-    children: [
-      {
-        path: "/",
-        element: <Home />,
-      },
-      {
-        path: "/profile",
-        element: <Profile />,
-      },
-      {
-        path: "/upload-video",
-        element: <UploadVideo />,
-      },
-    ],
+    path: "*",
+    element: <NotFound />,
   },
 ];
