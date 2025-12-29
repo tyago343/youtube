@@ -68,4 +68,16 @@ export class AuthenticationController {
   getProfile(@Request() req: Request & { user: User }) {
     return req.user;
   }
+
+  @Get('me')
+  @ApiOperation({ summary: 'Get current user' })
+  @ApiOkResponse({ description: 'User retrieved successfully' })
+  @ApiUnauthorizedResponse({ description: 'Invalid or missing token' })
+  async getMe(
+    @Request() req: Request & { user: { userId: string; email: string } },
+  ) {
+    const user = await this.authenticationService.getUser(req.user.userId);
+
+    return UserResponseDto.fromDomain(user);
+  }
 }

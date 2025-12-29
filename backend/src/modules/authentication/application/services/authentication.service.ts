@@ -5,6 +5,7 @@ import { ValidateUserUseCase } from '../use-cases/validate-user.use-case';
 import { User } from 'src/modules/users/domain/user.entity';
 import { UserAlreadyExistsException } from 'src/modules/users/domain/exceptions/user-already-exists.exceptions';
 import { AccessToken } from '../../domain/vo/access-token.vo';
+import { GetUserUseCase } from 'src/modules/users/application/use-cases/get-user.use-case';
 
 @Injectable()
 export class AuthenticationService {
@@ -12,6 +13,7 @@ export class AuthenticationService {
     private readonly signUpUseCase: SignUpUseCase,
     private readonly loginUseCase: LoginUseCase,
     private readonly validateUserUseCase: ValidateUserUseCase,
+    private readonly getUserUseCase: GetUserUseCase,
   ) {}
 
   async signUp(
@@ -37,5 +39,8 @@ export class AuthenticationService {
   }
   async validateUser(email: string, password: string): Promise<User> {
     return await this.validateUserUseCase.execute(email, password);
+  }
+  async getUser(identifier: string): Promise<User> {
+    return await this.getUserUseCase.execute(identifier);
   }
 }

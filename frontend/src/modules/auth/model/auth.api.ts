@@ -3,7 +3,13 @@ import type { User } from "@user/types/user.type";
 import { setCredentials } from "./auth.slice";
 import { setUser } from "@user/model/user.slice";
 import { toast } from "sonner";
-
+import {
+  saveAuthCredentials,
+  clearAuthStorage,
+  getStoredAccessToken,
+} from "@/shared/lib/storage";
+import { clearCredentials } from "./auth.slice";
+import { clearUser } from "@user/model/user.slice";
 export type AuthResponse = {
   user: User;
   accessToken: string;
@@ -41,6 +47,7 @@ export const authApi = baseApi.injectEndpoints({
           );
 
           dispatch(setUser(data.user));
+          saveAuthCredentials(data.accessToken, data.refreshToken);
         } catch (error) {
           toast.error("Login failed: " + error);
         }
@@ -65,6 +72,7 @@ export const authApi = baseApi.injectEndpoints({
           );
 
           dispatch(setUser(data.user));
+          saveAuthCredentials(data.accessToken, data.refreshToken);
         } catch (error) {
           toast.error("Register failed: " + error);
         }
@@ -80,11 +88,9 @@ export const authApi = baseApi.injectEndpoints({
         try {
           await queryFulfilled;
 
-          const { clearCredentials } = await import("./auth.slice");
-          const { clearUser } = await import("@user/model/user.slice");
-
           dispatch(clearCredentials());
           dispatch(clearUser());
+          clearAuthStorage();
         } catch (error) {
           toast.error("Logout failed: " + error);
           const { clearCredentials } = await import("./auth.slice");
@@ -92,11 +98,27 @@ export const authApi = baseApi.injectEndpoints({
 
           dispatch(clearCredentials());
           dispatch(clearUser());
+          clearAuthStorage();
         }
       },
+    }),
+
+    getMe: builder.query<User, void>({
+      query: () => ({
+        url: "/me",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${getStoredAccessToken() ?? ""}`,
+        },
+      }),
     }),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useLogoutMutation } =
-  authApi;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useLogoutMutation,
+  useGetMeQuery,
+  useLazyGetMeQuery,
+} = authApi;

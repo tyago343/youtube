@@ -4,8 +4,14 @@ import { LoginUseCase } from './use-cases/login-use-case';
 import { ValidateUserUseCase } from './use-cases/validate-user.use-case';
 import { AuthenticationService } from './services/authentication.service';
 import { UsersModule } from 'src/modules/users/users.module';
+import { GetUserUseCase } from 'src/modules/users/application/use-cases/get-user.use-case';
 
-const useCases = [SignUpUseCase, LoginUseCase, ValidateUserUseCase];
+const useCases = [
+  SignUpUseCase,
+  LoginUseCase,
+  ValidateUserUseCase,
+  GetUserUseCase,
+];
 
 @Module({
   imports: [UsersModule],
