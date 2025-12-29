@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserFactory } from '../../domain/factories/user.factory';
 import { User } from '../../domain/user.entity';
-import { PasswordHashingService } from 'src/modules/shared/application/ports/password-hashing.interface';
+import { PasswordHashingService } from '../../../shared/application/ports/password-hashing.interface';
 import { UserRepository } from '../ports/user.repository';
 import { Email } from '../../domain/vo/email.vo';
 import { Username } from '../../domain/vo/username.vo';
