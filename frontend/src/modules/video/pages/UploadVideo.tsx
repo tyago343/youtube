@@ -5,8 +5,11 @@ import {
   uploadVideoSchema,
   type UploadVideoForm,
 } from "../schemas/UploadVideoForm.schema";
+import { useSelector } from "react-redux";
+import { selectUser } from "@user/model/user.selectors";
 
-function UploadVideo({ user }: { user: User }) {
+function UploadVideo() {
+  const user = useSelector(selectUser) as User;
   const { control, handleSubmit } = useForm<UploadVideoForm>({
     resolver: zodResolver(uploadVideoSchema),
     defaultValues: {

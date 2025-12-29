@@ -3,11 +3,14 @@ import type { RouteObject } from "react-router";
 import { PublicRoute } from "./public.routes";
 import { PrivateRoute } from "./private.routes";
 import MainLayout from "@/shared/layout/main.layout";
+
 const Home = lazy(() => import("@/app/pages/Home"));
+
 const Login = lazy(() => import("@auth/pages/Login"));
 const Signup = lazy(() => import("@auth/pages/Signup"));
 const Profile = lazy(() => import("@user/pages/Profile"));
 const AuthLayout = lazy(() => import("@auth/layout/auth.layout"));
+const UploadVideo = lazy(() => import("@/modules/video/pages/UploadVideo"));
 export const routes: RouteObject[] = [
   {
     path: "/",
@@ -52,6 +55,10 @@ export const routes: RouteObject[] = [
       {
         path: "/profile",
         element: <Profile />,
+      },
+      {
+        path: "/upload-video",
+        element: <UploadVideo />,
       },
     ],
   },
