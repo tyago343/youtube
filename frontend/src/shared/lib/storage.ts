@@ -1,6 +1,7 @@
 const STORAGE_KEYS = {
   ACCESS_TOKEN: "auth_accessToken",
   REFRESH_TOKEN: "auth_refreshToken",
+  THEME: "theme_preference",
 } as const;
 
 type StorageKey = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];
@@ -89,4 +90,12 @@ export function getStoredCredentials(): {
     accessToken: getStoredAccessToken(),
     refreshToken: getStoredRefreshToken(),
   };
+}
+
+export function saveThemePreference(theme: string): void {
+  setItem(STORAGE_KEYS.THEME, theme);
+}
+
+export function getStoredThemePreference(): string | null {
+  return getItem(STORAGE_KEYS.THEME);
 }
