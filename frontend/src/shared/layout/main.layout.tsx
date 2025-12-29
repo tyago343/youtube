@@ -1,6 +1,7 @@
 import { Outlet } from "react-router";
 import Header from "@shared/components/header/Header";
 import { Toaster } from "sonner";
+import { RouteErrorBoundary } from "@/shared/error-boundary/RouteErrorBoundary";
 
 export default function MainLayout() {
   return (
@@ -13,7 +14,9 @@ export default function MainLayout() {
             Sidebar
           </aside>
           <section className="flex-1 p-4">
-            <Outlet />
+            <RouteErrorBoundary context="route">
+              <Outlet />
+            </RouteErrorBoundary>
           </section>
         </main>
       </div>
