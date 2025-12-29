@@ -1,4 +1,4 @@
-import { baseApi } from "@/app/store/api.store";
+import { baseApi } from "@/core/store/api.store";
 import type { User } from "@user/types/user.type";
 import { setCredentials } from "./auth.slice";
 import { setUser } from "@user/model/user.slice";

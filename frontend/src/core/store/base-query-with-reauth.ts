@@ -29,15 +29,12 @@ export const baseQueryWithReauth: BaseQueryFn<
 > = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  // If we get a 401 and we have a refresh token, try to refresh
   if (result.error && result.error.status === 401) {
     const state = api.getState() as RootState;
     const refreshToken = state.auth.refreshToken;
 
-    // Check if we have a refresh token and
     if (refreshToken) {
       try {
-        // Try to refresh the token
         const refreshResult = await baseQuery(
           {
             url: "/refresh",

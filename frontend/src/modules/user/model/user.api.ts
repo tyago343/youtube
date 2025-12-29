@@ -1,4 +1,4 @@
-import { baseApi } from "@/app/store/api.store";
+import { baseApi } from "@/core/store/api.store";
 import { updateUserAvatar } from "./user.slice";
 import { toast } from "sonner";
 

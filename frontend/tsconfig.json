@@ -10,11 +10,11 @@
       "@/*": ["./src/*"],
       "@modules/*": ["src/modules/*"],
       "@shared/*": ["src/shared/*"],
-      "@app/*": ["src/app/*"],
+      "@app/*": ["src/core/*"],
       "@video/*": ["src/modules/video/*"],
       "@user/*": ["src/modules/user/*"],
       "@auth/*": ["src/modules/auth/*"],
-      "@pages/*": ["src/app/pages/*"],
+      "@pages/*": ["src/core/pages/*"],
     }
   }
 }

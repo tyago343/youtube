@@ -2,7 +2,7 @@ import React from "react";
 import { render, type RenderOptions } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router";
-import store from "@/app/store";
+import store from "@/core/store";
 
 interface AllTheProvidersProps {
   children: React.ReactNode;

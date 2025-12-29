@@ -4,7 +4,7 @@ import { PublicRoute } from "./public.routes";
 import { PrivateRoute } from "./private.routes";
 import MainLayout from "@/shared/layout/main.layout";
 
-const Home = lazy(() => import("@/app/pages/Home"));
+const Home = lazy(() => import("@/core/pages/Home"));
 
 const Login = lazy(() => import("@auth/pages/Login"));
 const Signup = lazy(() => import("@auth/pages/Signup"));

@@ -1,4 +1,4 @@
 import { createRoot } from "react-dom/client";
-import { AppInit } from "./app";
+import { AppInit } from "./core";
 
 createRoot(document.getElementById("root")!).render(<AppInit />);
