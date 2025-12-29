@@ -5,12 +5,14 @@ import { ValidateUserUseCase } from './use-cases/validate-user.use-case';
 import { AuthenticationService } from './services/authentication.service';
 import { UsersModule } from 'src/modules/users/users.module';
 import { GetUserUseCase } from 'src/modules/users/application/use-cases/get-user.use-case';
+import { RefreshTokenUseCase } from './use-cases/refresh-token.use-case';
 
 const useCases = [
   SignUpUseCase,
   LoginUseCase,
   ValidateUserUseCase,
   GetUserUseCase,
+  RefreshTokenUseCase,
 ];
 
 @Module({

@@ -27,6 +27,8 @@ export class UserSchema {
   @CreateDateColumn()
   createdAt: Date;
 
-  @OneToMany(() => VideoSchema, (video) => video.owner)
+  @OneToMany(() => VideoSchema, (video) => video.owner, {
+    cascade: false,
+  })
   videos: VideoSchema[];
 }

@@ -3,11 +3,7 @@ import type { User } from "@user/types/user.type";
 import { setCredentials } from "./auth.slice";
 import { setUser } from "@user/model/user.slice";
 import { toast } from "sonner";
-import {
-  saveAuthCredentials,
-  clearAuthStorage,
-  getStoredAccessToken,
-} from "@/shared/lib/storage";
+import { saveAuthCredentials, clearAuthStorage } from "@/shared/lib/storage";
 import { clearCredentials } from "./auth.slice";
 import { clearUser } from "@user/model/user.slice";
 export type AuthResponse = {
@@ -107,10 +103,38 @@ export const authApi = baseApi.injectEndpoints({
       query: () => ({
         url: "/me",
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${getStoredAccessToken() ?? ""}`,
-        },
       }),
+    }),
+
+    refreshToken: builder.mutation<
+      { accessToken: string; refreshToken: string },
+      { refreshToken: string }
+    >({
+      query: ({ refreshToken }) => ({
+        url: "/refresh",
+        method: "POST",
+        body: { refreshToken },
+      }),
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+
+          dispatch(
+            setCredentials({
+              accessToken: data.accessToken,
+              refreshToken: data.refreshToken,
+            })
+          );
+
+          saveAuthCredentials(data.accessToken, data.refreshToken);
+        } catch (error) {
+          // If refresh fails, clear everything
+          toast.error("Refresh token failed: " + error);
+          dispatch(clearCredentials());
+          dispatch(clearUser());
+          clearAuthStorage();
+        }
+      },
     }),
   }),
 });
@@ -121,4 +145,5 @@ export const {
   useLogoutMutation,
   useGetMeQuery,
   useLazyGetMeQuery,
+  useRefreshTokenMutation,
 } = authApi;

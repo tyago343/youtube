@@ -10,6 +10,7 @@ import { TokenService } from '../application/ports/token.service.interface';
 import { JwtTokenService } from './services/jwt-token.service';
 import { LocalAuthenticationGuard } from './guards/local-authentication.guard';
 import { ValidateUserUseCase } from '../application/use-cases/validate-user.use-case';
+import { RefreshTokenUseCase } from '../application/use-cases/refresh-token.use-case';
 import { UsersModule } from 'src/modules/users/users.module';
 import { PasswordHashingService } from 'src/modules/shared/application/ports/password-hashing.interface';
 import { BcryptPasswordHashingService } from 'src/modules/shared/infrastructure/services/bcrypt-password-hashing.service';
@@ -31,6 +32,7 @@ import { BcryptPasswordHashingService } from 'src/modules/shared/infrastructure/
       useClass: BcryptPasswordHashingService,
     },
     ValidateUserUseCase,
+    RefreshTokenUseCase,
     LocalStrategy,
     JwtStrategy,
     LocalAuthenticationGuard,
