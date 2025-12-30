@@ -11,7 +11,7 @@ import {
 
 function UserMenuComponent({ user }: { user: User }) {
   return (
-    <NavigationMenu>
+    <NavigationMenu viewport={false}>
       <NavigationMenuItem className="hidden md:block bg-none border-none">
         <NavigationMenuTrigger className="bg-none border-none outline-none">
           <Avatar className="cursor-pointer">
@@ -19,14 +19,14 @@ function UserMenuComponent({ user }: { user: User }) {
             <AvatarFallback>{user.username.charAt(0)}</AvatarFallback>
           </Avatar>
         </NavigationMenuTrigger>
-        <NavigationMenuContent>
-          <NavigationMenuLink asChild>
+        <NavigationMenuContent className="min-w-[180px] left-auto right-0">
+          <NavigationMenuLink>
             <Link to="/profile">Profile</Link>
           </NavigationMenuLink>
-          <NavigationMenuLink asChild>
+          <NavigationMenuLink>
             <Link to="/logout">Logout</Link>
           </NavigationMenuLink>
-          <NavigationMenuLink asChild>
+          <NavigationMenuLink>
             <Link to="/upload-video">Upload Video</Link>
           </NavigationMenuLink>
         </NavigationMenuContent>

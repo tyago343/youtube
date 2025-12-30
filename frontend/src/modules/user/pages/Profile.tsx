@@ -1,44 +1,25 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar/avatar";
 import type { User } from "../types/user.type";
 import { Camera } from "lucide-react";
-import {
-  profileFormSchema,
-  type profileFormSchemaType,
-} from "../schemas/profile-form.schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "@/shared/ui/field/field";
-import { Input } from "@/shared/ui/input/input";
-import Button from "@/shared/ui/button/button";
+import { type profileFormSchemaType } from "../schemas/profile-form.schema";
 import { useSelector } from "react-redux";
 import { selectUser } from "@user/model/user.selectors";
-import { useUpdateAvatarMutation } from "../model/user.api";
+import {
+  useUpdateAvatarMutation,
+  useUpdateUserMutation,
+} from "../model/user.api";
+import ProfileFormComponent from "../components/profile-form.component";
 
 function Profile() {
   const user = useSelector(selectUser) as User;
   const [updateAvatar] = useUpdateAvatarMutation();
-  const { control, handleSubmit } = useForm<profileFormSchemaType>({
-    resolver: zodResolver(profileFormSchema),
-    defaultValues: {
-      username: user.username,
-      email: user.email,
-    },
-  });
-  async function onSubmit(data: profileFormSchemaType) {
-    console.log(data);
+  const [updateUser] = useUpdateUserMutation();
+  async function onSubmit(data: Partial<profileFormSchemaType>) {
+    await updateUser({ id: user.id, data });
   }
   async function onUploadAvatar(file: File | null) {
     if (file) {
-      try {
-        await updateAvatar({ id: user.id, file });
-      } catch (error) {
-        console.error(error);
-      }
+      await updateAvatar({ id: user.id, file });
     }
   }
   return (
@@ -61,52 +42,7 @@ function Profile() {
           className="hidden"
           onChange={(e) => onUploadAvatar(e.target.files?.[0] ?? null)}
         />
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="w-full max-w-md mt-4"
-        >
-          <FieldGroup className="mt-4">
-            <Controller
-              control={control}
-              name="username"
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={field.name}>Username</FieldLabel>
-                  <Input
-                    {...field}
-                    id={field.name}
-                    aria-invalid={fieldState.invalid}
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </FieldGroup>
-          <FieldGroup className="mt-4">
-            <Controller
-              control={control}
-              name="email"
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={field.name}>Email</FieldLabel>
-                  <Input
-                    {...field}
-                    id={field.name}
-                    aria-invalid={fieldState.invalid}
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </FieldGroup>
-          <Button type="submit" className="mt-4 float-right">
-            Save
-          </Button>
-        </form>
+        <ProfileFormComponent onSubmit={onSubmit} user={user} />
       </section>
     </>
   );

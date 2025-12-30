@@ -4,6 +4,7 @@ import { StoreProvider } from "./providers/store.provider";
 import { GlobalErrorBoundary } from "./error-boundary/GlobalErrorBoundary";
 import { initTheme } from "./theme/init-theme";
 import "./index.css";
+import { Toaster } from "sonner";
 
 export function AppInit() {
   initTheme();
@@ -11,6 +12,7 @@ export function AppInit() {
     <StrictMode>
       <GlobalErrorBoundary>
         <StoreProvider>
+          <Toaster richColors position="top-right" duration={3000} />
           <RouterProvider />
         </StoreProvider>
       </GlobalErrorBoundary>
