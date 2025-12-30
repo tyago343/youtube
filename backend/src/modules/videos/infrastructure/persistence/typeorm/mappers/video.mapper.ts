@@ -27,6 +27,7 @@ export class VideoMapper {
   }
 
   static toDomain(schema: VideoSchema): Video {
+    const owner = UserMapper.toDomain(schema.owner);
     return Video.fromPersistence({
       id: schema.id,
       title: schema.title,
@@ -34,7 +35,7 @@ export class VideoMapper {
       url: schema.url,
       thumbnailUrl: schema.thumbnailUrl,
       ownerId: UserId.create(schema.ownerId),
-      owner: UserMapper.toDomain(schema.owner),
+      owner: owner,
       views: schema.views,
       likes: schema.likes,
       dislikes: schema.dislikes,

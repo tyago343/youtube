@@ -3,8 +3,9 @@ import { env } from "../config/env";
 export const API_BASE_URL = env.VITE_API_URL;
 
 export const USER_TAG = "User";
+export const VIDEO_TAG = "Video";
 
-export const API_TAGS = [USER_TAG];
+export const API_TAGS = [USER_TAG, VIDEO_TAG];
 
 export const STORE_NAMES = {
   API: "api",

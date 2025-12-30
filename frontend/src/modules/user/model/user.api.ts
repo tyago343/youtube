@@ -2,6 +2,7 @@ import { baseApi } from "@/core/store/api.store";
 import { setUser, updateUserAvatar } from "./user.slice";
 import { toast } from "sonner";
 import type { User } from "../types/user.type";
+import { USER_TAG } from "@/core/store/constants.store";
 
 export const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -47,6 +48,7 @@ export const userApi = baseApi.injectEndpoints({
           body: data,
         };
       },
+      invalidatesTags: [USER_TAG],
       async onQueryStarted(_arg, { queryFulfilled, dispatch }) {
         try {
           const { data } = await queryFulfilled;

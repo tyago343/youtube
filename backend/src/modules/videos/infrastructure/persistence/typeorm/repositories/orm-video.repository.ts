@@ -28,8 +28,14 @@ export class OrmVideoRepository extends VideosRepository {
   findById(id: string): Promise<Video | null> {
     throw new Error('Method not implemented.');
   }
-  findAll(): Promise<Video[]> {
-    throw new Error('Method not implemented.');
+  async findAll(): Promise<Video[]> {
+    const schemas = await this.videoRepository.find({
+      order: {
+        createdAt: 'DESC',
+      },
+      relations: ['owner'],
+    });
+    return schemas.map((schema) => VideoMapper.toDomain(schema));
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   delete(id: string): Promise<void> {

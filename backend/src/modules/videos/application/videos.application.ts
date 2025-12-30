@@ -1,6 +1,7 @@
 import { DynamicModule, Module, Type } from '@nestjs/common';
 // Use Cases
 import { CreateVideoUseCase } from './use-cases/create-video.use-case';
+import { GetAllVideosUseCase } from './use-cases/get-all-videos.use-case';
 // Services
 import { VideosService } from './services/videos.service';
 // Domain
@@ -9,7 +10,7 @@ import { VideoFactory } from '../domain/factories/video.factory';
 import { SharedModule } from 'src/modules/shared/shared.module';
 import { UsersModule } from 'src/modules/users/users.module';
 
-const useCases = [CreateVideoUseCase];
+const useCases = [CreateVideoUseCase, GetAllVideosUseCase];
 
 @Module({
   providers: [...useCases, VideosService, VideoFactory],

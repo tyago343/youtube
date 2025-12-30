@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Get,
   Post,
   UploadedFiles,
   UseInterceptors,
@@ -17,6 +18,7 @@ import {
 import { CreateVideoDto } from './dto/create-video.dto';
 import { VideoResponseDto } from './dto/video-response.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { Public } from 'src/modules/authentication/presenters/http/decorators/public.decorator';
 
 @Controller('videos')
 export class VideosController {
@@ -106,5 +108,20 @@ export class VideosController {
       thumbnail,
     );
     return VideoResponseDto.fromDomain(newVideo);
+  }
+
+  @Public()
+  @ApiOperation({
+    summary: 'Get all videos',
+    description: 'Gets all videos.',
+  })
+  @ApiOkResponse({
+    description: 'Videos fetched successfully',
+    type: [VideoResponseDto],
+  })
+  @Get()
+  async getAll(): Promise<VideoResponseDto[]> {
+    const videos = await this.videosService.getAll();
+    return videos.map((video) => VideoResponseDto.fromDomain(video));
   }
 }
