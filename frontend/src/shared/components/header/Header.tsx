@@ -14,7 +14,7 @@ interface HeaderProps {
 function Header({ showSearch = false }: HeaderProps) {
   const user = useSelector(selectUser) as User;
   return (
-    <header className="flex items-center justify-between p-4 border-b gap-4">
+    <header className="flex items-center justify-between p-4 border-b gap-4 relative z-20">
       <div className="flex-1 max-w-2xl">
         {showSearch && <SearchBarComponent />}
       </div>

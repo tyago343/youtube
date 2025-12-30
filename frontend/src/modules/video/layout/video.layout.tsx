@@ -8,14 +8,14 @@ export function VideoLayout() {
     <>
       <Toaster richColors position="top-right" />
       <div className="min-h-screen bg-background text-foreground">
-        <Header showSearch={true} />
+        <Header />
         <main className="flex">
           <section className="flex-1">
             <RouteErrorBoundary context="video">
               <Outlet />
             </RouteErrorBoundary>
           </section>
-          <aside className="w-80 bg-sidebar p-4 border-l hidden lg:block h-[calc(100vh-73px)] sticky top-[73px]">
+          <aside className="w-80 bg-sidebar p-4 border-l hidden lg:block h-[calc(100vh-73px)] sticky top-[73px] z-10">
             <div className="text-muted-foreground text-sm">
               Recommended videos
             </div>

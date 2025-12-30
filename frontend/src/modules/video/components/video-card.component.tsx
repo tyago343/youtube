@@ -1,9 +1,14 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import type { Video } from "../types/video.types";
+import { useNavigate } from "react-router";
 
 export default function VideoCard({ video }: { video: Video }) {
+  const navigate = useNavigate();
   return (
-    <div className="rounded-lg overflow-hidden">
+    <div
+      className="rounded-lg overflow-hidden"
+      onClick={() => navigate(`/watch/${video.id}`)}
+    >
       <AspectRatio ratio={16 / 9}>
         <img
           src={video.thumbnailUrl}

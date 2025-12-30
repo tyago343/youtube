@@ -3,6 +3,8 @@ import {
   Body,
   Controller,
   Get,
+  Param,
+  ParseUUIDPipe,
   Post,
   UploadedFiles,
   UseInterceptors,
@@ -123,5 +125,22 @@ export class VideosController {
   async getAll(): Promise<VideoResponseDto[]> {
     const videos = await this.videosService.getAll();
     return videos.map((video) => VideoResponseDto.fromDomain(video));
+  }
+
+  @Public()
+  @ApiOperation({
+    summary: 'Get a video by id',
+    description: 'Gets a video by id.',
+  })
+  @ApiOkResponse({
+    description: 'Video fetched successfully',
+    type: VideoResponseDto,
+  })
+  @Get(':id')
+  async get(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+  ): Promise<VideoResponseDto> {
+    const video = await this.videosService.get(id);
+    return VideoResponseDto.fromDomain(video);
   }
 }

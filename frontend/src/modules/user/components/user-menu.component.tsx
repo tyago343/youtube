@@ -19,7 +19,7 @@ function UserMenuComponent({ user }: { user: User }) {
             <AvatarFallback>{user.username.charAt(0)}</AvatarFallback>
           </Avatar>
         </NavigationMenuTrigger>
-        <NavigationMenuContent className="min-w-[180px] left-auto right-0">
+        <NavigationMenuContent className="min-w-[180px] left-auto right-0 z-50">
           <NavigationMenuLink>
             <Link to="/profile">Profile</Link>
           </NavigationMenuLink>

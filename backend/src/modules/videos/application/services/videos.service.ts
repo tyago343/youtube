@@ -2,12 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { CreateVideoUseCase } from '../use-cases/create-video.use-case';
 import { Video } from '../../domain/video.entity';
 import { GetAllVideosUseCase } from '../use-cases/get-all-videos.use-case';
+import { GetVideoUseCase } from '../use-cases/get-video.use-case';
 
 @Injectable()
 export class VideosService {
   constructor(
     private readonly createVideoUseCase: CreateVideoUseCase,
     private readonly getAllVideosUseCase: GetAllVideosUseCase,
+    private readonly getVideoUseCase: GetVideoUseCase,
   ) {}
 
   async create(
@@ -24,5 +26,8 @@ export class VideosService {
   }
   async getAll(): Promise<Video[]> {
     return await this.getAllVideosUseCase.execute();
+  }
+  async get(id: string): Promise<Video> {
+    return await this.getVideoUseCase.execute(id);
   }
 }

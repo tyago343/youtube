@@ -6,7 +6,10 @@ export const videoApi = baseApi.injectEndpoints({
     getAllVideos: builder.query<Video[], void>({
       query: () => "/videos",
     }),
+    getVideo: builder.query<Video, string>({
+      query: (id) => `/videos/${id}`,
+    }),
   }),
 });
 
-export const { useGetAllVideosQuery } = videoApi;
+export const { useGetAllVideosQuery, useGetVideoQuery } = videoApi;
