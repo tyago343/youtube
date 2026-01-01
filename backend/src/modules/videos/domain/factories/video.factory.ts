@@ -1,7 +1,7 @@
 import { Video } from '../video.entity';
 import { UserId } from 'src/modules/users/domain/vo/user-id.vo';
 import { randomUUID } from 'crypto';
-import { User } from 'src/modules/users/domain/user.entity';
+
 export class VideoFactory {
   create({
     title,
@@ -9,7 +9,6 @@ export class VideoFactory {
     url,
     thumbnailUrl,
     ownerId,
-    owner,
     isPublic,
   }: {
     title: string;
@@ -17,9 +16,7 @@ export class VideoFactory {
     url: string;
     thumbnailUrl?: string;
     ownerId: UserId;
-    owner: User;
     isPublic?: boolean;
-    published?: Date;
   }): Video {
     return Video.create({
       id: randomUUID(),
@@ -29,7 +26,6 @@ export class VideoFactory {
       thumbnailUrl,
       createdAt: new Date(),
       ownerId,
-      owner,
       isPublic,
     });
   }
@@ -41,7 +37,6 @@ export class VideoFactory {
     url,
     thumbnailUrl,
     ownerId,
-    owner,
     isPublic,
     published,
     views,
@@ -56,14 +51,13 @@ export class VideoFactory {
     url: string;
     thumbnailUrl: string;
     ownerId: UserId;
-    owner: User;
     isPublic: boolean;
-    published: Date;
+    published?: Date;
     views: number;
     likes: number;
     dislikes: number;
     createdAt: Date;
-    updatedAt: Date;
+    updatedAt?: Date;
   }): Video {
     return Video.fromPersistence({
       id,
@@ -73,7 +67,6 @@ export class VideoFactory {
       thumbnailUrl,
       createdAt,
       ownerId,
-      owner,
       isPublic,
       published,
       views,

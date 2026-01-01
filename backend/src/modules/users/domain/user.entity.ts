@@ -3,7 +3,6 @@ import { Email } from './vo/email.vo';
 import { Username } from './vo/username.vo';
 import { Password } from './vo/password.vo';
 import { InvalidAvatarUrlException } from './exceptions/invalid-avatar-url.exception';
-import { Video } from 'src/modules/videos/domain/video.entity';
 
 export class User {
   public constructor(
@@ -13,7 +12,6 @@ export class User {
     public password: Password,
     public readonly createdAt: Date,
     public avatarUrl?: string,
-    public videos?: Video[],
     public updatedAt?: Date,
   ) {}
 
@@ -30,7 +28,6 @@ export class User {
       Password.fromHashed(hashedPassword),
       new Date(),
       undefined,
-      [],
     );
   }
 
@@ -41,7 +38,6 @@ export class User {
     hashedPassword,
     createdAt,
     avatarUrl,
-    videos,
     updatedAt,
   }: {
     id: string;
@@ -50,7 +46,6 @@ export class User {
     hashedPassword: string;
     createdAt: Date;
     avatarUrl?: string;
-    videos?: Video[];
     updatedAt?: Date;
   }): User {
     return new User(
@@ -60,7 +55,6 @@ export class User {
       Password.fromHashed(hashedPassword),
       createdAt,
       avatarUrl,
-      videos,
       updatedAt,
     );
   }
@@ -106,7 +100,6 @@ export class User {
       avatarUrl: this.avatarUrl,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      videos: this.videos,
     };
   }
 }

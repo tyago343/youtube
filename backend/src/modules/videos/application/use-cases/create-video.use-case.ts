@@ -40,18 +40,17 @@ export class CreateVideoUseCase {
       );
       thumbnailUrl = thumbnailUrlResult?.url;
     }
-    const owner = await this.userRepository.findById(
-      UserId.create(data.ownerId),
-    );
+    const ownerId = UserId.create(data.ownerId);
+    const owner = await this.userRepository.findById(ownerId);
     if (!owner) {
       throw new UserNotFoundException(data.ownerId);
     }
     const newVideo = this.videoFactory.create({
-      ...data,
+      title: data.title,
+      description: data.description,
       url: videoUrl.url,
       thumbnailUrl,
-      owner,
-      ownerId: owner.id,
+      ownerId,
       isPublic: data.isPublic,
     });
     return this.videoRepository.create(newVideo);

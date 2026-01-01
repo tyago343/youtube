@@ -1,6 +1,5 @@
 import { randomUUID } from 'crypto';
 import { User } from '../user.entity';
-import { Video } from 'src/modules/videos/domain/video.entity';
 
 export class UserFactory {
   create(email: string, username: string, hashedPassword: string): User {
@@ -15,7 +14,6 @@ export class UserFactory {
     hashedPassword,
     createdAt,
     avatarUrl,
-    videos,
     updatedAt,
   }: {
     id: string;
@@ -24,7 +22,6 @@ export class UserFactory {
     hashedPassword: string;
     createdAt: Date;
     avatarUrl?: string;
-    videos?: Video[];
     updatedAt?: Date;
   }): User {
     return User.fromPersistence({
@@ -34,7 +31,6 @@ export class UserFactory {
       hashedPassword,
       createdAt,
       avatarUrl,
-      videos,
       updatedAt,
     });
   }

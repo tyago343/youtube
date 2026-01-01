@@ -4,6 +4,7 @@ import {
   PrimaryColumn,
   Column,
   CreateDateColumn,
+  UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
 
@@ -26,6 +27,9 @@ export class UserSchema {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @UpdateDateColumn({ nullable: true })
+  updatedAt?: Date;
 
   @OneToMany(() => VideoSchema, (video) => video.owner, {
     cascade: false,

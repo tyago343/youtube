@@ -1,4 +1,3 @@
-import { User } from 'src/modules/users/domain/user.entity';
 import { UserId } from 'src/modules/users/domain/vo/user-id.vo';
 import { VideoId } from './vo/video-id.vo';
 
@@ -10,7 +9,6 @@ export class Video {
     public url: string,
     public thumbnailUrl: string,
     public readonly ownerId: UserId,
-    public readonly owner: User,
     public readonly createdAt: Date,
     public views: number,
     public likes: number,
@@ -27,7 +25,6 @@ export class Video {
     thumbnailUrl = 'no-thumbnail.png',
     createdAt = new Date(),
     ownerId,
-    owner,
     isPublic = false,
   }: {
     id: string;
@@ -36,7 +33,6 @@ export class Video {
     url: string;
     createdAt: Date;
     ownerId: UserId;
-    owner: User;
     thumbnailUrl?: string;
     isPublic?: boolean;
   }) {
@@ -50,7 +46,6 @@ export class Video {
       url,
       thumbnailUrl,
       ownerId,
-      owner,
       createdAt,
       views,
       likes,
@@ -68,7 +63,6 @@ export class Video {
     createdAt,
     updatedAt,
     ownerId,
-    owner,
     views,
     likes,
     dislikes,
@@ -82,7 +76,6 @@ export class Video {
     thumbnailUrl: string;
     createdAt: Date;
     ownerId: UserId;
-    owner: User;
     views: number;
     likes: number;
     dislikes: number;
@@ -97,7 +90,6 @@ export class Video {
       url,
       thumbnailUrl,
       ownerId,
-      owner,
       createdAt,
       views,
       likes,
@@ -115,7 +107,6 @@ export class Video {
       url: this.url,
       thumbnailUrl: this.thumbnailUrl,
       ownerId: this.ownerId.value,
-      owner: this.owner.toPrimitives(),
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
       views: this.views,

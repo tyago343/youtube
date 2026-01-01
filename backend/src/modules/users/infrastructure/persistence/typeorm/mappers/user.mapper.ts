@@ -1,4 +1,3 @@
-import { VideoMapper } from 'src/modules/videos/infrastructure/persistence/typeorm/mappers/video.mapper';
 import { User } from '../../../../domain/user.entity';
 import { UserSchema } from '../entities/user.schema';
 
@@ -13,8 +12,6 @@ export class UserMapper {
     schema.password = primitives.password;
     schema.avatarUrl = primitives.avatarUrl;
     schema.createdAt = primitives.createdAt || new Date();
-    // Don't include videos in persistence to avoid cascade update issues
-    // Videos should be managed separately
     return schema;
   }
 
@@ -26,8 +23,7 @@ export class UserMapper {
       hashedPassword: schema.password,
       createdAt: schema.createdAt,
       avatarUrl: schema.avatarUrl,
-      // Only include videos if they are loaded (eager or explicitly loaded)
-      videos: schema.videos?.map((video) => VideoMapper.toDomain(video)),
+      updatedAt: schema.updatedAt,
     });
   }
 }

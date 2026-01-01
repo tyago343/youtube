@@ -109,7 +109,13 @@ export class VideosController {
       createVideoDto,
       thumbnail,
     );
-    return VideoResponseDto.fromDomain(newVideo);
+    const videoWithOwner = await this.videosService.getWithOwner(
+      newVideo.id.value,
+    );
+    return VideoResponseDto.fromDomain(
+      videoWithOwner.video,
+      videoWithOwner.owner,
+    );
   }
 
   @Public()
@@ -123,8 +129,10 @@ export class VideosController {
   })
   @Get()
   async getAll(): Promise<VideoResponseDto[]> {
-    const videos = await this.videosService.getAll();
-    return videos.map((video) => VideoResponseDto.fromDomain(video));
+    const videosWithOwner = await this.videosService.getAllWithOwner();
+    return videosWithOwner.map(({ video, owner }) =>
+      VideoResponseDto.fromDomain(video, owner),
+    );
   }
 
   @Public()
@@ -140,7 +148,7 @@ export class VideosController {
   async get(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ): Promise<VideoResponseDto> {
-    const video = await this.videosService.get(id);
-    return VideoResponseDto.fromDomain(video);
+    const { video, owner } = await this.videosService.getWithOwner(id);
+    return VideoResponseDto.fromDomain(video, owner);
   }
 }
