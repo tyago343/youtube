@@ -6,7 +6,7 @@ import { selectUser } from "@user/model/user.selectors";
 import { useSelector } from "react-redux";
 import SearchBarComponent from "@search/components/search-bar.component";
 import { ThemeToggle } from "@shared/components/theme-toggle/ThemeToggle";
-
+import { Logo } from "./Logo";
 interface HeaderProps {
   showSearch?: boolean;
 }
@@ -14,7 +14,10 @@ interface HeaderProps {
 function Header({ showSearch = false }: HeaderProps) {
   const user = useSelector(selectUser) as User;
   return (
-    <header className="flex items-center justify-between p-4 border-b gap-4 relative z-20">
+    <header className="flex items-center justify-between p-4 px-8 gap-4 relative z-20">
+      <Link to="/">
+        <Logo />
+      </Link>
       <div className="flex-1 max-w-2xl">
         {showSearch && <SearchBarComponent />}
       </div>

@@ -81,14 +81,6 @@ export class AuthenticationController {
     };
   }
 
-  @Post('logout')
-  @ApiOperation({ summary: 'Logout a user' })
-  @ApiOkResponse({ description: 'User logged out successfully' })
-  @ApiUnauthorizedResponse({ description: 'Invalid or missing token' })
-  logout(@Request() req: Request & { logout: () => void }) {
-    return req.logout();
-  }
-
   @Get('profile')
   @ApiOperation({ summary: 'Get current user profile' })
   @ApiOkResponse({ description: 'User profile retrieved successfully' })

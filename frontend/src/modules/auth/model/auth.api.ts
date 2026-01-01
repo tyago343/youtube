@@ -50,7 +50,7 @@ export const authApi = baseApi.injectEndpoints({
               data: ApiError;
             }
           );
-          toast.error("Login failed: " + errorMessage);
+          toast.error(errorMessage);
         }
       },
     }),
@@ -80,34 +80,7 @@ export const authApi = baseApi.injectEndpoints({
               data: ApiError;
             }
           );
-          toast.error("Register failed: " + errorMessage);
-        }
-      },
-    }),
-
-    logout: builder.mutation<void, void>({
-      query: () => ({
-        url: "/logout",
-        method: "POST",
-      }),
-      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        try {
-          await queryFulfilled;
-
-          dispatch(clearCredentials());
-          dispatch(clearUser());
-          clearAuthStorage();
-        } catch (action: unknown) {
-          const errorMessage = extractErrorMessageFromBackendError(
-            (action as { error: { data: ApiError } }).error as {
-              data: ApiError;
-            }
-          );
-          toast.error("Logout failed: " + errorMessage);
-
-          dispatch(clearCredentials());
-          dispatch(clearUser());
-          clearAuthStorage();
+          toast.error(errorMessage);
         }
       },
     }),
@@ -147,7 +120,7 @@ export const authApi = baseApi.injectEndpoints({
             }
           );
           // If refresh fails, clear everything
-          toast.error("Refresh token failed: " + errorMessage);
+          toast.error(errorMessage);
           dispatch(clearCredentials());
           dispatch(clearUser());
           clearAuthStorage();
@@ -160,7 +133,6 @@ export const authApi = baseApi.injectEndpoints({
 export const {
   useLoginMutation,
   useRegisterMutation,
-  useLogoutMutation,
   useGetMeQuery,
   useLazyGetMeQuery,
   useRefreshTokenMutation,

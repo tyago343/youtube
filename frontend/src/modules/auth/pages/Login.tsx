@@ -23,7 +23,7 @@ import { useLoginMutation } from "@auth/model/auth.api";
 import { useNavigate } from "react-router";
 
 function Login() {
-  const [loginUser, { isSuccess }] = useLoginMutation();
+  const [loginUser] = useLoginMutation();
   const navigate = useNavigate();
   const { control, handleSubmit } = useForm<LoginFormSchemaType>({
     resolver: zodResolver(LoginFormSchema),
@@ -33,10 +33,8 @@ function Login() {
     },
   });
   async function onSubmit(data: LoginFormSchemaType) {
-    await loginUser(data);
-    if (isSuccess) {
-      navigate("/", { replace: true });
-    }
+    const response = await loginUser(data).unwrap();
+    if (response.user) navigate("/");
   }
   return (
     <section className="flex justify-center items-center h-screen">

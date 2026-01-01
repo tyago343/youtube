@@ -1,15 +1,23 @@
-import type { User } from "@/modules/user/types/user.type";
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar/avatar";
-import { Link } from "react-router";
+import type { User } from "@user/types/user.type";
+import { Avatar, AvatarFallback, AvatarImage } from "@shared/ui/avatar/avatar";
+import { Link, useNavigate } from "react-router";
 import {
   NavigationMenuItem,
   NavigationMenuTrigger,
   NavigationMenuContent,
   NavigationMenuLink,
   NavigationMenu,
-} from "@/shared/ui/navigation-menu/navigation-menu";
+} from "@shared/ui/navigation-menu/navigation-menu";
+import { useDispatch } from "react-redux";
+import { logout } from "@auth/model/auth.actions";
 
 function UserMenuComponent({ user }: { user: User }) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  async function onLogout() {
+    await logout(dispatch);
+    navigate("/");
+  }
   return (
     <NavigationMenu viewport={false}>
       <NavigationMenuItem className="hidden md:block bg-none border-none">
@@ -24,7 +32,7 @@ function UserMenuComponent({ user }: { user: User }) {
             <Link to="/profile">Profile</Link>
           </NavigationMenuLink>
           <NavigationMenuLink>
-            <Link to="/logout">Logout</Link>
+            <p onClick={onLogout}>Logout</p>
           </NavigationMenuLink>
           <NavigationMenuLink>
             <Link to="/upload-video">Upload Video</Link>

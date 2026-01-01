@@ -10,13 +10,13 @@ export function VideoLayout() {
       <div className="min-h-screen bg-background text-foreground">
         <Header />
         <main className="flex">
-          <section className="flex-1">
+          <section className="flex-1 px-8">
             <RouteErrorBoundary context="video">
               <Outlet />
             </RouteErrorBoundary>
           </section>
-          <aside className="w-80 bg-sidebar p-4 border-l hidden lg:block h-[calc(100vh-73px)] sticky top-[73px] z-10">
-            <div className="text-muted-foreground text-sm">
+          <aside className="w-1/4  hidden lg:block h-[calc(100vh-73px)] top-[73px] z-10">
+            <div className="text-muted-foreground text-sm p-4">
               Recommended videos
             </div>
           </aside>
