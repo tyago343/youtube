@@ -23,7 +23,7 @@ import { useLoginMutation } from "@auth/model/auth.api";
 import { useNavigate } from "react-router";
 
 function Login() {
-  const [loginUser] = useLoginMutation();
+  const [loginUser, { isSuccess }] = useLoginMutation();
   const navigate = useNavigate();
   const { control, handleSubmit } = useForm<LoginFormSchemaType>({
     resolver: zodResolver(LoginFormSchema),
@@ -33,11 +33,9 @@ function Login() {
     },
   });
   async function onSubmit(data: LoginFormSchemaType) {
-    try {
-      await loginUser(data);
+    await loginUser(data);
+    if (isSuccess) {
       navigate("/", { replace: true });
-    } catch (error) {
-      console.log(error);
     }
   }
   return (

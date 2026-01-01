@@ -13,7 +13,7 @@ export default function MainLayout() {
           <aside className="w-64 bg-sidebar p-4 border-r hidden md:block h-[calc(100vh-73px)] sticky top-[73px]">
             Sidebar
           </aside>
-          <section className="flex-1 p-4">
+          <section className="flex-1 p-4 text-3xl">
             <RouteErrorBoundary context="route">
               <Outlet />
             </RouteErrorBoundary>

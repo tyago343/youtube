@@ -1,6 +1,6 @@
 import { useParams } from "react-router";
 import { useGetVideoQuery } from "../model/video.api";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { AspectRatio } from "@/shared/ui/aspect-ratio";
 
 function VideoWatch() {
   const { videoId } = useParams<{ videoId: string }>();

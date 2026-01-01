@@ -1,4 +1,4 @@
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { AspectRatio } from "@/shared/ui/aspect-ratio";
 import type { Video } from "../types/video.types";
 import { useNavigate } from "react-router";
 

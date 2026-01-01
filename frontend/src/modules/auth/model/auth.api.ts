@@ -1,11 +1,13 @@
-import { baseApi } from "@/core/store/api.store";
+import { baseApi } from "@core/store/api.store";
 import type { User } from "@user/types/user.type";
 import { setCredentials } from "./auth.slice";
 import { setUser } from "@user/model/user.slice";
 import { toast } from "sonner";
-import { saveAuthCredentials, clearAuthStorage } from "@/shared/lib/storage";
+import { saveAuthCredentials, clearAuthStorage } from "@shared/lib/storage";
 import { clearCredentials } from "./auth.slice";
 import { clearUser } from "@user/model/user.slice";
+import type { ApiError } from "@shared/model/api-error.types";
+import { extractErrorMessageFromBackendError } from "@shared/lib/errors.lib";
 export type AuthResponse = {
   user: User;
   accessToken: string;
@@ -34,18 +36,21 @@ export const authApi = baseApi.injectEndpoints({
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-
           dispatch(
             setCredentials({
               accessToken: data.accessToken,
               refreshToken: data.refreshToken,
             })
           );
-
           dispatch(setUser(data.user));
           saveAuthCredentials(data.accessToken, data.refreshToken);
-        } catch (error) {
-          toast.error("Login failed: " + error);
+        } catch (action: unknown) {
+          const errorMessage = extractErrorMessageFromBackendError(
+            (action as { error: { data: ApiError } }).error as {
+              data: ApiError;
+            }
+          );
+          toast.error("Login failed: " + errorMessage);
         }
       },
     }),
@@ -69,8 +74,13 @@ export const authApi = baseApi.injectEndpoints({
 
           dispatch(setUser(data.user));
           saveAuthCredentials(data.accessToken, data.refreshToken);
-        } catch (error) {
-          toast.error("Register failed: " + error);
+        } catch (action: unknown) {
+          const errorMessage = extractErrorMessageFromBackendError(
+            (action as { error: { data: ApiError } }).error as {
+              data: ApiError;
+            }
+          );
+          toast.error("Register failed: " + errorMessage);
         }
       },
     }),
@@ -87,8 +97,13 @@ export const authApi = baseApi.injectEndpoints({
           dispatch(clearCredentials());
           dispatch(clearUser());
           clearAuthStorage();
-        } catch (error) {
-          toast.error("Logout failed: " + error);
+        } catch (action: unknown) {
+          const errorMessage = extractErrorMessageFromBackendError(
+            (action as { error: { data: ApiError } }).error as {
+              data: ApiError;
+            }
+          );
+          toast.error("Logout failed: " + errorMessage);
 
           dispatch(clearCredentials());
           dispatch(clearUser());
@@ -125,9 +140,14 @@ export const authApi = baseApi.injectEndpoints({
           );
 
           saveAuthCredentials(data.accessToken, data.refreshToken);
-        } catch (error) {
+        } catch (action: unknown) {
+          const errorMessage = extractErrorMessageFromBackendError(
+            (action as { error: { data: ApiError } }).error as {
+              data: ApiError;
+            }
+          );
           // If refresh fails, clear everything
-          toast.error("Refresh token failed: " + error);
+          toast.error("Refresh token failed: " + errorMessage);
           dispatch(clearCredentials());
           dispatch(clearUser());
           clearAuthStorage();

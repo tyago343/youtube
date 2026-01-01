@@ -24,7 +24,7 @@ function Profile() {
   }
   return (
     <>
-      <h1>Profile</h1>
+      <h1 className="text-center mb-6">Profile</h1>
       <section className="flex flex-col items-center justify-center">
         <label className="relative" htmlFor="upload-avatar">
           <Avatar className="cursor-pointer w-32 h-32">

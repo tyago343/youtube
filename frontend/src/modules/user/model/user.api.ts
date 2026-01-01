@@ -3,6 +3,8 @@ import { setUser, updateUserAvatar } from "./user.slice";
 import { toast } from "sonner";
 import type { User } from "../types/user.type";
 import { USER_TAG } from "@/core/store/constants.store";
+import type { ApiError } from "@/shared/model/api-error.types";
+import { extractErrorMessageFromBackendError } from "@/shared/lib/errors.lib";
 
 export const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -28,15 +30,14 @@ export const userApi = baseApi.injectEndpoints({
           const { data } = await queryFulfilled;
           toast.success("Avatar updated successfully");
           dispatch(updateUserAvatar(data.avatarUrl));
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-          const errorMessage =
-            error?.error?.data?.message ||
-            error?.data?.message ||
-            error?.message ||
-            "Failed to update avatar";
+        } catch (action: unknown) {
+          const errorMessage = extractErrorMessageFromBackendError(
+            (action as { error: { data: ApiError } }).error as {
+              data: ApiError;
+            }
+          );
 
-          toast.error(errorMessage);
+          toast.error("Failed to update avatar: " + errorMessage);
         }
       },
     }),
@@ -54,15 +55,14 @@ export const userApi = baseApi.injectEndpoints({
           const { data } = await queryFulfilled;
           toast.success("User updated successfully");
           dispatch(setUser(data));
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-          const errorMessage =
-            error?.error?.data?.message ||
-            error?.data?.message ||
-            error?.message ||
-            "Failed to update user";
+        } catch (action: unknown) {
+          const errorMessage = extractErrorMessageFromBackendError(
+            (action as { error: { data: ApiError } }).error as {
+              data: ApiError;
+            }
+          );
 
-          toast.error(errorMessage);
+          toast.error("Failed to update user: " + errorMessage);
         }
       },
     }),
