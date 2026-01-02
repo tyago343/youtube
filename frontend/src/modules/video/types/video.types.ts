@@ -9,10 +9,21 @@ export type Video = {
   createdAt: Date;
   updatedAt: Date;
   ownerId: string;
-  owner: User;
+  owner: Pick<User, "id" | "username" | "avatarUrl">;
   views: number;
   likes: number;
   dislikes: number;
   isPublic: boolean;
   published: Date;
 };
+
+export type NormalizedVideo = Pick<
+  Video,
+  | "id"
+  | "title"
+  | "description"
+  | "url"
+  | "thumbnailUrl"
+  | "createdAt"
+  | "ownerId"
+>;

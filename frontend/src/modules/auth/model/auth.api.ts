@@ -90,6 +90,7 @@ export const authApi = baseApi.injectEndpoints({
         url: "/me",
         method: "GET",
       }),
+      serializeQueryArgs: () => "getMe",
     }),
 
     refreshToken: builder.mutation<
