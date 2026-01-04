@@ -7,7 +7,6 @@ export const uploadVideoSchema = z.object({
   thumbnail: z
     .instanceof(File, { message: "Thumbnail is required" })
     .optional(),
-  publish: z.boolean().optional(),
   isPublic: z.boolean().optional(),
 });
 

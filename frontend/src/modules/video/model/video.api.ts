@@ -4,6 +4,7 @@ import { videosReceived, videoAdded } from "./video.slice";
 import { usersAdded } from "@/modules/user/model/user.slice";
 import { VIDEO_TAG } from "@core/store/constants.store";
 import type { RootState } from "@core/store";
+import type { UploadVideoForm } from "../schemas/UploadVideoForm.schema";
 
 const normalizeVideo = (video: Video): NormalizedVideo => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -92,7 +93,40 @@ export const videoApi = baseApi.injectEndpoints({
         }
       },
     }),
+    uploadVideo: builder.mutation<Video, UploadVideoForm & { ownerId: string }>(
+      {
+        query: ({
+          title,
+          description,
+          video,
+          thumbnail,
+          isPublic,
+          ownerId,
+        }) => {
+          const payload = new FormData();
+          payload.append("title", title);
+          payload.append("description", description);
+          payload.append("video", video);
+          payload.append("thumbnail", thumbnail ?? "");
+          payload.append("isPublic", isPublic ? "true" : "false");
+          payload.append("ownerId", ownerId);
+          return {
+            url: "/videos",
+            method: "POST",
+            body: payload,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            formData: true,
+          };
+        },
+      }
+    ),
   }),
 });
 
-export const { useGetAllVideosQuery, useGetVideoQuery } = videoApi;
+export const {
+  useGetAllVideosQuery,
+  useGetVideoQuery,
+  useUploadVideoMutation,
+} = videoApi;

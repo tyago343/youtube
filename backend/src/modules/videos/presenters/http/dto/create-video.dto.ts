@@ -6,6 +6,7 @@ import {
   IsString,
   IsUUID,
 } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class CreateVideoDto {
   @ApiProperty({
@@ -38,6 +39,18 @@ export class CreateVideoDto {
     required: false,
   })
   @IsOptional()
+  @Transform(({ value }) => {
+    if (value === undefined || value === null) {
+      return undefined;
+    }
+    if (typeof value === 'boolean') {
+      return value;
+    }
+    if (typeof value === 'string') {
+      return value.toLowerCase() === 'true';
+    }
+    return Boolean(value);
+  })
   @IsBoolean()
   isPublic?: boolean;
 }

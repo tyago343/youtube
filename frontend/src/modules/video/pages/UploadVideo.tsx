@@ -15,8 +15,15 @@ import { Textarea } from "@shared/ui/input/textarea";
 import { Switch } from "@shared/ui/switch";
 import Button from "@shared/ui/button/button";
 import { FileDropZone } from "@/shared/components/file-drop-zone/FileDropZone";
+import { useUploadVideoMutation } from "../model/video.api";
+import { toast } from "sonner";
+import { selectUser } from "@/modules/user/model/user.selectors";
+import { useSelector } from "react-redux";
+import type { User } from "@/modules/user/types/user.type";
 
 function UploadVideo() {
+  const { id: userId } = useSelector(selectUser) as User;
+  const [uploadVideo] = useUploadVideoMutation();
   const { control, handleSubmit } = useForm<UploadVideoForm>({
     resolver: zodResolver(uploadVideoSchema),
     defaultValues: {
@@ -28,7 +35,14 @@ function UploadVideo() {
     },
   });
   async function onSubmit(data: UploadVideoForm) {
-    console.log(data);
+    try {
+      const response = await uploadVideo({ ...data, ownerId: userId }).unwrap();
+      if (response?.id) {
+        toast.success("Video uploaded successfully");
+      }
+    } catch (error) {
+      toast.error("Failed to upload video: " + error);
+    }
   }
   return (
     <div>

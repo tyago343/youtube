@@ -66,4 +66,3 @@ describe('GetAllVideosUseCase', () => {
     expect(videosRepositoryMocks.findAll).toHaveBeenCalledTimes(1);
   });
 });
-
