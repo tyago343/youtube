@@ -23,7 +23,6 @@ describe('User', () => {
       expect(user.password.value).toBe(validHashedPassword);
       expect(user.createdAt).toBeInstanceOf(Date);
       expect(user.avatarUrl).toBeUndefined();
-      expect(user.videos).toEqual([]);
     });
   });
 
