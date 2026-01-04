@@ -1,6 +1,6 @@
 import store from "../store";
 import { Provider } from "react-redux";
-import { useAuthInit } from "@/shared/hooks/use-auth-init";
+import { useAuthInit } from "@/shared/hooks/use-auth-init.hook.";
 import { RouterFallback } from "./router-fallback";
 
 function AuthInitializer({ children }: { children: React.ReactNode }) {
