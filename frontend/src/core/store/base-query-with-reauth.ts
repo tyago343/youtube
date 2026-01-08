@@ -4,17 +4,19 @@ import type {
   FetchArgs,
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
+import { toast } from "sonner";
+import { saveAuthCredentials, clearAuthStorage } from "@shared/lib/storage";
+import { setCredentials, clearCredentials } from "@auth/model/auth.slice";
+import { refreshTokenResponseSchema } from "@auth/schemas/refresh-token-response.schema";
+import { clearUser } from "@user/model/user.slice";
 import type { RootState } from "./index";
 import { API_BASE_URL } from "./constants.store";
-import { setCredentials, clearCredentials } from "@auth/model/auth.slice";
-import { clearUser } from "@user/model/user.slice";
-import { saveAuthCredentials, clearAuthStorage } from "@/shared/lib/storage";
-import { toast } from "sonner";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: API_BASE_URL,
   prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).auth.accessToken;
+    const state = getState() as RootState;
+    const token = state.auth.accessToken;
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);
     }
@@ -46,22 +48,33 @@ export const baseQueryWithReauth: BaseQueryFn<
         );
 
         if (refreshResult.data) {
-          const { accessToken, refreshToken: newRefreshToken } =
-            refreshResult.data as {
-              accessToken: string;
-              refreshToken: string;
-            };
-
-          api.dispatch(
-            setCredentials({
-              accessToken,
-              refreshToken: newRefreshToken,
-            })
+          const parseResult = refreshTokenResponseSchema.safeParse(
+            refreshResult.data
           );
 
-          saveAuthCredentials(accessToken, newRefreshToken);
+          if (parseResult.success) {
+            const { accessToken, refreshToken: newRefreshToken } =
+              parseResult.data;
 
-          result = await baseQuery(args, api, extraOptions);
+            api.dispatch(
+              setCredentials({
+                accessToken,
+                refreshToken: newRefreshToken,
+              })
+            );
+
+            saveAuthCredentials(accessToken, newRefreshToken);
+
+            result = await baseQuery(args, api, extraOptions);
+          } else {
+            console.error(
+              "Invalid refresh token response format:",
+              parseResult.error
+            );
+            api.dispatch(clearCredentials());
+            api.dispatch(clearUser());
+            clearAuthStorage();
+          }
         } else {
           api.dispatch(clearCredentials());
           api.dispatch(clearUser());

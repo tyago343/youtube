@@ -1,18 +1,18 @@
-import UserMenuComponent from "@user/components/user-menu.component";
-import Button from "@shared/ui/button/button";
-import { Link } from "react-router";
-import type { User } from "@user/types/user.type";
-import { selectUser } from "@user/model/user.selectors";
 import { useSelector } from "react-redux";
+import { Link } from "react-router";
 import SearchBarComponent from "@search/components/search-bar.component";
 import { ThemeToggle } from "@shared/components/theme-toggle/ThemeToggle";
+import Button from "@shared/ui/button/button";
+import UserMenuComponent from "@user/components/user-menu.component";
+import { selectUser } from "@user/model/user.selectors";
 import { Logo } from "./Logo";
+
 interface HeaderProps {
   showSearch?: boolean;
 }
 
 function Header({ showSearch = false }: HeaderProps) {
-  const user = useSelector(selectUser) as User;
+  const user = useSelector(selectUser);
   return (
     <header className="flex items-center justify-between p-4 px-8 gap-4 relative z-20">
       <Link to="/">

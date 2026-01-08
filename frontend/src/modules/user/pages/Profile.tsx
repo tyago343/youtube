@@ -1,9 +1,7 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar/avatar";
-import type { User } from "../types/user.type";
 import { Camera } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@shared/ui/avatar/avatar";
+import { useAuthenticatedUser } from "@auth/context/authenticated-user.context";
 import { type profileFormSchemaType } from "../schemas/profile-form.schema";
-import { useSelector } from "react-redux";
-import { selectUser } from "@user/model/user.selectors";
 import {
   useUpdateAvatarMutation,
   useUpdateUserMutation,
@@ -11,7 +9,7 @@ import {
 import ProfileFormComponent from "../components/profile-form.component";
 
 function Profile() {
-  const user = useSelector(selectUser) as User;
+  const user = useAuthenticatedUser();
   const [updateAvatar] = useUpdateAvatarMutation();
   const [updateUser] = useUpdateUserMutation();
   async function onSubmit(data: Partial<profileFormSchemaType>) {
@@ -28,7 +26,10 @@ function Profile() {
       <section className="flex flex-col items-center justify-center">
         <label className="relative" htmlFor="upload-avatar">
           <Avatar className="cursor-pointer w-32 h-32">
-            <AvatarImage src={user.avatarUrl} alt={user.username} />
+            <AvatarImage
+              src={user.avatarUrl ?? undefined}
+              alt={user.username}
+            />
             <AvatarFallback>{user.username.charAt(0)}</AvatarFallback>
           </Avatar>
           <div className="absolute bottom-0 right-0 bg-black rounded-full p-1.5 cursor-pointer z-10">

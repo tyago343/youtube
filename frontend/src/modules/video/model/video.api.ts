@@ -1,10 +1,12 @@
-import type { NormalizedVideo, Video } from "../types/video.types";
+import { z } from "zod";
 import { baseApi } from "@core/store/api.store";
-import { videosReceived, videoAdded } from "./video.slice";
-import { usersAdded } from "@/modules/user/model/user.slice";
 import { VIDEO_TAG } from "@core/store/constants.store";
 import type { RootState } from "@core/store";
+import { usersAdded } from "@user/model/user.slice";
+import { videoSchema, type Video } from "../schemas/video.schema";
+import { videosReceived, videoAdded } from "./video.slice";
 import type { UploadVideoForm } from "../schemas/UploadVideoForm.schema";
+import type { NormalizedVideo } from "../types/video.types";
 
 const normalizeVideo = (video: Video): NormalizedVideo => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -16,6 +18,9 @@ export const videoApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllVideos: builder.query<Video[], void>({
       query: () => "/videos",
+      transformResponse: (response: unknown) => {
+        return z.array(videoSchema).parse(response);
+      },
       providesTags: [VIDEO_TAG],
       async onQueryStarted(_arg, { queryFulfilled, dispatch, getState }) {
         try {
@@ -28,7 +33,8 @@ export const videoApi = baseApi.injectEndpoints({
                   owner !== null && owner !== undefined
               );
 
-            const { user: userState } = getState() as RootState;
+            const state = getState();
+            const { user: userState } = state as RootState;
             const existingUserIds = new Set(Object.keys(userState.entities));
 
             const uniqueOwnersMap = new Map(
@@ -58,14 +64,17 @@ export const videoApi = baseApi.injectEndpoints({
     }),
     getVideo: builder.query<Video, string>({
       query: (id) => `/videos/${id}`,
+      transformResponse: (response: unknown) => {
+        return videoSchema.parse(response);
+      },
       providesTags: (_result, _error, id) => [{ type: VIDEO_TAG, id }],
       async onQueryStarted(_arg, { queryFulfilled, dispatch, getState }) {
         try {
           const { data } = await queryFulfilled;
           if (data) {
             if (data.owner) {
-              const { user: userState, video: videoState } =
-                getState() as RootState;
+              const state = getState();
+              const { user: userState, video: videoState } = state as RootState;
               const existingVideoIds = new Set(
                 Object.keys(videoState.entities)
               );
@@ -119,6 +128,9 @@ export const videoApi = baseApi.injectEndpoints({
             },
             formData: true,
           };
+        },
+        transformResponse: (response: unknown) => {
+          return videoSchema.parse(response);
         },
       }
     ),

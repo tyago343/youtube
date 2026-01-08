@@ -1,4 +1,4 @@
-import { Spinner } from "@/shared/ui/spinner/spinner";
+import { Spinner } from "@shared/ui/spinner/spinner";
 
 export const RouterFallback = () => {
   return (

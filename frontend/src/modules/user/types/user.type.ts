@@ -1,6 +1,1 @@
-export type User = {
-  id: string;
-  username: string;
-  email: string;
-  avatarUrl: string;
-};
+export type { User } from "../schemas/user.schema";

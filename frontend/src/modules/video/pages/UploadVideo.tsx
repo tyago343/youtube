@@ -1,9 +1,6 @@
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  uploadVideoSchema,
-  type UploadVideoForm,
-} from "../schemas/UploadVideoForm.schema";
+import { toast } from "sonner";
 import {
   Field,
   FieldError,
@@ -14,15 +11,17 @@ import { Input } from "@shared/ui/input/input";
 import { Textarea } from "@shared/ui/input/textarea";
 import { Switch } from "@shared/ui/switch";
 import Button from "@shared/ui/button/button";
-import { FileDropZone } from "@/shared/components/file-drop-zone/FileDropZone";
+import { FileDropZone } from "@shared/components/file-drop-zone/FileDropZone";
+import { useAuthenticatedUser } from "@auth/context/authenticated-user.context";
+import {
+  uploadVideoSchema,
+  type UploadVideoForm,
+} from "../schemas/UploadVideoForm.schema";
 import { useUploadVideoMutation } from "../model/video.api";
-import { toast } from "sonner";
-import { selectUser } from "@/modules/user/model/user.selectors";
-import { useSelector } from "react-redux";
-import type { User } from "@/modules/user/types/user.type";
 
 function UploadVideo() {
-  const { id: userId } = useSelector(selectUser) as User;
+  const user = useAuthenticatedUser();
+  const userId = user.id;
   const [uploadVideo] = useUploadVideoMutation();
   const { control, handleSubmit } = useForm<UploadVideoForm>({
     resolver: zodResolver(uploadVideoSchema),

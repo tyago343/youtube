@@ -1,5 +1,1 @@
-export type ApiError = {
-  message: string;
-  error: string;
-  statusCode: number;
-};
+export type { ApiError } from "./api-error.schema";

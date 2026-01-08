@@ -1,3 +1,6 @@
+import { z } from "zod";
+import { tokenSchema, themePreferenceSchema } from "./storage.schemas";
+
 const STORAGE_KEYS = {
   ACCESS_TOKEN: "auth_accessToken",
   REFRESH_TOKEN: "auth_refreshToken",
@@ -6,7 +9,10 @@ const STORAGE_KEYS = {
 
 type StorageKey = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];
 
-function getItem<T = string>(key: StorageKey): T | null {
+function getItem<T = string>(
+  key: StorageKey,
+  schema?: z.ZodSchema<T>
+): T | null {
   if (typeof window === "undefined") {
     return null;
   }
@@ -17,11 +23,28 @@ function getItem<T = string>(key: StorageKey): T | null {
       return null;
     }
 
+    let parsed: unknown;
     try {
-      return JSON.parse(item) as T;
+      parsed = JSON.parse(item);
     } catch {
-      return item as T;
+      parsed = item;
     }
+
+    if (schema) {
+      const result = schema.safeParse(parsed);
+      if (result.success) {
+        return result.data;
+      } else {
+        console.warn(
+          `Invalid data format in localStorage key "${key}":`,
+          result.error
+        );
+        return null;
+      }
+    }
+
+    // Fallback for untyped getItem calls (should be avoided)
+    return parsed as T;
   } catch (error) {
     console.error(`Error reading from localStorage key "${key}":`, error);
     return null;
@@ -75,11 +98,11 @@ export function saveAuthCredentials(
 }
 
 export function getStoredAccessToken(): string | null {
-  return getItem(STORAGE_KEYS.ACCESS_TOKEN);
+  return getItem(STORAGE_KEYS.ACCESS_TOKEN, tokenSchema);
 }
 
 export function getStoredRefreshToken(): string | null {
-  return getItem(STORAGE_KEYS.REFRESH_TOKEN);
+  return getItem(STORAGE_KEYS.REFRESH_TOKEN, tokenSchema);
 }
 
 export function getStoredCredentials(): {
@@ -97,5 +120,5 @@ export function saveThemePreference(theme: string): void {
 }
 
 export function getStoredThemePreference(): string | null {
-  return getItem(STORAGE_KEYS.THEME);
+  return getItem(STORAGE_KEYS.THEME, themePreferenceSchema);
 }

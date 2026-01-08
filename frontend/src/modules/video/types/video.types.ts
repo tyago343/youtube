@@ -1,21 +1,4 @@
-import type { User } from "@/modules/user/types/user.type";
-
-export type Video = {
-  id: string;
-  title: string;
-  description: string;
-  url: string;
-  thumbnailUrl: string;
-  createdAt: Date;
-  updatedAt: Date;
-  ownerId: string;
-  owner: Pick<User, "id" | "username" | "avatarUrl">;
-  views: number;
-  likes: number;
-  dislikes: number;
-  isPublic: boolean;
-  published: Date;
-};
+import type { Video } from "../schemas/video.schema";
 
 export type NormalizedVideo = Pick<
   Video,

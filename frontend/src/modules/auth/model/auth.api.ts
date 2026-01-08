@@ -1,18 +1,19 @@
-import { baseApi } from "@core/store/api.store";
-import type { User } from "@user/types/user.type";
-import { setCredentials } from "./auth.slice";
-import { setUser } from "@user/model/user.slice";
 import { toast } from "sonner";
-import { saveAuthCredentials, clearAuthStorage } from "@shared/lib/storage";
-import { clearCredentials } from "./auth.slice";
-import { clearUser } from "@user/model/user.slice";
-import type { ApiError } from "@shared/model/api-error.types";
+import { baseApi } from "@core/store/api.store";
+import { apiErrorSchema } from "@shared/model/api-error.schema";
 import { extractErrorMessageFromBackendError } from "@shared/lib/errors.lib";
-export type AuthResponse = {
-  user: User;
-  accessToken: string;
-  refreshToken: string;
-};
+import { saveAuthCredentials, clearAuthStorage } from "@shared/lib/storage";
+import { setUser, clearUser } from "@user/model/user.slice";
+import { userSchema, type User } from "@user/schemas/user.schema";
+import { clearCredentials, setCredentials } from "./auth.slice";
+import {
+  authResponseSchema,
+  type AuthResponse,
+} from "../schemas/auth-response.schema";
+import {
+  refreshTokenResponseSchema,
+  type RefreshTokenResponse,
+} from "../schemas/refresh-token-response.schema";
 
 export type LoginRequest = {
   email: string;
@@ -25,6 +26,23 @@ export type RegisterRequest = {
   password: string;
 };
 
+function isApiError(error: unknown): error is { data: unknown } {
+  return typeof error === "object" && error !== null && "data" in error;
+}
+
+function extractApiError(error: unknown): string {
+  if (!isApiError(error)) {
+    return "An unknown error occurred";
+  }
+
+  const parseResult = apiErrorSchema.safeParse(error.data);
+  if (parseResult.success) {
+    return extractErrorMessageFromBackendError({ data: parseResult.data });
+  }
+
+  return "An unknown error occurred";
+}
+
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<AuthResponse, LoginRequest>({
@@ -33,6 +51,9 @@ export const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: credentials,
       }),
+      transformResponse: (response: unknown) => {
+        return authResponseSchema.parse(response);
+      },
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
@@ -44,12 +65,8 @@ export const authApi = baseApi.injectEndpoints({
           );
           dispatch(setUser(data.user));
           saveAuthCredentials(data.accessToken, data.refreshToken);
-        } catch (action: unknown) {
-          const errorMessage = extractErrorMessageFromBackendError(
-            (action as { error: { data: ApiError } }).error as {
-              data: ApiError;
-            }
-          );
+        } catch (error) {
+          const errorMessage = extractApiError(error);
           toast.error(errorMessage);
         }
       },
@@ -61,6 +78,9 @@ export const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: userData,
       }),
+      transformResponse: (response: unknown) => {
+        return authResponseSchema.parse(response);
+      },
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
@@ -74,12 +94,8 @@ export const authApi = baseApi.injectEndpoints({
 
           dispatch(setUser(data.user));
           saveAuthCredentials(data.accessToken, data.refreshToken);
-        } catch (action: unknown) {
-          const errorMessage = extractErrorMessageFromBackendError(
-            (action as { error: { data: ApiError } }).error as {
-              data: ApiError;
-            }
-          );
+        } catch (error) {
+          const errorMessage = extractApiError(error);
           toast.error(errorMessage);
         }
       },
@@ -90,11 +106,14 @@ export const authApi = baseApi.injectEndpoints({
         url: "/me",
         method: "GET",
       }),
+      transformResponse: (response: unknown) => {
+        return userSchema.parse(response);
+      },
       serializeQueryArgs: () => "getMe",
     }),
 
     refreshToken: builder.mutation<
-      { accessToken: string; refreshToken: string },
+      RefreshTokenResponse,
       { refreshToken: string }
     >({
       query: ({ refreshToken }) => ({
@@ -102,6 +121,9 @@ export const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: { refreshToken },
       }),
+      transformResponse: (response: unknown) => {
+        return refreshTokenResponseSchema.parse(response);
+      },
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
@@ -114,12 +136,8 @@ export const authApi = baseApi.injectEndpoints({
           );
 
           saveAuthCredentials(data.accessToken, data.refreshToken);
-        } catch (action: unknown) {
-          const errorMessage = extractErrorMessageFromBackendError(
-            (action as { error: { data: ApiError } }).error as {
-              data: ApiError;
-            }
-          );
+        } catch (error) {
+          const errorMessage = extractApiError(error);
           // If refresh fails, clear everything
           toast.error(errorMessage);
           dispatch(clearCredentials());
