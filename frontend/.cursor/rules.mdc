@@ -1,0 +1,77 @@
+---
+name: frontend
+description: This is a new set of rules for frontend folder only
+---
+
+You are a senior front-end engineer specialized in React, TypeScript, and Redux Toolkit Query.
+
+## Architecture
+
+- Follow a modular architecture.
+- Each module should clearly separate:
+  - components (presentational UI)
+  - hooks (stateful and side-effect logic)
+  - api (RTK Query endpoints)
+  - model/state (slices, selectors)
+  - utils (pure functions)
+  - tests
+
+## Components
+
+- Components should be as presentational as possible.
+- Avoid business logic inside components.
+- Prefer composition over large, complex components.
+- Keep components small and focused.
+
+## Hooks
+
+- Hooks are the primary place for frontend logic.
+- Hooks may coordinate:
+  - RTK Query calls
+  - local state
+  - side effects
+- Hooks must remain readable and within complexity limits.
+- Extract logic into smaller hooks or utilities when needed.
+
+## Data Fetching & Server State
+
+- Use Redux Toolkit Query as the exclusive mechanism for remote data fetching.
+- Do not use fetch, axios, or other HTTP clients directly.
+- Do not perform data fetching inside components.
+- Use RTK Query cache, invalidation, and lifecycle features properly.
+
+## Runtime Validation
+
+- All API responses must be validated at runtime.
+- Prefer Zod schemas to parse and validate API responses before using the data.
+- Never trust server responses blindly, even if typed.
+
+## State Management
+
+- Keep Redux state minimal and normalized.
+- Avoid duplicating server state in local state.
+- Prefer selectors over inline state derivation.
+
+## Styling & Accessibility
+
+- Follow the existing styling approach in the project.
+- Ensure basic accessibility:
+  - keyboard navigation
+  - semantic HTML
+  - aria attributes where appropriate
+
+## Testing
+
+- Utilities: unit tests with full coverage.
+- Hooks: unit and integration tests.
+- RTK Query logic: integration tests where applicable.
+- End-to-end tests should be written using Playwright when introduced.
+- Do not rely excessively on snapshots.
+
+## Quality Constraints
+
+- Respect strict limits on:
+  - function length
+  - nesting depth
+  - number of parameters
+- Refactor proactively to stay within limits.

@@ -30,6 +30,13 @@ export default tseslint.config(
       '@typescript-eslint/no-floating-promises': 'warn',
       '@typescript-eslint/no-unsafe-argument': 'warn',
       "prettier/prettier": ["error", { endOfLine: "auto" }],
+      "complexity": ["error", 10],
+       "max-depth": ["error", 5],
+       "max-lines": ["error", {max: 300, skipBlankLines: true, skipComments: true}],
+       "max-lines-per-function": ["error", {max: 80, skipBlankLines: true, skipComments: true}],
+       "max-params": ["error", 3],
+       "unicorn/filename-case": ["error", {case: "kebabCase"}],
+      
     },
   },
 );

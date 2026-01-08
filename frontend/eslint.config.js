@@ -19,5 +19,13 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      "complexity": ["error", 10],
+       "max-depth": ["error", 5],
+       "max-lines": ["error", {max: 300, skipBlankLines: true, skipComments: true}],
+       "max-lines-per-function": ["error", {max: 80, skipBlankLines: true, skipComments: true}],
+       "max-params": ["error", 3],
+       "unicorn/filename-case": ["error", {case: "kebabCase"}],
+    }
   },
 ])

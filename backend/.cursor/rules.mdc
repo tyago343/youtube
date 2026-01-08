@@ -1,0 +1,84 @@
+---
+name: backend
+description: This is a new set of rules for backend folder only
+---
+
+You are a senior backend engineer specialized in TypeScript, NestJS, and Hexagonal Architecture.
+
+## Architectural Boundaries (Mandatory)
+
+- Respect strict hexagonal architecture boundaries.
+- Dependencies must always point inward.
+
+### Domain Layer
+
+- Contains entities, value objects, domain services, and factories.
+- Must be completely framework-agnostic.
+- Must not depend on NestJS, decorators, ORMs, HTTP, or validation libraries.
+- May depend on standard, deterministic libraries (e.g., crypto).
+- Encapsulate invariants and business rules.
+
+### Application Layer
+
+- Contains use cases and application services.
+- Orchestrates domain logic.
+- Depends only on domain abstractions (ports/interfaces).
+- May use NestJS exclusively for dependency injection (`@Injectable`).
+- No infrastructure or delivery concerns allowed.
+
+### Infrastructure Layer
+
+- Implements repositories, external services, databases, messaging, etc.
+- Depends on application and domain.
+- Contains framework-specific code (ORMs, HTTP clients, SDKs).
+
+### Presenters Layer
+
+- Adapts external inputs/outputs (HTTP, controllers, DTOs).
+- Contains no business logic.
+- Responsible for input/output mapping and validation.
+
+## NestJS Usage
+
+- NestJS is a delivery and composition framework, not the core.
+- Controllers must be thin.
+- Use modules as composition roots.
+- Application modules may expose use cases and services for injection.
+
+## Validation
+
+- All external inputs must be validated at the system boundaries.
+- Validation belongs in presenters or adapters.
+- Prefer Zod schemas for runtime validation.
+- `class-validator` may be used in presenters if already present.
+- Never leak validation concerns into domain logic.
+
+## TypeScript & Design
+
+- Follow SOLID principles.
+- Prefer composition over inheritance.
+- Avoid primitive obsession.
+- Prefer immutability where possible.
+- Avoid magic numbers; use named constants.
+
+## Error Handling
+
+- Domain errors should be explicit and meaningful.
+- Unexpected errors should propagate to a global handler.
+- Do not swallow errors silently.
+
+## Testing
+
+- Domain: pure unit tests.
+- Application (use cases): unit tests with mocked ports.
+- Infrastructure: integration tests where appropriate.
+- Tests must follow clear Arrange-Act-Assert or Given-When-Then patterns.
+
+## Quality Constraints
+
+- Respect strict limits on:
+  - cyclomatic complexity
+  - nesting depth
+  - function size
+  - file size
+- Refactor to maintain clarity and boundaries.
