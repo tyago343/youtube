@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import type { RouteObject } from "react-router";
-import MainLayout from "@/shared/layout/main.layout";
-import { PrivateGuard } from "@/core/router/guards/private.guard";
+import MainLayout from "@shared/layouts/main.layout";
+import { PrivateGuard } from "@core/router/guards/private.guard";
 
 const Profile = lazy(() => import("../pages/Profile"));
 
@@ -22,4 +22,3 @@ export const userRoutes: RouteObject[] = [
     ],
   },
 ];
-

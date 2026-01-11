@@ -1,8 +1,8 @@
 import { lazy } from "react";
 import type { RouteObject } from "react-router";
+import { PrivateGuard } from "@core/router/guards/private.guard";
+import MainLayout from "@shared/layouts/main.layout";
 import { VideoLayout } from "../layout/video.layout";
-import MainLayout from "@/shared/layout/main.layout";
-import { PrivateGuard } from "@/core/router/guards/private.guard";
 
 const VideoWatch = lazy(() => import("../pages/VideoWatch"));
 const UploadVideo = lazy(() => import("../pages/UploadVideo"));

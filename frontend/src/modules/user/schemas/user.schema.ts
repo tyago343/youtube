@@ -4,7 +4,7 @@ export const userSchema = z.object({
   id: z.uuid(),
   email: z.email(),
   username: z.string().min(1),
-  avatarUrl: z.url().optional().nullable(),
+  avatarUrl: z.url().optional(),
   createdAt: z.iso.datetime().or(z.date()),
 });
 

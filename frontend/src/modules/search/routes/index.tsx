@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import type { RouteObject } from "react-router";
-import MainLayout from "@/shared/layout/main.layout";
-import { PublicGuard } from "@/core/router/guards/public.guard";
+import MainLayout from "@shared/layouts/main.layout";
+import { PublicGuard } from "@core/router/guards/public.guard";
 
 const SearchResults = lazy(() => import("../pages/SearchResults"));
 
@@ -22,4 +22,3 @@ export const searchRoutes: RouteObject[] = [
     ],
   },
 ];
-

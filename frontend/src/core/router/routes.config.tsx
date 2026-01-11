@@ -1,6 +1,6 @@
 import { lazy } from "react";
 import type { RouteObject } from "react-router";
-import MainLayout from "@/shared/layout/main.layout";
+import MainLayout from "@/shared/layouts/main.layout";
 import { PublicGuard } from "./guards/public.guard";
 
 const Home = lazy(() => import("@/core/pages/Home"));

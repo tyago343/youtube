@@ -1,4 +1,4 @@
-import VideosGrid from "@/modules/video/components/videos-grid.component";
+import VideosGrid from "@video/components/videos-grid.component";
 
 function Home() {
   return <VideosGrid />;
