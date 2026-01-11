@@ -9,7 +9,7 @@ export function VideoLayout() {
       <Toaster richColors position="top-right" />
       <div className="min-h-screen bg-background text-foreground">
         <Header />
-        <main className="flex">
+        <main className="flex pb-12">
           <section className="flex-1 px-8">
             <RouteErrorBoundary context="video">
               <Outlet />

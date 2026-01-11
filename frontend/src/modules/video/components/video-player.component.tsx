@@ -8,7 +8,7 @@ interface VideoPlayerProps {
 function VideoPlayer({ video }: VideoPlayerProps) {
   return (
     <AspectRatio ratio={16 / 9} className="rounded-lg overflow-hidden">
-      <video src={video.url} controls />
+      <video src={video.url} controls autoPlay />
     </AspectRatio>
   );
 }

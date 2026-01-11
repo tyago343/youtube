@@ -6,6 +6,7 @@ import SearchBarComponent from "@search/components/search-bar.component";
 import UserMenuComponent from "@user/components/user-menu.component";
 import { selectUser } from "@user/model/user.selectors";
 import { Logo } from "./logo";
+import { MenuIcon } from "lucide-react";
 
 interface HeaderProps {
   showSearch?: boolean;
@@ -15,9 +16,18 @@ function Header({ showSearch = false }: HeaderProps) {
   const user = useSelector(selectUser);
   return (
     <header className="flex items-center justify-between p-4 px-8 gap-4 z-20 sticky top-0 bg-background">
-      <Link to="/">
-        <Logo />
-      </Link>
+      <div className="flex items-center gap-4">
+        <Button
+          variant="ghost"
+          size="icon-lg"
+          className="rounded-full cursor-pointer dark:hover:bg-accent"
+        >
+          <MenuIcon className="size-6" />
+        </Button>
+        <Link to="/">
+          <Logo />
+        </Link>
+      </div>
       <div className="flex-1 max-w-2xl">
         {showSearch && <SearchBarComponent />}
       </div>
