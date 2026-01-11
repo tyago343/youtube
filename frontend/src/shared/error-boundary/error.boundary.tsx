@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { ErrorFallback } from "./ErrorFallback";
+import { ErrorFallback } from "./error-fallback";
 import { getErrorMessage } from "./error-messages.config";
 import type {
   ErrorBoundaryProps,

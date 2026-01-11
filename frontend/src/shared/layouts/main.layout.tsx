@@ -1,8 +1,8 @@
 import { Outlet } from "react-router";
 import { Toaster } from "sonner";
-import Header from "@shared/components/header/Header";
-import { RouteErrorBoundary } from "@shared/error-boundary/RouteErrorBoundary";
-import Sidebar from "../components/sidebar/Sidebar";
+import Header from "@/shared/components/header/header.component";
+import { RouteErrorBoundary } from "@/shared/error-boundary/route-error.boundary";
+import Sidebar from "../components/sidebar/sidebar";
 
 export default function MainLayout() {
   return (

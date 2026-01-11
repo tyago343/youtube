@@ -1,7 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 import type { RootState } from "@core/store";
-import type { NormalizedVideo, Video } from "../types/video.types";
-import { selectUserEntities } from "@/modules/user/model/user.selectors";
+import { selectUserEntities } from "@user/model/user.selectors";
+import type { NormalizedVideo } from "../types/video.types";
+import type { Video } from "../schemas/video.schema";
 import { videoAdapter } from "./video.adapter";
 
 const selectVideoState = (state: RootState) => state.video;

@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
-import Header from "@/shared/components/header/Header";
+import Header from "@/shared/components/header/header.component";
 import { Toaster } from "sonner";
-import { RouteErrorBoundary } from "@/shared/error-boundary/RouteErrorBoundary";
+import { RouteErrorBoundary } from "@/shared/error-boundary/route-error.boundary";
 
 export function VideoLayout() {
   return (

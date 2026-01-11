@@ -1,4 +1,4 @@
-import type { Video } from "@/modules/video/types/video.types";
+import type { Video } from "@video/schemas/video.schema";
 
 export const videoMock: Video = {
   id: "123e4567-e89b-12d3-a456-426614174000",
@@ -11,7 +11,6 @@ export const videoMock: Video = {
   ownerId: "123e4567-e89b-12d3-a456-426614174000",
   owner: {
     id: "123e4567-e89b-12d3-a456-426614174000",
-    email: "john.doe@example.com",
     username: "johndoe",
     avatarUrl: "https://storage.example.com/avatars/user123.jpg",
   },

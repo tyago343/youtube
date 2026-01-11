@@ -1,6 +1,6 @@
 import { Camera } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@shared/ui/avatar/avatar";
-import { useAuthenticatedUser } from "@auth/context/authenticated-user.context";
+import useAuthenticatedUser from "@auth/context/authenticated-user.context";
 import { type profileFormSchemaType } from "../schemas/profile-form.schema";
 import {
   useUpdateAvatarMutation,

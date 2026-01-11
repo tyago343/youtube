@@ -5,7 +5,7 @@ import type { RootState } from "@core/store";
 import { usersAdded } from "@user/model/user.slice";
 import { videoSchema, type Video } from "../schemas/video.schema";
 import { videosReceived, videoAdded } from "./video.slice";
-import type { UploadVideoForm } from "../schemas/UploadVideoForm.schema";
+import type { UploadVideoForm } from "../schemas/upload-video-form.schema";
 import type { NormalizedVideo } from "../types/video.types";
 
 const normalizeVideo = (video: Video): NormalizedVideo => {

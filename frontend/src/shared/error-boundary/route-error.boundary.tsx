@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ErrorBoundary } from "./ErrorBoundary";
+import { ErrorBoundary } from "./error.boundary";
 import type { ErrorContext, ErrorBoundaryConfig } from "./types";
 
 interface RouteErrorBoundaryProps {

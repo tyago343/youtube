@@ -11,12 +11,12 @@ import { Input } from "@shared/ui/input/input";
 import { Textarea } from "@shared/ui/input/textarea";
 import { Switch } from "@shared/ui/switch";
 import Button from "@shared/ui/button/button";
-import { FileDropZone } from "@shared/components/file-drop-zone/FileDropZone";
-import { useAuthenticatedUser } from "@auth/context/authenticated-user.context";
+import { FileDropZone } from "@/shared/components/file-drop-zone/file-drop-zone.component";
+import useAuthenticatedUser from "@auth/context/authenticated-user.context";
 import {
   uploadVideoSchema,
   type UploadVideoForm,
-} from "../schemas/UploadVideoForm.schema";
+} from "../schemas/upload-video-form.schema";
 import { useUploadVideoMutation } from "../model/video.api";
 import ThumbnailPreview from "../components/thumbnail-preview.component";
 

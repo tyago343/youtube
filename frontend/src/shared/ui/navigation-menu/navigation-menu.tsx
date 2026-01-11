@@ -3,7 +3,7 @@ import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
 import { ChevronDownIcon } from "lucide-react";
 
 import { cn } from "@/shared/lib/utils";
-import { navigationMenuTriggerStyle } from "./navigation-menu-TriggerStyle";
+import { navigationMenuTriggerStyle } from "./navigation-menu-trigger.style";
 
 function NavigationMenu({
   className,

@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
-import { ThemeToggle } from "@shared/components/theme-toggle/ThemeToggle";
+import { ThemeToggle } from "@/shared/components/theme-toggle/theme-toggle";
 import Button from "@shared/ui/button/button";
 import SearchBarComponent from "@search/components/search-bar.component";
 import UserMenuComponent from "@user/components/user-menu.component";
 import { selectUser } from "@user/model/user.selectors";
-import { Logo } from "./Logo";
+import { Logo } from "./logo";
 
 interface HeaderProps {
   showSearch?: boolean;

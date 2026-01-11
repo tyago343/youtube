@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ErrorBoundary } from "@/shared/error-boundary/ErrorBoundary";
+import { ErrorBoundary } from "@/shared/error-boundary/error.boundary";
 import type { ErrorBoundaryConfig } from "@/shared/error-boundary/types";
 
 interface GlobalErrorBoundaryProps {

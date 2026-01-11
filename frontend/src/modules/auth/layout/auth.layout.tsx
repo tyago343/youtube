@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 import { Toaster } from "sonner";
-import { RouteErrorBoundary } from "@/shared/error-boundary/RouteErrorBoundary";
+import { RouteErrorBoundary } from "@/shared/error-boundary/route-error.boundary";
 
 export default function AuthLayout() {
   return (

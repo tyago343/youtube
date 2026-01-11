@@ -1,8 +1,8 @@
-import { AspectRatio } from "@/shared/ui/aspect-ratio";
-import type { Video } from "../types/video.types";
+import { AspectRatio } from "@shared/ui/aspect-ratio";
 import { useNavigate } from "react-router";
+import type { NormalizedVideo } from "../types/video.types";
 
-export default function VideoCard({ video }: { video: Video }) {
+export default function VideoCard({ video }: { video: NormalizedVideo }) {
   const navigate = useNavigate();
   return (
     <div

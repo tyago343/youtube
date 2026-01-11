@@ -13,7 +13,7 @@ import type { User } from "@user/types/user.type";
 import userReducer, { userSlice } from "@user/model/user.slice";
 import { baseApi } from "@core/store/api.store";
 import { renderHook } from "@shared/lib/tests/test-utils";
-import { setupLocalStorageMock } from "@shared/lib/tests/mocks/localStorage.mock";
+import { setupLocalStorageMock } from "@/shared/lib/tests/mocks/local-storage.mock.ts";
 import {
   createAuthApiMocks,
   mockGetMeSuccess,
@@ -89,6 +89,7 @@ describe("useAuthInit", () => {
     it("should restore session successfully", async () => {
       const accessToken = "test-access-token";
       const refreshToken = "test-refresh-token";
+      // @ts-expect-error - mock user
       const mockUser: User = {
         id: "user-1",
         username: "testuser",
@@ -194,6 +195,7 @@ describe("useAuthInit", () => {
   describe("when only accessToken is stored (no refreshToken)", () => {
     it("should still attempt to restore session but not dispatch setCredentials", async () => {
       const accessToken = "test-access-token";
+      // @ts-expect-error - mock user
       const mockUser: User = {
         id: "user-1",
         username: "testuser",
@@ -296,6 +298,7 @@ describe("useAuthInit", () => {
     it("should only initialize once per mount", async () => {
       const accessToken = "test-access-token";
       const refreshToken = "test-refresh-token";
+      // @ts-expect-error - mock user
       const mockUser: User = {
         id: "user-1",
         username: "testuser",

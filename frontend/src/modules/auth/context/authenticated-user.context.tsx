@@ -1,25 +1,9 @@
-import { createContext, useContext, type ReactNode } from "react";
+import { createContext, useContext } from "react";
 import type { User } from "@user/schemas/user.schema";
 
-const AuthenticatedUserContext = createContext<User | null>(null);
+export const AuthenticatedUserContext = createContext<User | null>(null);
 
-type AuthenticatedUserProviderProps = {
-  user: User;
-  children: ReactNode;
-};
-
-export function AuthenticatedUserProvider({
-  user,
-  children,
-}: AuthenticatedUserProviderProps) {
-  return (
-    <AuthenticatedUserContext.Provider value={user}>
-      {children}
-    </AuthenticatedUserContext.Provider>
-  );
-}
-
-export function useAuthenticatedUser(): User {
+function useAuthenticatedUser(): User {
   const user = useContext(AuthenticatedUserContext);
 
   if (!user) {
@@ -31,3 +15,4 @@ export function useAuthenticatedUser(): User {
 
   return user;
 }
+export default useAuthenticatedUser;
