@@ -18,6 +18,7 @@ import {
   type UploadVideoForm,
 } from "../schemas/UploadVideoForm.schema";
 import { useUploadVideoMutation } from "../model/video.api";
+import ThumbnailPreview from "../components/thumbnail-preview.component";
 
 function UploadVideo() {
   const user = useAuthenticatedUser();
@@ -120,6 +121,9 @@ function UploadVideo() {
                     variant="compact"
                     orientation="horizontal"
                     maxSize={1024 * 1024 * 10}
+                    previewComponent={(file) => (
+                      <ThumbnailPreview file={file} />
+                    )}
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
