@@ -1,0 +1,60 @@
+{
+  "save": "Guardar",
+  "email": "Correo electrónico",
+  "username": "Nombre de usuario",
+  "login": "Iniciar sesión",
+  "signup": "Registrarse",
+  "logout": "Cerrar sesión",
+  "navigation": {
+    "home": "Inicio",
+    "subscriptions": "Suscripciones",
+    "you": "Tú",
+    "settings": "Configuración",
+    "history": "Historial",
+    "playlists": "Listas de reproducción",
+    "watchLater": "Ver más tarde",
+    "likedVideos": "Videos que te gustaron",
+    "yourVideos": "Tus videos",
+    "downloads": "Descargas"
+  },
+  "fileDropZone": {
+    "placeholder": "Arrastra y suelta un archivo aquí o haz clic para seleccionar",
+    "dropHere": "Suelta tu archivo aquí",
+    "changeFile": "Cambiar archivo"
+  },
+  "theme": {
+    "switchToLight": "Cambiar a modo claro",
+    "switchToDark": "Cambiar a modo oscuro"
+  },
+  "actions": {
+    "reloadPage": "Recargar página",
+    "goBack": "Volver",
+    "tryAgain": "Intentar de nuevo"
+  },
+  "errors": {
+    "global": {
+      "title": "Algo salió mal",
+      "message": "Ocurrió un error inesperado. Por favor, recarga la página para continuar."
+    },
+    "route": {
+      "title": "Error al cargar la página",
+      "message": "No pudimos cargar esta sección. Por favor, intenta recargar la aplicación o visita otra página."
+    },
+    "auth": {
+      "title": "Error de autenticación",
+      "message": "Hubo un problema al procesar tu solicitud de autenticación. Por favor, inténtalo de nuevo."
+    },
+    "video": {
+      "title": "Error al cargar el video",
+      "message": "No pudimos cargar el reproductor o la información del video. Por favor, inténtalo de nuevo o regresa a la página anterior."
+    },
+    "user": {
+      "title": "Error al cargar el perfil",
+      "message": "No pudimos cargar tu información de usuario. Por favor, recarga la página o regresa a la página principal."
+    },
+    "search": {
+      "title": "Error en la búsqueda",
+      "message": "No pudimos realizar la búsqueda. Por favor, inténtalo de nuevo o regresa a la página anterior."
+    }
+  }
+}

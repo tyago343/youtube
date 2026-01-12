@@ -1,5 +1,6 @@
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from "react-i18next";
 import {
   LoginFormSchema,
   type LoginFormSchemaType,
@@ -23,6 +24,7 @@ import { useLoginMutation } from "@auth/model/auth.api";
 import { useNavigate } from "react-router";
 
 function Login() {
+  const { t } = useTranslation("shared");
   const [loginUser] = useLoginMutation();
   const navigate = useNavigate();
   const { control, handleSubmit } = useForm<LoginFormSchemaType>({
@@ -50,7 +52,7 @@ function Login() {
                 name="email"
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor={field.name}>Email</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>{t("email")}</FieldLabel>
                     <Input
                       {...field}
                       id={field.name}

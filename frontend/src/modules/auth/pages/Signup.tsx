@@ -1,5 +1,6 @@
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from "react-i18next";
 import {
   Card,
   CardContent,
@@ -23,6 +24,7 @@ import {
 import { useNavigate } from "react-router";
 
 function Signup() {
+  const { t } = useTranslation("shared");
   const { control, handleSubmit } = useForm<SignupFormSchemaType>({
     resolver: zodResolver(SignupFormSchema),
     defaultValues: {
@@ -57,7 +59,7 @@ function Signup() {
                 name="email"
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor={field.name}>Email</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>{t("email")}</FieldLabel>
                     <Input
                       {...field}
                       id={field.name}
@@ -78,7 +80,9 @@ function Signup() {
                 name="username"
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor={field.name}>Username</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>
+                      {t("username")}
+                    </FieldLabel>
                     <Input
                       {...field}
                       id={field.name}

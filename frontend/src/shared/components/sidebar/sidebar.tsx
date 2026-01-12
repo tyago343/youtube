@@ -11,6 +11,7 @@ import {
   ThumbsUp,
   User,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { cn } from "@shared/lib/utils";
 import Button from "@shared/ui/button/button";
 import { Separator } from "@shared/ui/separator/separator";
@@ -24,12 +25,12 @@ const DUMMY_CHANNELS = [
 ];
 
 const YOU_LINKS = [
-  { to: "/history", label: "History", icon: History },
-  { to: "/playlists", label: "Playlists", icon: ListVideo },
-  { to: "/watch-later", label: "Watch later", icon: Clock },
-  { to: "/liked-videos", label: "Liked videos", icon: ThumbsUp },
-  { to: "/your-videos", label: "Your videos", icon: PlaySquare },
-  { to: "/downloads", label: "Downloads", icon: Download },
+  { to: "/history", labelKey: "navigation.history", icon: History },
+  { to: "/playlists", labelKey: "navigation.playlists", icon: ListVideo },
+  { to: "/watch-later", labelKey: "navigation.watchLater", icon: Clock },
+  { to: "/liked-videos", labelKey: "navigation.likedVideos", icon: ThumbsUp },
+  { to: "/your-videos", labelKey: "navigation.yourVideos", icon: PlaySquare },
+  { to: "/downloads", labelKey: "navigation.downloads", icon: Download },
 ];
 
 const BASE_BUTTON_CLASSES =
@@ -39,7 +40,7 @@ const ACTIVE_CLASSES = "bg-accent text-accent-foreground";
 function Sidebar() {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
-
+  const { t } = useTranslation("shared");
   return (
     <aside className="w-64 hidden md:block h-[calc(100vh-73px)] sticky top-[73px] overflow-y-auto">
       <nav className="px-4 pr-8">
@@ -54,13 +55,12 @@ function Sidebar() {
                 )}
               >
                 <HomeIcon className="size-4" />
-                <span>Home</span>
+                <span>{t("navigation.home")}</span>
               </Button>
             </Link>
           </li>
         </ul>
       </nav>
-
       <Separator className="my-4" />
       <nav className="px-4 pr-8">
         <div className="flex flex-col gap-1">
@@ -73,7 +73,7 @@ function Sidebar() {
                 isActive("/subscriptions") && ACTIVE_CLASSES
               )}
             >
-              <span>Subscriptions</span>
+              <span>{t("navigation.subscriptions")}</span>
               <ChevronRight className="size-4" />
             </Button>
           </Link>
@@ -112,7 +112,7 @@ function Sidebar() {
                 isActive("/profile") && ACTIVE_CLASSES
               )}
             >
-              <span>You</span>
+              <span>{t("navigation.you")}</span>
               <ChevronRight className="size-4" />
             </Button>
           </Link>
@@ -128,7 +128,7 @@ function Sidebar() {
                     )}
                   >
                     <link.icon className="size-4" />
-                    <span>{link.label}</span>
+                    <span>{t(link.labelKey)}</span>
                   </Button>
                 </Link>
               </li>
@@ -149,7 +149,7 @@ function Sidebar() {
                 )}
               >
                 <Settings className="size-4" />
-                <span>Settings</span>
+                <span>{t("navigation.settings")}</span>
               </Button>
             </Link>
           </li>

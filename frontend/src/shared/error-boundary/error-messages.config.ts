@@ -1,8 +1,8 @@
 import type { ErrorContext } from "./types";
 
 export interface ErrorMessageConfig {
-  title: string;
-  message: string;
+  titleKey: string;
+  messageKey: string;
   actions: {
     reload?: boolean;
     back?: boolean;
@@ -12,51 +12,45 @@ export interface ErrorMessageConfig {
 
 export const ERROR_MESSAGES: Record<ErrorContext, ErrorMessageConfig> = {
   global: {
-    title: "Something went wrong",
-    message:
-      "An unexpected error occurred. Please reload the page to continue.",
+    titleKey: "errors.global.title",
+    messageKey: "errors.global.message",
     actions: {
       reload: true,
     },
   },
   route: {
-    title: "Error loading the page",
-    message:
-      "We couldn't load this section. Please try reloading the application or visit another page.",
+    titleKey: "errors.route.title",
+    messageKey: "errors.route.message",
     actions: {
       reload: true,
     },
   },
   auth: {
-    title: "Authentication error",
-    message:
-      "There was a problem processing your authentication request. Please try again.",
+    titleKey: "errors.auth.title",
+    messageKey: "errors.auth.message",
     actions: {
       retry: true,
     },
   },
   video: {
-    title: "Error loading the video",
-    message:
-      "We couldn't load the player or the video information. Please try again or go back to the previous page.",
+    titleKey: "errors.video.title",
+    messageKey: "errors.video.message",
     actions: {
       retry: true,
       back: true,
     },
   },
   user: {
-    title: "Error loading the profile",
-    message:
-      "We couldn't load your user information. Please try reloading the page or going back to the home page.",
+    titleKey: "errors.user.title",
+    messageKey: "errors.user.message",
     actions: {
       reload: true,
       back: true,
     },
   },
   search: {
-    title: "Error searching",
-    message:
-      "We couldn't perform the search. Please try again or go back to the previous page.",
+    titleKey: "errors.search.title",
+    messageKey: "errors.search.message",
     actions: {
       retry: true,
       back: true,

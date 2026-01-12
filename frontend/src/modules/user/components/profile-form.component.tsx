@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import type { User } from "../types/user.type";
 import {
   profileFormSchema,
@@ -20,6 +21,7 @@ export interface ProfileFormComponentProps {
 }
 
 function ProfileFormComponent({ onSubmit, user }: ProfileFormComponentProps) {
+  const { t } = useTranslation("shared");
   const { control, handleSubmit, formState } = useForm<profileFormSchemaType>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
@@ -53,12 +55,12 @@ function ProfileFormComponent({ onSubmit, user }: ProfileFormComponentProps) {
       className="w-full max-w-md mt-4"
     >
       <FieldGroup className="mt-4">
-        <Controller
+          <Controller
           control={control}
           name="username"
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Username</FieldLabel>
+              <FieldLabel htmlFor={field.name}>{t("username")}</FieldLabel>
               <Input
                 {...field}
                 id={field.name}
@@ -70,12 +72,12 @@ function ProfileFormComponent({ onSubmit, user }: ProfileFormComponentProps) {
         />
       </FieldGroup>
       <FieldGroup className="mt-4">
-        <Controller
+          <Controller
           control={control}
           name="email"
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Email</FieldLabel>
+              <FieldLabel htmlFor={field.name}>{t("email")}</FieldLabel>
               <Input
                 {...field}
                 id={field.name}
@@ -87,7 +89,7 @@ function ProfileFormComponent({ onSubmit, user }: ProfileFormComponentProps) {
         />
       </FieldGroup>
       <Button type="submit" className="mt-4 float-right" disabled={!isDirty}>
-        Save
+        {t("save")}
       </Button>
     </form>
   );

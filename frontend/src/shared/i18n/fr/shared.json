@@ -1,0 +1,60 @@
+{
+  "save": "Sauvegarder",
+  "email": "E-mail",
+  "username": "Nom d'utilisateur",
+  "login": "Connexion",
+  "signup": "Inscription",
+  "logout": "Déconnexion",
+  "navigation": {
+    "home": "Accueil",
+    "subscriptions": "Abonnements",
+    "you": "Vous",
+    "settings": "Paramètres",
+    "history": "Historique",
+    "playlists": "Playlists",
+    "watchLater": "À regarder plus tard",
+    "likedVideos": "Vidéos aimées",
+    "yourVideos": "Vos vidéos",
+    "downloads": "Téléchargements"
+  },
+  "fileDropZone": {
+    "placeholder": "Glissez-déposez un fichier ici ou cliquez pour sélectionner",
+    "dropHere": "Déposez votre fichier ici",
+    "changeFile": "Changer de fichier"
+  },
+  "theme": {
+    "switchToLight": "Passer en mode clair",
+    "switchToDark": "Passer en mode sombre"
+  },
+  "actions": {
+    "reloadPage": "Recharger la page",
+    "goBack": "Retour",
+    "tryAgain": "Réessayer"
+  },
+  "errors": {
+    "global": {
+      "title": "Une erreur s'est produite",
+      "message": "Une erreur inattendue s'est produite. Veuillez recharger la page pour continuer."
+    },
+    "route": {
+      "title": "Erreur de chargement de la page",
+      "message": "Nous n'avons pas pu charger cette section. Veuillez recharger l'application ou visiter une autre page."
+    },
+    "auth": {
+      "title": "Erreur d'authentification",
+      "message": "Un problème est survenu lors du traitement de votre demande d'authentification. Veuillez réessayer."
+    },
+    "video": {
+      "title": "Erreur de chargement de la vidéo",
+      "message": "Nous n'avons pas pu charger le lecteur ou les informations de la vidéo. Veuillez réessayer ou revenir à la page précédente."
+    },
+    "user": {
+      "title": "Erreur de chargement du profil",
+      "message": "Nous n'avons pas pu charger vos informations utilisateur. Veuillez recharger la page ou revenir à la page d'accueil."
+    },
+    "search": {
+      "title": "Erreur de recherche",
+      "message": "Nous n'avons pas pu effectuer la recherche. Veuillez réessayer ou revenir à la page précédente."
+    }
+  }
+}

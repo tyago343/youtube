@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
+import { useTranslation } from "react-i18next";
 import { ThemeToggle } from "@/shared/components/theme-toggle/theme-toggle";
 import Button from "@shared/ui/button/button";
 import SearchBarComponent from "@search/components/search-bar.component";
@@ -13,9 +14,10 @@ interface HeaderProps {
 }
 
 function Header({ showSearch = false }: HeaderProps) {
+  const { t } = useTranslation("shared");
   const user = useSelector(selectUser);
   return (
-    <header className="flex items-center justify-between p-4 px-8 gap-4 z-20 sticky top-0 bg-background">
+    <header className="flex items-center justify-between p-4 px-5 gap-4 z-20 sticky top-0 bg-background">
       <div className="flex items-center gap-4">
         <Button
           variant="ghost"
@@ -38,10 +40,10 @@ function Header({ showSearch = false }: HeaderProps) {
         ) : (
           <div className="flex gap-2">
             <Link to="/auth/login">
-              <Button variant="outline">Login</Button>
+              <Button variant="outline">{t("login")}</Button>
             </Link>
             <Link to="/auth/signup">
-              <Button variant="outline">Signup</Button>
+              <Button variant="outline">{t("signup")}</Button>
             </Link>
           </div>
         )}

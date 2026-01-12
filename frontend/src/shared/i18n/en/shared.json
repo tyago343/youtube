@@ -1,0 +1,60 @@
+{
+  "save": "Save",
+  "email": "Email",
+  "username": "Username",
+  "login": "Login",
+  "signup": "Signup",
+  "logout": "Logout",
+  "navigation": {
+    "home": "Home",
+    "subscriptions": "Subscriptions",
+    "you": "You",
+    "settings": "Settings",
+    "history": "History",
+    "playlists": "Playlists",
+    "watchLater": "Watch later",
+    "likedVideos": "Liked videos",
+    "yourVideos": "Your videos",
+    "downloads": "Downloads"
+  },
+  "fileDropZone": {
+    "placeholder": "Drag and drop a file here or click to select",
+    "dropHere": "Drop your file here",
+    "changeFile": "Change file"
+  },
+  "theme": {
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode"
+  },
+  "actions": {
+    "reloadPage": "Reload page",
+    "goBack": "Go back",
+    "tryAgain": "Try again"
+  },
+  "errors": {
+    "global": {
+      "title": "Something went wrong",
+      "message": "An unexpected error occurred. Please reload the page to continue."
+    },
+    "route": {
+      "title": "Error loading the page",
+      "message": "We couldn't load this section. Please try reloading the application or visit another page."
+    },
+    "auth": {
+      "title": "Authentication error",
+      "message": "There was a problem processing your authentication request. Please try again."
+    },
+    "video": {
+      "title": "Error loading the video",
+      "message": "We couldn't load the player or the video information. Please try again or go back to the previous page."
+    },
+    "user": {
+      "title": "Error loading the profile",
+      "message": "We couldn't load your user information. Please try reloading the page or going back to the home page."
+    },
+    "search": {
+      "title": "Error searching",
+      "message": "We couldn't perform the search. Please try again or go back to the previous page."
+    }
+  }
+}

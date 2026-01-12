@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { AlertCircle, RefreshCw, ArrowLeft, RotateCcw } from "lucide-react";
 import Button from "@shared/ui/button/button";
 import type { ErrorMessageConfig } from "./error-messages.config";
@@ -15,6 +16,8 @@ export function ErrorFallback({
   onReload,
   onBack,
 }: ErrorFallbackProps) {
+  const { t } = useTranslation("shared");
+
   const handleReload = () => {
     if (onReload) {
       onReload();
@@ -39,29 +42,29 @@ export function ErrorFallback({
         </div>
 
         <div className="space-y-2">
-          <h2 className="text-2xl font-semibold">{config.title}</h2>
-          <p className="text-muted-foreground">{config.message}</p>
+          <h2 className="text-2xl font-semibold">{t(config.titleKey)}</h2>
+          <p className="text-muted-foreground">{t(config.messageKey)}</p>
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-3">
           {config.actions.reload && (
             <Button onClick={handleReload} variant="default">
               <RefreshCw className="mr-2 h-4 w-4" />
-              Reload page
+              {t("actions.reloadPage")}
             </Button>
           )}
 
           {config.actions.back && (
             <Button onClick={handleBack} variant="outline">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Go back
+              {t("actions.goBack")}
             </Button>
           )}
 
           {config.actions.retry && onReset && (
             <Button onClick={onReset} variant="outline">
               <RotateCcw className="mr-2 h-4 w-4" />
-              Try again
+              {t("actions.tryAgain")}
             </Button>
           )}
         </div>

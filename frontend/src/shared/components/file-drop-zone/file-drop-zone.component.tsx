@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import { useFileDrop } from "@/shared/hooks/use-file-drop.hook";
 import { cn } from "@/shared/lib/utils";
 import { Upload, X } from "lucide-react";
@@ -24,13 +25,14 @@ export function FileDropZone({
   accept = [],
   maxSize,
   label,
-  placeholder = "Drag and drop a file here or click to select",
+  placeholder,
   className,
   variant = "default",
   orientation = "vertical",
   showPreview = true,
   previewComponent,
 }: FileDropZoneProps) {
+  const { t } = useTranslation("shared");
   const {
     isDragging,
     error,
@@ -43,6 +45,9 @@ export function FileDropZone({
     accept,
     maxSize,
   });
+
+  const defaultPlaceholder = t("fileDropZone.placeholder");
+  const resolvedPlaceholder = placeholder ?? defaultPlaceholder;
 
   const formatFileSize = (bytes: number): string => {
     if (bytes < 1024) return `${bytes} B`;
@@ -168,7 +173,7 @@ export function FileDropZone({
                     openFileDialog();
                   }}
                 >
-                  Change file
+                  {t("fileDropZone.changeFile")}
                 </Button>
                 <Button
                   type="button"
@@ -210,7 +215,7 @@ export function FileDropZone({
               )}
             >
               <p className="font-medium text-sm">
-                {isDragging ? "Drop your file here" : placeholder}
+                {isDragging ? t("fileDropZone.dropHere") : resolvedPlaceholder}
               </p>
               {label && (
                 <p className="text-xs text-muted-foreground mt-1">{label}</p>
