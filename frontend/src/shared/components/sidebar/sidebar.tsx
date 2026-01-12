@@ -10,11 +10,13 @@ import {
   Settings,
   ThumbsUp,
   User,
+  type LucideIcon,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@shared/lib/utils";
 import Button from "@shared/ui/button/button";
 import { Separator } from "@shared/ui/separator/separator";
+import { useSidebar } from "./use-sidebar.hook";
 
 const DUMMY_CHANNELS = [
   { id: "1", name: "Buenas Tardes C..." },
@@ -37,10 +39,33 @@ const BASE_BUTTON_CLASSES =
   "w-full justify-start cursor-pointer hover:bg-accent hover:text-accent-foreground py-5";
 const ACTIVE_CLASSES = "bg-accent text-accent-foreground";
 
+interface CollapsedNavItem {
+  to: string;
+  labelKey: string;
+  icon: LucideIcon;
+}
+
+const COLLAPSED_NAV_ITEMS: CollapsedNavItem[] = [
+  { to: "/", labelKey: "navigation.home", icon: HomeIcon },
+  { to: "/profile", labelKey: "navigation.you", icon: User },
+  {
+    to: "/subscriptions",
+    labelKey: "navigation.subscriptions",
+    icon: ListVideo,
+  },
+  { to: "/settings", labelKey: "navigation.settings", icon: Settings },
+];
+
 function Sidebar() {
   const location = useLocation();
+  const { isCollapsed } = useSidebar();
   const isActive = (path: string) => location.pathname === path;
   const { t } = useTranslation("shared");
+
+  if (isCollapsed) {
+    return <CollapsedSidebar isActive={isActive} />;
+  }
+
   return (
     <aside className="w-64 hidden md:block h-[calc(100vh-73px)] sticky top-[73px] overflow-y-auto">
       <nav className="px-4 pr-8">
@@ -154,6 +179,37 @@ function Sidebar() {
             </Link>
           </li>
         </ul>
+      </nav>
+    </aside>
+  );
+}
+
+interface CollapsedSidebarProps {
+  isActive: (path: string) => boolean;
+}
+
+function CollapsedSidebar({ isActive }: CollapsedSidebarProps) {
+  const { t } = useTranslation("shared");
+
+  return (
+    <aside className="w-[72px] hidden md:flex flex-col items-center h-[calc(100vh-73px)] sticky top-[73px] overflow-y-auto py-2">
+      <nav className="flex flex-col items-center gap-1 w-full">
+        {COLLAPSED_NAV_ITEMS.map((item) => (
+          <Link key={item.to} to={item.to} className="w-full">
+            <Button
+              variant="ghost"
+              className={cn(
+                "w-full h-auto flex-col gap-1 py-4 px-1 cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-lg",
+                isActive(item.to) && ACTIVE_CLASSES
+              )}
+            >
+              <item.icon className="size-6" />
+              <span className="text-[10px] font-normal">
+                {t(item.labelKey)}
+              </span>
+            </Button>
+          </Link>
+        ))}
       </nav>
     </aside>
   );

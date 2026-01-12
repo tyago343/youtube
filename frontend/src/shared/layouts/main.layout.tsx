@@ -1,12 +1,13 @@
 import { Outlet } from "react-router";
 import { Toaster } from "sonner";
-import Header from "@/shared/components/header/header.component";
-import { RouteErrorBoundary } from "@/shared/error-boundary/route-error.boundary";
+import { RouteErrorBoundary } from "../error-boundary/route-error.boundary";
+import Header from "../components/header/header.component";
 import Sidebar from "../components/sidebar/sidebar";
+import { SidebarProvider } from "../components/sidebar/sidebar.context";
 
 export default function MainLayout() {
   return (
-    <>
+    <SidebarProvider>
       <Toaster richColors position="top-right" />
       <div className="min-h-screen bg-background text-foreground">
         <Header showSearch={false} />
@@ -19,6 +20,6 @@ export default function MainLayout() {
           </section>
         </main>
       </div>
-    </>
+    </SidebarProvider>
   );
 }

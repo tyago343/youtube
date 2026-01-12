@@ -6,6 +6,7 @@ import Button from "@shared/ui/button/button";
 import SearchBarComponent from "@search/components/search-bar.component";
 import UserMenuComponent from "@user/components/user-menu.component";
 import { selectUser } from "@user/model/user.selectors";
+import { useSidebarOptional } from "../sidebar/use-sidebar.hook";
 import { Logo } from "./logo";
 import { MenuIcon } from "lucide-react";
 
@@ -16,6 +17,8 @@ interface HeaderProps {
 function Header({ showSearch = false }: HeaderProps) {
   const { t } = useTranslation("shared");
   const user = useSelector(selectUser);
+  const sidebar = useSidebarOptional();
+
   return (
     <header className="flex items-center justify-between p-4 px-5 gap-4 z-20 sticky top-0 bg-background">
       <div className="flex items-center gap-4">
@@ -23,6 +26,8 @@ function Header({ showSearch = false }: HeaderProps) {
           variant="ghost"
           size="icon-lg"
           className="rounded-full cursor-pointer dark:hover:bg-accent"
+          onClick={sidebar?.toggleSidebar}
+          aria-label={t("navigation.toggleSidebar")}
         >
           <MenuIcon className="size-6" />
         </Button>
