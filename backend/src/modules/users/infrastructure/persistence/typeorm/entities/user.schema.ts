@@ -22,13 +22,13 @@ export class UserSchema {
   @Column()
   password: string;
 
-  @Column({ nullable: true })
+  @Column()
   avatarUrl?: string;
 
   @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn({ nullable: true })
+  @UpdateDateColumn()
   updatedAt?: Date;
 
   @OneToMany(() => ChannelSchema, (channel) => channel.owner, {

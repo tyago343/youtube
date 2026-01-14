@@ -24,7 +24,6 @@ export class UserResponseDto {
     description: 'The avatar URL of the user',
     example: 'https://storage.example.com/avatars/user123.jpg',
     required: false,
-    nullable: true,
   })
   avatarUrl?: string;
 

@@ -16,12 +16,12 @@ function VideoInfo({ video }: VideoInfoProps) {
         <div className="flex items-center gap-2">
           <Avatar className="cursor-pointer">
             <AvatarImage
-              src={video.owner.avatarUrl}
-              alt={video.owner.username}
+              src={video.channel.avatarUrl}
+              alt={video.channel.name}
             />
-            <AvatarFallback>{video.owner.username.charAt(0)}</AvatarFallback>
+            <AvatarFallback>{video.channel.name.charAt(0)}</AvatarFallback>
           </Avatar>
-          <p className="font-semibold">{video.owner.username}</p>
+          <p className="font-semibold">{video.channel.name}</p>
         </div>
         <div className="flex items-center gap-2">
           <Button

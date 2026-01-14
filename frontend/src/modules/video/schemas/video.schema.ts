@@ -1,5 +1,10 @@
 import { z } from "zod";
-import { ownerSummarySchema } from "@user/schemas/owner-summary.schema";
+
+const channelSummarySchema = z.object({
+  id: z.uuid(),
+  name: z.string().min(1),
+  avatarUrl: z.url(),
+});
 
 export const videoSchema = z.object({
   id: z.uuid(),
@@ -13,9 +18,10 @@ export const videoSchema = z.object({
   likes: z.number().int().nonnegative(),
   dislikes: z.number().int().nonnegative(),
   isPublic: z.boolean(),
-  ownerId: z.uuid(),
-  owner: ownerSummarySchema,
+  channelId: z.uuid(),
+  channel: channelSummarySchema,
   published: z.iso.datetime().or(z.date()).optional().nullable(),
 });
 
 export type Video = z.infer<typeof videoSchema>;
+export type ChannelSummary = z.infer<typeof channelSummarySchema>;

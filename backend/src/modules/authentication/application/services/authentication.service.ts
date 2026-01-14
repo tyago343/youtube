@@ -1,10 +1,15 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { SignUpUseCase } from '../use-cases/sign-up.use-case';
 import { LoginUseCase } from '../use-cases/login-use-case';
 import { RefreshTokenUseCase } from '../use-cases/refresh-token.use-case';
 import { ValidateUserUseCase } from '../use-cases/validate-user.use-case';
 import { User } from 'src/modules/users/domain/user.entity';
 import { UserAlreadyExistsException } from 'src/modules/users/domain/exceptions/user-already-exists.exceptions';
+import { UserNotFoundException } from 'src/modules/users/domain/exceptions/user-not-found.exception';
 import { AccessToken } from '../../domain/vo/access-token.vo';
 import { RefreshToken } from '../../domain/vo/refresh-token.vo';
 import { GetUserUseCase } from 'src/modules/users/application/use-cases/get-user.use-case';
@@ -61,6 +66,13 @@ export class AuthenticationService {
   }
 
   async getUser(identifier: string): Promise<User> {
-    return await this.getUserUseCase.execute(identifier);
+    try {
+      return await this.getUserUseCase.execute(identifier);
+    } catch (error) {
+      if (error instanceof UserNotFoundException) {
+        throw new UnauthorizedException('User not found');
+      }
+      throw error;
+    }
   }
 }

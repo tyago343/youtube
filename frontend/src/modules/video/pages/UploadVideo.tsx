@@ -36,7 +36,10 @@ function UploadVideo() {
   });
   async function onSubmit(data: UploadVideoForm) {
     try {
-      const response = await uploadVideo({ ...data, ownerId: userId }).unwrap();
+      const response = await uploadVideo({
+        ...data,
+        channelId: userId,
+      }).unwrap();
       if (response?.id) {
         toast.success("Video uploaded successfully");
       }

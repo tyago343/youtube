@@ -2,11 +2,15 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { UserRepository } from './modules/users/application/ports/user.repository';
 import { VideosRepository } from './modules/videos/application/ports/videos.repository';
+import { ChannelRepository } from './modules/channels/application/ports/channel.repository';
 import { PasswordHashingService } from './modules/shared/application/ports/password-hashing.interface';
 import { UserFactory } from './modules/users/domain/factories/user.factory';
 import { VideoFactory } from './modules/videos/domain/factories/video.factory';
+import { ChannelFactory } from './modules/channels/domain/factories/channel.factory';
 import { UserId } from './modules/users/domain/vo/user-id.vo';
 import { User } from './modules/users/domain/user.entity';
+import { Channel } from './modules/channels/domain/channel.entity';
+import { ChannelId } from './modules/channels/domain/vo/channel-id.vo';
 
 const PASSWORD = '123123123';
 const AVATAR_URL =
@@ -77,15 +81,77 @@ const VIDEO_DESCRIPTIONS = [
   'Practical guide with real-world scenarios and solutions.',
 ];
 
+const CHANNEL_DATA = [
+  {
+    name: 'Alice Dev Channel',
+    description: 'Programming tutorials and coding tips from Alice.',
+  },
+  {
+    name: 'Bob Codes',
+    description: 'Software development content and tech reviews.',
+  },
+  {
+    name: 'Charlie Tech Hub',
+    description: 'Technology insights and developer resources.',
+  },
+  {
+    name: 'Diana Creates',
+    description: 'Creative coding and web development tutorials.',
+  },
+  {
+    name: 'Eve Stream Central',
+    description: 'Live coding sessions and programming challenges.',
+  },
+  {
+    name: 'Frank Vlogs Tech',
+    description: 'Daily tech vlogs and coding adventures.',
+  },
+  { name: 'Grace Art & Code', description: 'Where art meets programming.' },
+  {
+    name: 'Henry Maker Space',
+    description: 'DIY projects and maker tutorials.',
+  },
+  {
+    name: 'Ivy Design Studio',
+    description: 'UI/UX design and frontend development.',
+  },
+  {
+    name: 'Jack Production House',
+    description: 'Professional video production and editing tips.',
+  },
+  {
+    name: 'Kate Editor Pro',
+    description: 'Video editing tutorials and creative workflows.',
+  },
+  {
+    name: 'Leo Director Cut',
+    description: 'Filmmaking and storytelling through code.',
+  },
+  {
+    name: 'Mia Content Lab',
+    description: 'Content creation strategies and digital marketing.',
+  },
+  {
+    name: 'Noah Creator Hub',
+    description: 'Building digital products and online businesses.',
+  },
+  {
+    name: 'Olivia Video Academy',
+    description: 'Video production and streaming tutorials.',
+  },
+];
+
 async function seed() {
   const app = await NestFactory.createApplicationContext(AppModule);
   const userRepository = app.get<UserRepository>(UserRepository);
   const videoRepository = app.get<VideosRepository>(VideosRepository);
+  const channelRepository = app.get<ChannelRepository>(ChannelRepository);
   const passwordHashingService = app.get<PasswordHashingService>(
     PasswordHashingService,
   );
   const userFactory = new UserFactory();
   const videoFactory = new VideoFactory();
+  const channelFactory = new ChannelFactory();
 
   console.log('Starting seed...');
 
@@ -117,13 +183,49 @@ async function seed() {
 
   console.log(`Created ${createdUsers.length} users`);
 
-  // Create videos (20-25 videos distributed among users)
+  // Create channels (one per user)
+  console.log('Creating channels...');
+  const userToChannel = new Map<string, Channel>();
+  for (let i = 0; i < createdUsers.length; i++) {
+    try {
+      const user = createdUsers[i];
+      const channelData = CHANNEL_DATA[i % CHANNEL_DATA.length];
+      const ownerId = UserId.create(user.id.value);
+
+      const channel = channelFactory.create({
+        ownerId,
+        name: channelData.name,
+        description: channelData.description,
+      });
+
+      // Set avatar URL for the channel
+      channel.updateAvatar(AVATAR_URL);
+
+      const savedChannel = await channelRepository.save(channel);
+      userToChannel.set(user.id.value, savedChannel);
+      console.log(
+        `Created channel: "${savedChannel.name}" for ${user.username.value}`,
+      );
+    } catch (error) {
+      console.error(
+        `Error creating channel for user ${createdUsers[i].username.value}:`,
+        error instanceof Error ? error.message : String(error),
+      );
+    }
+  }
+
+  console.log(`Created ${userToChannel.size} channels`);
+
+  // Create videos (20-25 videos distributed among users with channels)
   console.log('Creating videos...');
   const videoCount = 23; // Between 20-25
-  const usersWithVideos = createdUsers.slice(0, 10); // First 10 users will have videos
+  const usersWithChannels = createdUsers.filter((user) =>
+    userToChannel.has(user.id.value),
+  );
+  const usersWithVideos = usersWithChannels.slice(0, 10); // First 10 users with channels
 
   if (usersWithVideos.length === 0) {
-    console.error('No users available to create videos');
+    console.error('No users with channels available to create videos');
     await app.close();
     return;
   }
@@ -132,7 +234,12 @@ async function seed() {
     try {
       const ownerIndex = i % usersWithVideos.length;
       const owner = usersWithVideos[ownerIndex];
-      const ownerId = UserId.create(owner.id.value);
+      const channel = userToChannel.get(owner.id.value);
+
+      if (!channel) {
+        console.error(`No channel found for user ${owner.username.value}`);
+        continue;
+      }
 
       const title = VIDEO_TITLES[i % VIDEO_TITLES.length];
       const description =
@@ -153,7 +260,7 @@ async function seed() {
         description,
         url: VIDEO_URL,
         thumbnailUrl,
-        ownerId,
+        channelId: ChannelId.create(channel.id.value),
         isPublic,
       });
 
@@ -164,7 +271,7 @@ async function seed() {
 
       const savedVideo = await videoRepository.create(video);
       console.log(
-        `Created video: "${savedVideo.title}" by ${owner.username.value}`,
+        `Created video: "${savedVideo.title}" on channel "${channel.name}"`,
       );
     } catch (error) {
       console.error(

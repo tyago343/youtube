@@ -8,10 +8,10 @@ export const videoMock: Video = {
   thumbnailUrl: "https://example.com/thumbnail.png",
   createdAt: new Date("2021-01-01T00:00:00.000Z"),
   updatedAt: new Date("2021-01-01T00:00:00.000Z"),
-  ownerId: "123e4567-e89b-12d3-a456-426614174000",
-  owner: {
+  channelId: "123e4567-e89b-12d3-a456-426614174000",
+  channel: {
     id: "123e4567-e89b-12d3-a456-426614174000",
-    username: "johndoe",
+    name: "John Doe's Channel",
     avatarUrl: "https://storage.example.com/avatars/user123.jpg",
   },
   views: 100,
