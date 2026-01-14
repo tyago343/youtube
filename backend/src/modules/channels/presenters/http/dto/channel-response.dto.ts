@@ -72,18 +72,13 @@ export class ChannelResponseDto {
   static fromDomain(channel: Channel): ChannelResponseDto {
     const dto = new ChannelResponseDto();
     const primitives = channel.toPrimitives();
-
     dto.id = primitives.id;
     dto.ownerId = primitives.ownerId;
     dto.name = primitives.name;
     dto.description = primitives.description;
-    dto.status = primitives.status;
     dto.avatarUrl = primitives.avatarUrl;
     dto.bannerUrl = primitives.bannerUrl;
-    dto.isMonetizationEnabled = primitives.isMonetizationEnabled;
     dto.createdAt = primitives.createdAt;
-    dto.updatedAt = primitives.updatedAt;
-
     return dto;
   }
 }

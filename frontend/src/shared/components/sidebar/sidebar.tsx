@@ -17,14 +17,7 @@ import { cn } from "@shared/lib/utils";
 import Button from "@shared/ui/button/button";
 import { Separator } from "@shared/ui/separator/separator";
 import { useSidebar } from "./use-sidebar.hook";
-
-const DUMMY_CHANNELS = [
-  { id: "1", name: "Buenas Tardes C..." },
-  { id: "2", name: "Radio Con Vos 8..." },
-  { id: "3", name: "midudev" },
-  { id: "4", name: "The PrimeTime" },
-  { id: "5", name: "BLENDER" },
-];
+import SubscriptionsList from "@/modules/channel/components/subscriptions-list.component";
 
 const YOU_LINKS = [
   { to: "/history", labelKey: "navigation.history", icon: History },
@@ -102,27 +95,7 @@ function Sidebar() {
               <ChevronRight className="size-4" />
             </Button>
           </Link>
-          <ul className="flex flex-col gap-1">
-            {DUMMY_CHANNELS.map((channel) => {
-              const channelPath = `/channel/${channel.id}`;
-              return (
-                <li key={channel.id}>
-                  <Link to={channelPath}>
-                    <Button
-                      variant="ghost"
-                      className={cn(
-                        BASE_BUTTON_CLASSES,
-                        isActive(channelPath) && ACTIVE_CLASSES
-                      )}
-                    >
-                      <User className="size-4" />
-                      <span className="truncate">{channel.name}</span>
-                    </Button>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+          <SubscriptionsList />
         </div>
       </nav>
       <Separator className="my-4" />
