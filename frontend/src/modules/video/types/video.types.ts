@@ -13,7 +13,7 @@ export type NormalizedVideo = Pick<
   | "views"
   | "likes"
   | "dislikes"
-  | "isPublic"
+  | "visibility"
   | "updatedAt"
   | "published"
 >;

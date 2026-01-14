@@ -2,6 +2,7 @@ import { Channel } from './channel.entity';
 import { InvalidChannelNameException } from './exceptions/invalid-channel-name.exception';
 import { UserId } from 'src/modules/users/domain/vo/user-id.vo';
 import { randomUUID } from 'crypto';
+import { ChannelStatus } from './vo/channel-status.vo';
 
 describe('Channel', () => {
   const validId = randomUUID();
@@ -83,6 +84,7 @@ describe('Channel', () => {
         name: validName,
         description: validDescription,
         createdAt,
+        status: ChannelStatus.ACTIVE.value,
         avatarUrl,
         bannerUrl,
         isMonetizationEnabled: true,
@@ -109,6 +111,7 @@ describe('Channel', () => {
         name: validName,
         description: validDescription,
         createdAt,
+        status: ChannelStatus.ACTIVE.value,
         isMonetizationEnabled: false,
       });
 
@@ -216,6 +219,7 @@ describe('Channel', () => {
         name: validName,
         description: validDescription,
         createdAt: new Date(),
+        status: ChannelStatus.ACTIVE.value,
         isMonetizationEnabled: true,
       });
 
@@ -308,6 +312,7 @@ describe('Channel', () => {
         name: validName,
         description: validDescription,
         createdAt,
+        status: ChannelStatus.ACTIVE.value,
         avatarUrl,
         bannerUrl,
         isMonetizationEnabled: true,

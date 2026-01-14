@@ -26,6 +26,7 @@ export class ChannelFactory {
     name,
     description,
     createdAt,
+    status,
     avatarUrl,
     bannerUrl,
     isMonetizationEnabled,
@@ -36,6 +37,7 @@ export class ChannelFactory {
     name: string;
     description: string;
     createdAt: Date;
+    status: string;
     avatarUrl?: string;
     bannerUrl?: string;
     isMonetizationEnabled: boolean;
@@ -47,6 +49,7 @@ export class ChannelFactory {
       name,
       description,
       createdAt,
+      status,
       avatarUrl,
       bannerUrl,
       isMonetizationEnabled,

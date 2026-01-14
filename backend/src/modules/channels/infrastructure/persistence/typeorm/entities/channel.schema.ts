@@ -38,6 +38,9 @@ export class ChannelSchema {
   @Column({ default: false })
   isMonetizationEnabled: boolean;
 
+  @Column({ default: 'ACTIVE' })
+  status: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

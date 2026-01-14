@@ -8,6 +8,7 @@ import {
 } from 'src/modules/videos/application/ports/videos.repository';
 import { Video } from 'src/modules/videos/domain/video.entity';
 import { VideoMapper } from '../mappers/video.mapper';
+import { VideoVisibility } from 'src/modules/videos/domain/vo/video-visibility.vo';
 
 @Injectable()
 export class OrmVideoRepository extends VideosRepository {
@@ -59,6 +60,39 @@ export class OrmVideoRepository extends VideosRepository {
       order: {
         createdAt: 'DESC',
       },
+      relations: ['channel'],
+    });
+    return schemas.map((schema) => VideoMapper.toDomainWithChannel(schema));
+  }
+
+  async findAllByVisibilityWithChannel(
+    visibility: VideoVisibility,
+  ): Promise<VideoWithChannel[]> {
+    const schemas = await this.videoRepository.find({
+      where: { visibility: visibility.value },
+      order: { createdAt: 'DESC' },
+      relations: ['channel'],
+    });
+    return schemas.map((schema) => VideoMapper.toDomainWithChannel(schema));
+  }
+
+  async findByIdAndVisibilityWithChannel(
+    id: string,
+    visibility: VideoVisibility,
+  ): Promise<VideoWithChannel | null> {
+    const schema = await this.videoRepository.findOne({
+      where: { id, visibility: visibility.value },
+      relations: ['channel'],
+    });
+    return schema ? VideoMapper.toDomainWithChannel(schema) : null;
+  }
+
+  async findAllByOwnerIdWithChannel(
+    ownerId: string,
+  ): Promise<VideoWithChannel[]> {
+    const schemas = await this.videoRepository.find({
+      where: { channel: { ownerId } },
+      order: { createdAt: 'DESC' },
       relations: ['channel'],
     });
     return schemas.map((schema) => VideoMapper.toDomainWithChannel(schema));

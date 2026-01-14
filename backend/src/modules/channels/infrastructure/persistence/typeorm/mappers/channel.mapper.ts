@@ -11,6 +11,7 @@ export class ChannelMapper {
     schema.ownerId = primitives.ownerId;
     schema.name = primitives.name;
     schema.description = primitives.description;
+    schema.status = primitives.status;
     schema.avatarUrl = primitives.avatarUrl;
     schema.bannerUrl = primitives.bannerUrl;
     schema.isMonetizationEnabled = primitives.isMonetizationEnabled;
@@ -26,6 +27,7 @@ export class ChannelMapper {
       ownerId: UserId.create(schema.ownerId),
       name: schema.name,
       description: schema.description,
+      status: schema.status,
       avatarUrl: schema.avatarUrl,
       bannerUrl: schema.bannerUrl,
       isMonetizationEnabled: schema.isMonetizationEnabled,

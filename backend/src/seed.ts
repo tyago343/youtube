@@ -25,6 +25,7 @@ const THUMBNAIL_URLS = [
 
 const USERS = [
   { username: 'alice_dev', email: 'alice@example.com' },
+  { username: 'santi', email: 'santi@test.com' },
   { username: 'bob_coder', email: 'bob@example.com' },
   { username: 'charlie_tech', email: 'charlie@example.com' },
   { username: 'diana_creator', email: 'diana@example.com' },

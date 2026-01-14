@@ -3,8 +3,10 @@ import { DynamicModule, Module, Type } from '@nestjs/common';
 import { CreateVideoUseCase } from './use-cases/create-video.use-case';
 import { GetAllVideosUseCase } from './use-cases/get-all-videos.use-case';
 import { GetVideoUseCase } from './use-cases/get-video.use-case';
-import { GetAllVideosWithChannelUseCase } from './use-cases/get-all-videos-with-owner.use-case';
 import { GetVideoWithChannelUseCase } from './use-cases/get-video-with-owner.use-case';
+import { GetAllPublicVideosUseCase } from './use-cases/get-all-public-videos.use-case';
+import { GetPublicVideoUseCase } from './use-cases/get-public-video.use-case';
+import { GetUserVideosUseCase } from './use-cases/get-user-videos.use-case';
 // Services
 import { VideosService } from './services/videos.service';
 // Domain
@@ -17,8 +19,10 @@ const useCases = [
   CreateVideoUseCase,
   GetAllVideosUseCase,
   GetVideoUseCase,
-  GetAllVideosWithChannelUseCase,
   GetVideoWithChannelUseCase,
+  GetAllPublicVideosUseCase,
+  GetPublicVideoUseCase,
+  GetUserVideosUseCase,
 ];
 
 @Module({

@@ -6,6 +6,7 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
+  Request,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -118,8 +119,8 @@ export class VideosController {
 
   @Public()
   @ApiOperation({
-    summary: 'Get all videos',
-    description: 'Gets all videos.',
+    summary: 'Get all public videos',
+    description: 'Gets all public videos.',
   })
   @ApiOkResponse({
     description: 'Videos fetched successfully',
@@ -127,7 +128,29 @@ export class VideosController {
   })
   @Get()
   async getAll(): Promise<VideoResponseDto[]> {
-    const videosWithChannel = await this.videosService.getAllWithChannel();
+    const videosWithChannel = await this.videosService.getAllPublicVideos();
+    return videosWithChannel.map(({ video, channel }) =>
+      VideoResponseDto.fromDomain(video, channel),
+    );
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Get all videos owned by the authenticated user',
+    description:
+      'Gets all videos from channels owned by the authenticated user. Includes videos of any visibility.',
+  })
+  @ApiOkResponse({
+    description: 'User videos fetched successfully',
+    type: [VideoResponseDto],
+  })
+  @Get('me/videos')
+  async getUserVideos(
+    @Request() req: Request & { user: { userId: string } },
+  ): Promise<VideoResponseDto[]> {
+    const videosWithChannel = await this.videosService.getUserVideos(
+      req.user.userId,
+    );
     return videosWithChannel.map(({ video, channel }) =>
       VideoResponseDto.fromDomain(video, channel),
     );
@@ -135,8 +158,9 @@ export class VideosController {
 
   @Public()
   @ApiOperation({
-    summary: 'Get a video by id',
-    description: 'Gets a video by id.',
+    summary: 'Get a public video by id',
+    description:
+      'Gets a public video by id. Only returns videos with public visibility.',
   })
   @ApiOkResponse({
     description: 'Video fetched successfully',
@@ -146,7 +170,7 @@ export class VideosController {
   async get(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ): Promise<VideoResponseDto> {
-    const { video, channel } = await this.videosService.getWithChannel(id);
+    const { video, channel } = await this.videosService.getPublicVideo(id);
     return VideoResponseDto.fromDomain(video, channel);
   }
 }

@@ -17,7 +17,7 @@ export const videoSchema = z.object({
   views: z.number().int().nonnegative(),
   likes: z.number().int().nonnegative(),
   dislikes: z.number().int().nonnegative(),
-  isPublic: z.boolean(),
+  visibility: z.enum(["PUBLIC", "PRIVATE", "MEMBERS"]),
   channelId: z.uuid(),
   channel: channelSummarySchema,
   published: z.iso.datetime().or(z.date()).optional().nullable(),

@@ -8,8 +8,10 @@ import { Video } from '../../domain/video.entity';
 import { GetAllVideosUseCase } from '../use-cases/get-all-videos.use-case';
 import { GetVideoUseCase } from '../use-cases/get-video.use-case';
 import { VideoWithChannel } from '../ports/videos.repository';
-import { GetAllVideosWithChannelUseCase } from '../use-cases/get-all-videos-with-owner.use-case';
 import { GetVideoWithChannelUseCase } from '../use-cases/get-video-with-owner.use-case';
+import { GetAllPublicVideosUseCase } from '../use-cases/get-all-public-videos.use-case';
+import { GetPublicVideoUseCase } from '../use-cases/get-public-video.use-case';
+import { GetUserVideosUseCase } from '../use-cases/get-user-videos.use-case';
 import { VideoNotFoundException } from '../../domain/exceptions/video-not-found.exception';
 import { ChannelNotFoundException } from 'src/modules/channels/domain/exceptions/channel-not-found.exception';
 
@@ -19,8 +21,10 @@ export class VideosService {
     private readonly createVideoUseCase: CreateVideoUseCase,
     private readonly getAllVideosUseCase: GetAllVideosUseCase,
     private readonly getVideoUseCase: GetVideoUseCase,
-    private readonly getAllVideosWithChannelUseCase: GetAllVideosWithChannelUseCase,
     private readonly getVideoWithChannelUseCase: GetVideoWithChannelUseCase,
+    private readonly getAllPublicVideosUseCase: GetAllPublicVideosUseCase,
+    private readonly getPublicVideoUseCase: GetPublicVideoUseCase,
+    private readonly getUserVideosUseCase: GetUserVideosUseCase,
   ) {}
 
   async create(
@@ -55,9 +59,20 @@ export class VideosService {
       throw error;
     }
   }
-  async getAllWithChannel(): Promise<VideoWithChannel[]> {
-    return await this.getAllVideosWithChannelUseCase.execute();
+  async getAllPublicVideos(): Promise<VideoWithChannel[]> {
+    return await this.getAllPublicVideosUseCase.execute();
   }
+  async getPublicVideo(id: string): Promise<VideoWithChannel> {
+    try {
+      return await this.getPublicVideoUseCase.execute(id);
+    } catch (error) {
+      if (error instanceof VideoNotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw error;
+    }
+  }
+
   async getWithChannel(id: string): Promise<VideoWithChannel> {
     try {
       return await this.getVideoWithChannelUseCase.execute(id);
@@ -67,5 +82,9 @@ export class VideosService {
       }
       throw error;
     }
+  }
+
+  async getUserVideos(userId: string): Promise<VideoWithChannel[]> {
+    return await this.getUserVideosUseCase.execute(userId);
   }
 }

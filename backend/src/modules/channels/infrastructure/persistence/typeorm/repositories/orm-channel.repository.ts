@@ -5,6 +5,7 @@ import { ChannelSchema } from '../entities/channel.schema';
 import { ChannelRepository } from 'src/modules/channels/application/ports/channel.repository';
 import { Channel } from 'src/modules/channels/domain/channel.entity';
 import { ChannelId } from 'src/modules/channels/domain/vo/channel-id.vo';
+import { ChannelStatus } from 'src/modules/channels/domain/vo/channel-status.vo';
 import { UserId } from 'src/modules/users/domain/vo/user-id.vo';
 import { ChannelMapper } from '../mappers/channel.mapper';
 
@@ -43,6 +44,18 @@ export class OrmChannelRepository extends ChannelRepository {
       order: { createdAt: 'DESC' },
     });
     return schemas.map((schema) => ChannelMapper.toDomain(schema));
+  }
+
+  async findAllByStatus(status: ChannelStatus): Promise<Channel[]> {
+    const schemas = await this.channelRepository.find({
+      where: { status: status.value },
+      order: { createdAt: 'DESC' },
+    });
+    return schemas.map((schema) => ChannelMapper.toDomain(schema));
+  }
+
+  async findAllActive(): Promise<Channel[]> {
+    return this.findAllByStatus(ChannelStatus.ACTIVE);
   }
 
   async delete(id: ChannelId): Promise<void> {

@@ -1,5 +1,6 @@
 import { Video } from '../../domain/video.entity';
 import { Channel } from 'src/modules/channels/domain/channel.entity';
+import { VideoVisibility } from '../../domain/vo/video-visibility.vo';
 
 export type VideoWithChannel = {
   video: Video;
@@ -15,4 +16,15 @@ export abstract class VideosRepository {
 
   abstract findByIdWithChannel(id: string): Promise<VideoWithChannel | null>;
   abstract findAllWithChannel(): Promise<VideoWithChannel[]>;
+
+  abstract findAllByVisibilityWithChannel(
+    visibility: VideoVisibility,
+  ): Promise<VideoWithChannel[]>;
+  abstract findByIdAndVisibilityWithChannel(
+    id: string,
+    visibility: VideoVisibility,
+  ): Promise<VideoWithChannel | null>;
+  abstract findAllByOwnerIdWithChannel(
+    ownerId: string,
+  ): Promise<VideoWithChannel[]>;
 }

@@ -1,6 +1,7 @@
 import { UserId } from 'src/modules/users/domain/vo/user-id.vo';
 import { ChannelId } from './vo/channel-id.vo';
 import { InvalidChannelNameException } from './exceptions/invalid-channel-name.exception';
+import { ChannelStatus } from './vo/channel-status.vo';
 
 const MIN_CHANNEL_NAME_LENGTH = 3;
 const MAX_CHANNEL_NAME_LENGTH = 100;
@@ -13,6 +14,7 @@ export class Channel {
     public name: string,
     public description: string,
     public readonly createdAt: Date,
+    public status: ChannelStatus,
     public avatarUrl?: string,
     public bannerUrl?: string,
     public isMonetizationEnabled: boolean = false,
@@ -39,6 +41,7 @@ export class Channel {
       name,
       description,
       new Date(),
+      ChannelStatus.ACTIVE,
       undefined,
       undefined,
       false,
@@ -52,6 +55,7 @@ export class Channel {
     name,
     description,
     createdAt,
+    status,
     avatarUrl,
     bannerUrl,
     isMonetizationEnabled,
@@ -62,6 +66,7 @@ export class Channel {
     name: string;
     description: string;
     createdAt: Date;
+    status: string;
     avatarUrl?: string;
     bannerUrl?: string;
     isMonetizationEnabled: boolean;
@@ -73,6 +78,7 @@ export class Channel {
       name,
       description,
       createdAt,
+      ChannelStatus.fromString(status),
       avatarUrl,
       bannerUrl,
       isMonetizationEnabled,
@@ -138,6 +144,55 @@ export class Channel {
     this.markAsUpdated();
   }
 
+  suspend(): void {
+    this.status = ChannelStatus.SUSPENDED;
+    this.markAsUpdated();
+  }
+
+  terminate(): void {
+    this.status = ChannelStatus.TERMINATED;
+    this.markAsUpdated();
+  }
+
+  deactivate(): void {
+    this.status = ChannelStatus.INACTIVE;
+    this.markAsUpdated();
+  }
+
+  activate(): void {
+    this.status = ChannelStatus.ACTIVE;
+    this.markAsUpdated();
+  }
+
+  markForReview(): void {
+    this.status = ChannelStatus.PENDING_REVIEW;
+    this.markAsUpdated();
+  }
+
+  isActive(): boolean {
+    return this.status.equals(ChannelStatus.ACTIVE);
+  }
+
+  isSuspended(): boolean {
+    return this.status.equals(ChannelStatus.SUSPENDED);
+  }
+
+  isTerminated(): boolean {
+    return this.status.equals(ChannelStatus.TERMINATED);
+  }
+
+  isInactive(): boolean {
+    return this.status.equals(ChannelStatus.INACTIVE);
+  }
+
+  isPendingReview(): boolean {
+    return this.status.equals(ChannelStatus.PENDING_REVIEW);
+  }
+
+  isPubliclyVisible(): boolean {
+    return this.status.isPubliclyVisible();
+  }
+
   isOwnedBy(ownerId: UserId): boolean {
     return this.ownerId.equals(ownerId);
   }
@@ -160,6 +215,7 @@ export class Channel {
       ownerId: this.ownerId.value,
       name: this.name,
       description: this.description,
+      status: this.status.value,
       avatarUrl: this.avatarUrl,
       bannerUrl: this.bannerUrl,
       isMonetizationEnabled: this.isMonetizationEnabled,
