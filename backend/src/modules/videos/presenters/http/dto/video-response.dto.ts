@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Video } from 'src/modules/videos/domain/video.entity';
-import { OwnerSummaryDto } from 'src/modules/users/presenters/http/dto/owner-summary.dto';
-import { User } from 'src/modules/users/domain/user.entity';
+import { ChannelSummaryDto } from 'src/modules/channels/presenters/http/dto/channel-summary.dto';
+import { Channel } from 'src/modules/channels/domain/channel.entity';
 
 export class VideoResponseDto {
   @ApiProperty({
@@ -65,16 +65,16 @@ export class VideoResponseDto {
   isPublic: boolean;
 
   @ApiProperty({
-    description: 'The owner id of the video',
+    description: 'The channel id of the video',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
-  ownerId: string;
+  channelId: string;
 
   @ApiProperty({
-    description: 'The owner of the video',
-    type: OwnerSummaryDto,
+    description: 'The channel of the video',
+    type: ChannelSummaryDto,
   })
-  owner: OwnerSummaryDto;
+  channel: ChannelSummaryDto;
 
   @ApiProperty({
     description: 'The updated at date of the video',
@@ -92,7 +92,7 @@ export class VideoResponseDto {
   })
   published?: Date;
 
-  static fromDomain(video: Video, owner: User): VideoResponseDto {
+  static fromDomain(video: Video, channel: Channel): VideoResponseDto {
     const dto = new VideoResponseDto();
     dto.id = video.id.value;
     dto.title = video.title;
@@ -106,8 +106,8 @@ export class VideoResponseDto {
     dto.dislikes = video.dislikes;
     dto.isPublic = video.isPublic;
     dto.published = video.published;
-    dto.ownerId = video.ownerId.value;
-    dto.owner = OwnerSummaryDto.fromDomain(owner);
+    dto.channelId = video.channelId.value;
+    dto.channel = ChannelSummaryDto.fromDomain(channel);
     return dto;
   }
 }

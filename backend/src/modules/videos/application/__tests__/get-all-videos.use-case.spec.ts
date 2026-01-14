@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { GetAllVideosUseCase } from '../use-cases/get-all-videos.use-case';
 import { VideosRepository } from '../ports/videos.repository';
 import { Video } from '../../domain/video.entity';
-import { UserId } from '../../../users/domain/vo/user-id.vo';
+import { ChannelId } from 'src/modules/channels/domain/vo/channel-id.vo';
 import { randomUUID } from 'crypto';
 import { createVideosRepositoryMocks } from './mocks';
 
@@ -10,7 +10,7 @@ describe('GetAllVideosUseCase', () => {
   let useCase: GetAllVideosUseCase;
   let videosRepositoryMocks: ReturnType<typeof createVideosRepositoryMocks>;
 
-  const ownerId = randomUUID();
+  const channelId = randomUUID();
 
   beforeEach(async () => {
     videosRepositoryMocks = createVideosRepositoryMocks();
@@ -44,7 +44,7 @@ describe('GetAllVideosUseCase', () => {
       description: 'Description 1',
       url: 'https://example.com/video1.mp4',
       createdAt: new Date(),
-      ownerId: UserId.create(ownerId),
+      channelId: ChannelId.create(channelId),
     });
 
     const video2 = Video.create({
@@ -53,7 +53,7 @@ describe('GetAllVideosUseCase', () => {
       description: 'Description 2',
       url: 'https://example.com/video2.mp4',
       createdAt: new Date(),
-      ownerId: UserId.create(ownerId),
+      channelId: ChannelId.create(channelId),
     });
 
     const videos = [video1, video2];

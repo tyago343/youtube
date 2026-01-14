@@ -3,11 +3,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CreateVideoUseCase } from '../use-cases/create-video.use-case';
 import { VideosRepository } from '../ports/videos.repository';
 import { FileStorageService } from 'src/modules/shared/application/ports/file-storage.interface';
-import { UserRepository } from 'src/modules/users/application/ports/user.repository';
+import { ChannelRepository } from 'src/modules/channels/application/ports/channel.repository';
 import { VideoFactory } from '../../domain/factories/video.factory';
 import { Video } from '../../domain/video.entity';
-import { User } from 'src/modules/users/domain/user.entity';
-import { UserNotFoundException } from 'src/modules/users/domain/exceptions/user-not-found.exception';
+import { Channel } from 'src/modules/channels/domain/channel.entity';
+import { ChannelNotFoundException } from 'src/modules/channels/domain/exceptions/channel-not-found.exception';
+import { ChannelId } from 'src/modules/channels/domain/vo/channel-id.vo';
 import { UserId } from 'src/modules/users/domain/vo/user-id.vo';
 import { randomUUID } from 'crypto';
 import {
@@ -15,15 +16,16 @@ import {
   createFileStorageMocks,
   createVideoFactoryMocks,
 } from './mocks';
-import { createUserRepositoryMocks } from 'src/modules/users/application/__tests__/mocks';
+import { createChannelRepositoryMocks } from 'src/modules/channels/application/__tests__/mocks';
 
 describe('CreateVideoUseCase', () => {
   let useCase: CreateVideoUseCase;
   let videosRepositoryMocks: ReturnType<typeof createVideosRepositoryMocks>;
   let fileStorageMocks: ReturnType<typeof createFileStorageMocks>;
-  let userRepositoryMocks: ReturnType<typeof createUserRepositoryMocks>;
+  let channelRepositoryMocks: ReturnType<typeof createChannelRepositoryMocks>;
   let videoFactoryMocks: ReturnType<typeof createVideoFactoryMocks>;
 
+  const channelId = randomUUID();
   const ownerId = randomUUID();
   const videoId = randomUUID();
   const videoUrl = 'https://storage.example.com/videos/video123.mp4';
@@ -58,7 +60,7 @@ describe('CreateVideoUseCase', () => {
   beforeEach(async () => {
     videosRepositoryMocks = createVideosRepositoryMocks();
     fileStorageMocks = createFileStorageMocks();
-    userRepositoryMocks = createUserRepositoryMocks();
+    channelRepositoryMocks = createChannelRepositoryMocks();
     videoFactoryMocks = createVideoFactoryMocks();
 
     const module: TestingModule = await Test.createTestingModule({
@@ -73,8 +75,8 @@ describe('CreateVideoUseCase', () => {
           useValue: fileStorageMocks.service,
         },
         {
-          provide: UserRepository,
-          useValue: userRepositoryMocks.repository,
+          provide: ChannelRepository,
+          useValue: channelRepositoryMocks.repository,
         },
         {
           provide: VideoFactory,
@@ -87,12 +89,12 @@ describe('CreateVideoUseCase', () => {
   });
 
   it('should create a video successfully', async () => {
-    const owner = User.create(
-      ownerId,
-      'owner@example.com',
-      'owner',
-      '$2b$10$hashedpassword',
-    );
+    const channel = Channel.create({
+      id: channelId,
+      ownerId: UserId.create(ownerId),
+      name: 'Test Channel',
+      description: 'Test Description',
+    });
 
     const createdVideo = Video.create({
       id: videoId,
@@ -100,38 +102,38 @@ describe('CreateVideoUseCase', () => {
       description: 'Test Description',
       url: videoUrl,
       createdAt: new Date(),
-      ownerId: UserId.create(ownerId),
+      channelId: ChannelId.create(channelId),
     });
 
     fileStorageMocks.uploadFile.mockResolvedValue({ url: videoUrl });
-    userRepositoryMocks.findById.mockResolvedValue(owner);
+    channelRepositoryMocks.findById.mockResolvedValue(channel);
     videoFactoryMocks.create.mockReturnValue(createdVideo);
     videosRepositoryMocks.create.mockResolvedValue(createdVideo);
 
     const result = await useCase.execute(mockVideoFile, {
       title: 'Test Video',
       description: 'Test Description',
-      ownerId,
+      channelId,
     });
 
     expect(result).toBe(createdVideo);
     expect(fileStorageMocks.uploadFile).toHaveBeenCalledWith(mockVideoFile, {
       folder: 'videos',
     });
-    expect(userRepositoryMocks.findById).toHaveBeenCalledWith(
-      expect.any(UserId),
+    expect(channelRepositoryMocks.findById).toHaveBeenCalledWith(
+      expect.any(ChannelId),
     );
     expect(videoFactoryMocks.create).toHaveBeenCalled();
     expect(videosRepositoryMocks.create).toHaveBeenCalledWith(createdVideo);
   });
 
   it('should create a video with thumbnail', async () => {
-    const owner = User.create(
-      ownerId,
-      'owner@example.com',
-      'owner',
-      '$2b$10$hashedpassword',
-    );
+    const channel = Channel.create({
+      id: channelId,
+      ownerId: UserId.create(ownerId),
+      name: 'Test Channel',
+      description: 'Test Description',
+    });
 
     const createdVideo = Video.create({
       id: videoId,
@@ -140,13 +142,13 @@ describe('CreateVideoUseCase', () => {
       url: videoUrl,
       thumbnailUrl,
       createdAt: new Date(),
-      ownerId: UserId.create(ownerId),
+      channelId: ChannelId.create(channelId),
     });
 
     fileStorageMocks.uploadFile
       .mockResolvedValueOnce({ url: videoUrl })
       .mockResolvedValueOnce({ url: thumbnailUrl });
-    userRepositoryMocks.findById.mockResolvedValue(owner);
+    channelRepositoryMocks.findById.mockResolvedValue(channel);
     videoFactoryMocks.create.mockReturnValue(createdVideo);
     videosRepositoryMocks.create.mockResolvedValue(createdVideo);
 
@@ -155,7 +157,7 @@ describe('CreateVideoUseCase', () => {
       {
         title: 'Test Video',
         description: 'Test Description',
-        ownerId,
+        channelId,
       },
       mockThumbnailFile,
     );
@@ -178,31 +180,31 @@ describe('CreateVideoUseCase', () => {
     );
   });
 
-  it('should throw UserNotFoundException when owner does not exist', async () => {
+  it('should throw ChannelNotFoundException when channel does not exist', async () => {
     fileStorageMocks.uploadFile.mockResolvedValue({ url: videoUrl });
-    userRepositoryMocks.findById.mockResolvedValue(null);
+    channelRepositoryMocks.findById.mockResolvedValue(null);
 
     await expect(
       useCase.execute(mockVideoFile, {
         title: 'Test Video',
         description: 'Test Description',
-        ownerId,
+        channelId,
       }),
-    ).rejects.toThrow(UserNotFoundException);
+    ).rejects.toThrow(ChannelNotFoundException);
 
     expect(fileStorageMocks.uploadFile).toHaveBeenCalled();
-    expect(userRepositoryMocks.findById).toHaveBeenCalled();
+    expect(channelRepositoryMocks.findById).toHaveBeenCalled();
     expect(videoFactoryMocks.create).not.toHaveBeenCalled();
     expect(videosRepositoryMocks.create).not.toHaveBeenCalled();
   });
 
   it('should create a video with isPublic flag', async () => {
-    const owner = User.create(
-      ownerId,
-      'owner@example.com',
-      'owner',
-      '$2b$10$hashedpassword',
-    );
+    const channel = Channel.create({
+      id: channelId,
+      ownerId: UserId.create(ownerId),
+      name: 'Test Channel',
+      description: 'Test Description',
+    });
 
     const createdVideo = Video.create({
       id: videoId,
@@ -210,19 +212,19 @@ describe('CreateVideoUseCase', () => {
       description: 'Test Description',
       url: videoUrl,
       createdAt: new Date(),
-      ownerId: UserId.create(ownerId),
+      channelId: ChannelId.create(channelId),
       isPublic: true,
     });
 
     fileStorageMocks.uploadFile.mockResolvedValue({ url: videoUrl });
-    userRepositoryMocks.findById.mockResolvedValue(owner);
+    channelRepositoryMocks.findById.mockResolvedValue(channel);
     videoFactoryMocks.create.mockReturnValue(createdVideo);
     videosRepositoryMocks.create.mockResolvedValue(createdVideo);
 
     const result = await useCase.execute(mockVideoFile, {
       title: 'Test Video',
       description: 'Test Description',
-      ownerId,
+      channelId,
       isPublic: true,
     });
 

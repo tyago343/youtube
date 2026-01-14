@@ -6,8 +6,8 @@ export interface VideosRepositoryMocks {
   findById: jest.Mock;
   findAll: jest.Mock;
   delete: jest.Mock;
-  findByIdWithOwner: jest.Mock;
-  findAllWithOwner: jest.Mock;
+  findByIdWithChannel: jest.Mock;
+  findAllWithChannel: jest.Mock;
   repository: jest.Mocked<VideosRepository>;
 }
 
@@ -17,8 +17,8 @@ export function createVideosRepositoryMocks(): VideosRepositoryMocks {
   const findById = jest.fn();
   const findAll = jest.fn();
   const deleteMock = jest.fn();
-  const findByIdWithOwner = jest.fn();
-  const findAllWithOwner = jest.fn();
+  const findByIdWithChannel = jest.fn();
+  const findAllWithChannel = jest.fn();
 
   const repository = {
     create,
@@ -26,8 +26,8 @@ export function createVideosRepositoryMocks(): VideosRepositoryMocks {
     findById,
     findAll,
     delete: deleteMock,
-    findByIdWithOwner,
-    findAllWithOwner,
+    findByIdWithChannel,
+    findAllWithChannel,
   } as jest.Mocked<VideosRepository>;
 
   return {
@@ -36,8 +36,8 @@ export function createVideosRepositoryMocks(): VideosRepositoryMocks {
     findById,
     findAll,
     delete: deleteMock,
-    findByIdWithOwner,
-    findAllWithOwner,
+    findByIdWithChannel,
+    findAllWithChannel,
     repository,
   };
 }

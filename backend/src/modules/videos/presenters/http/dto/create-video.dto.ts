@@ -26,12 +26,12 @@ export class CreateVideoDto {
   description: string;
 
   @ApiProperty({
-    description: 'The owner id of the video',
+    description: 'The channel id that owns the video',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
   @IsUUID()
   @IsNotEmpty()
-  ownerId: string;
+  channelId: string;
 
   @ApiProperty({
     description: 'Whether the video is public',

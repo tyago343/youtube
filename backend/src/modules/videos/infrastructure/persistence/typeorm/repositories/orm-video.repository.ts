@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { VideoSchema } from '../entities/video.schema';
 import {
   VideosRepository,
-  VideoWithOwner,
+  VideoWithChannel,
 } from 'src/modules/videos/application/ports/videos.repository';
 import { Video } from 'src/modules/videos/domain/video.entity';
 import { VideoMapper } from '../mappers/video.mapper';
@@ -46,21 +46,21 @@ export class OrmVideoRepository extends VideosRepository {
     throw new Error('Method not implemented.');
   }
 
-  async findByIdWithOwner(id: string): Promise<VideoWithOwner | null> {
+  async findByIdWithChannel(id: string): Promise<VideoWithChannel | null> {
     const schema = await this.videoRepository.findOne({
       where: { id },
-      relations: ['owner'],
+      relations: ['channel'],
     });
-    return schema ? VideoMapper.toDomainWithOwner(schema) : null;
+    return schema ? VideoMapper.toDomainWithChannel(schema) : null;
   }
 
-  async findAllWithOwner(): Promise<VideoWithOwner[]> {
+  async findAllWithChannel(): Promise<VideoWithChannel[]> {
     const schemas = await this.videoRepository.find({
       order: {
         createdAt: 'DESC',
       },
-      relations: ['owner'],
+      relations: ['channel'],
     });
-    return schemas.map((schema) => VideoMapper.toDomainWithOwner(schema));
+    return schemas.map((schema) => VideoMapper.toDomainWithChannel(schema));
   }
 }

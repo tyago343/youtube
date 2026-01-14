@@ -1,18 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GetVideoWithOwnerUseCase } from '../use-cases/get-video-with-owner.use-case';
-import { VideosRepository, VideoWithOwner } from '../ports/videos.repository';
+import { GetVideoWithChannelUseCase } from '../use-cases/get-video-with-owner.use-case';
+import { VideosRepository, VideoWithChannel } from '../ports/videos.repository';
 import { Video } from '../../domain/video.entity';
 import { VideoNotFoundException } from '../../domain/exceptions/video-not-found.exception';
-import { User } from '../../../users/domain/user.entity';
-import { UserId } from '../../../users/domain/vo/user-id.vo';
+import { Channel } from 'src/modules/channels/domain/channel.entity';
+import { ChannelId } from 'src/modules/channels/domain/vo/channel-id.vo';
+import { UserId } from 'src/modules/users/domain/vo/user-id.vo';
 import { randomUUID } from 'crypto';
 import { createVideosRepositoryMocks } from './mocks';
 
-describe('GetVideoWithOwnerUseCase', () => {
-  let useCase: GetVideoWithOwnerUseCase;
+describe('GetVideoWithChannelUseCase', () => {
+  let useCase: GetVideoWithChannelUseCase;
   let videosRepositoryMocks: ReturnType<typeof createVideosRepositoryMocks>;
 
   const videoId = randomUUID();
+  const channelId = randomUUID();
   const ownerId = randomUUID();
 
   beforeEach(async () => {
@@ -20,7 +22,7 @@ describe('GetVideoWithOwnerUseCase', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        GetVideoWithOwnerUseCase,
+        GetVideoWithChannelUseCase,
         {
           provide: VideosRepository,
           useValue: videosRepositoryMocks.repository,
@@ -28,51 +30,55 @@ describe('GetVideoWithOwnerUseCase', () => {
       ],
     }).compile();
 
-    useCase = module.get<GetVideoWithOwnerUseCase>(GetVideoWithOwnerUseCase);
+    useCase = module.get<GetVideoWithChannelUseCase>(
+      GetVideoWithChannelUseCase,
+    );
   });
 
-  it('should get a video with owner by id', async () => {
+  it('should get a video with channel by id', async () => {
     const video = Video.create({
       id: videoId,
       title: 'Test Video',
       description: 'Test Description',
       url: 'https://example.com/video.mp4',
       createdAt: new Date(),
-      ownerId: UserId.create(ownerId),
+      channelId: ChannelId.create(channelId),
     });
 
-    const owner = User.create(
-      ownerId,
-      'owner@example.com',
-      'owner',
-      '$2b$10$hashedpassword',
+    const channel = Channel.create({
+      id: channelId,
+      ownerId: UserId.create(ownerId),
+      name: 'Test Channel',
+      description: 'Test Description',
+    });
+
+    const videoWithChannel: VideoWithChannel = { video, channel };
+
+    videosRepositoryMocks.findByIdWithChannel.mockResolvedValue(
+      videoWithChannel,
     );
-
-    const videoWithOwner: VideoWithOwner = { video, owner };
-
-    videosRepositoryMocks.findByIdWithOwner.mockResolvedValue(videoWithOwner);
 
     const result = await useCase.execute(videoId);
 
-    expect(result).toBe(videoWithOwner);
+    expect(result).toBe(videoWithChannel);
     expect(result.video).toBe(video);
-    expect(result.owner).toBe(owner);
-    expect(videosRepositoryMocks.findByIdWithOwner).toHaveBeenCalledWith(
+    expect(result.channel).toBe(channel);
+    expect(videosRepositoryMocks.findByIdWithChannel).toHaveBeenCalledWith(
       videoId,
     );
-    expect(videosRepositoryMocks.findByIdWithOwner).toHaveBeenCalledTimes(1);
+    expect(videosRepositoryMocks.findByIdWithChannel).toHaveBeenCalledTimes(1);
   });
 
   it('should throw VideoNotFoundException when video does not exist', async () => {
-    videosRepositoryMocks.findByIdWithOwner.mockResolvedValue(null);
+    videosRepositoryMocks.findByIdWithChannel.mockResolvedValue(null);
 
     await expect(useCase.execute(videoId)).rejects.toThrow(
       VideoNotFoundException,
     );
 
-    expect(videosRepositoryMocks.findByIdWithOwner).toHaveBeenCalledWith(
+    expect(videosRepositoryMocks.findByIdWithChannel).toHaveBeenCalledWith(
       videoId,
     );
-    expect(videosRepositoryMocks.findByIdWithOwner).toHaveBeenCalledTimes(1);
+    expect(videosRepositoryMocks.findByIdWithChannel).toHaveBeenCalledTimes(1);
   });
 });

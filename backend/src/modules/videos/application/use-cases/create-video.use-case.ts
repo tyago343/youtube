@@ -2,9 +2,9 @@ import { FileStorageService } from 'src/modules/shared/application/ports/file-st
 import { Video } from '../../domain/video.entity';
 import { VideosRepository } from '../ports/videos.repository';
 import { Injectable } from '@nestjs/common';
-import { UserId } from 'src/modules/users/domain/vo/user-id.vo';
-import { UserRepository } from 'src/modules/users/application/ports/user.repository';
-import { UserNotFoundException } from 'src/modules/users/domain/exceptions/user-not-found.exception';
+import { ChannelId } from 'src/modules/channels/domain/vo/channel-id.vo';
+import { ChannelRepository } from 'src/modules/channels/application/ports/channel.repository';
+import { ChannelNotFoundException } from 'src/modules/channels/domain/exceptions/channel-not-found.exception';
 import { VideoFactory } from '../../domain/factories/video.factory';
 @Injectable()
 export class CreateVideoUseCase {
@@ -14,7 +14,7 @@ export class CreateVideoUseCase {
   constructor(
     private readonly videoRepository: VideosRepository,
     private readonly storageService: FileStorageService,
-    private readonly userRepository: UserRepository,
+    private readonly channelRepository: ChannelRepository,
     private readonly videoFactory: VideoFactory,
   ) {}
   async execute(
@@ -22,7 +22,7 @@ export class CreateVideoUseCase {
     data: {
       title: string;
       description: string;
-      ownerId: string;
+      channelId: string;
       isPublic?: boolean;
     },
     thumbnail?: Express.Multer.File,
@@ -40,17 +40,17 @@ export class CreateVideoUseCase {
       );
       thumbnailUrl = thumbnailUrlResult?.url;
     }
-    const ownerId = UserId.create(data.ownerId);
-    const owner = await this.userRepository.findById(ownerId);
-    if (!owner) {
-      throw new UserNotFoundException(data.ownerId);
+    const channelId = ChannelId.create(data.channelId);
+    const channel = await this.channelRepository.findById(channelId);
+    if (!channel) {
+      throw new ChannelNotFoundException(data.channelId);
     }
     const newVideo = this.videoFactory.create({
       title: data.title,
       description: data.description,
       url: videoUrl.url,
       thumbnailUrl,
-      ownerId,
+      channelId,
       isPublic: data.isPublic,
     });
     return this.videoRepository.create(newVideo);

@@ -1,4 +1,4 @@
-import { UserSchema } from 'src/modules/users/infrastructure/persistence/typeorm/entities/user.schema';
+import { ChannelSchema } from 'src/modules/channels/infrastructure/persistence/typeorm/entities/channel.schema';
 import {
   Entity,
   Column,
@@ -30,11 +30,11 @@ export class VideoSchema {
   createdAt: Date;
 
   @Column()
-  ownerId: string;
+  channelId: string;
 
-  @ManyToOne(() => UserSchema, (owner) => owner.videos)
-  @JoinColumn({ name: 'ownerId' })
-  owner: UserSchema;
+  @ManyToOne(() => ChannelSchema, (channel) => channel.videos)
+  @JoinColumn({ name: 'channelId' })
+  channel: ChannelSchema;
 
   @Column({ default: 0 })
   views: number;

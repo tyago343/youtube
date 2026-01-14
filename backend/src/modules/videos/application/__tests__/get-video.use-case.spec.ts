@@ -3,7 +3,7 @@ import { GetVideoUseCase } from '../use-cases/get-video.use-case';
 import { VideosRepository } from '../ports/videos.repository';
 import { Video } from '../../domain/video.entity';
 import { VideoNotFoundException } from '../../domain/exceptions/video-not-found.exception';
-import { UserId } from '../../../users/domain/vo/user-id.vo';
+import { ChannelId } from 'src/modules/channels/domain/vo/channel-id.vo';
 import { randomUUID } from 'crypto';
 import { createVideosRepositoryMocks } from './mocks';
 
@@ -12,7 +12,7 @@ describe('GetVideoUseCase', () => {
   let videosRepositoryMocks: ReturnType<typeof createVideosRepositoryMocks>;
 
   const videoId = randomUUID();
-  const ownerId = randomUUID();
+  const channelId = randomUUID();
 
   beforeEach(async () => {
     videosRepositoryMocks = createVideosRepositoryMocks();
@@ -37,7 +37,7 @@ describe('GetVideoUseCase', () => {
       description: 'Test Description',
       url: 'https://example.com/video.mp4',
       createdAt: new Date(),
-      ownerId: UserId.create(ownerId),
+      channelId: ChannelId.create(channelId),
     });
 
     videosRepositoryMocks.findById.mockResolvedValue(video);

@@ -1,4 +1,4 @@
-import { UserId } from 'src/modules/users/domain/vo/user-id.vo';
+import { ChannelId } from 'src/modules/channels/domain/vo/channel-id.vo';
 import { VideoId } from './vo/video-id.vo';
 
 export class Video {
@@ -8,7 +8,7 @@ export class Video {
     public description: string,
     public url: string,
     public thumbnailUrl: string,
-    public readonly ownerId: UserId,
+    public readonly channelId: ChannelId,
     public readonly createdAt: Date,
     public views: number,
     public likes: number,
@@ -24,7 +24,7 @@ export class Video {
     url,
     thumbnailUrl = 'no-thumbnail.png',
     createdAt = new Date(),
-    ownerId,
+    channelId,
     isPublic = false,
   }: {
     id: string;
@@ -32,7 +32,7 @@ export class Video {
     description: string;
     url: string;
     createdAt: Date;
-    ownerId: UserId;
+    channelId: ChannelId;
     thumbnailUrl?: string;
     isPublic?: boolean;
   }) {
@@ -45,7 +45,7 @@ export class Video {
       description,
       url,
       thumbnailUrl,
-      ownerId,
+      channelId,
       createdAt,
       views,
       likes,
@@ -62,7 +62,7 @@ export class Video {
     thumbnailUrl,
     createdAt,
     updatedAt,
-    ownerId,
+    channelId,
     views,
     likes,
     dislikes,
@@ -75,7 +75,7 @@ export class Video {
     url: string;
     thumbnailUrl: string;
     createdAt: Date;
-    ownerId: UserId;
+    channelId: ChannelId;
     views: number;
     likes: number;
     dislikes: number;
@@ -89,7 +89,7 @@ export class Video {
       description,
       url,
       thumbnailUrl,
-      ownerId,
+      channelId,
       createdAt,
       views,
       likes,
@@ -106,7 +106,7 @@ export class Video {
       description: this.description,
       url: this.url,
       thumbnailUrl: this.thumbnailUrl,
-      ownerId: this.ownerId.value,
+      channelId: this.channelId.value,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
       views: this.views,

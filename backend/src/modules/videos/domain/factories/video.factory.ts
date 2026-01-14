@@ -1,5 +1,5 @@
 import { Video } from '../video.entity';
-import { UserId } from 'src/modules/users/domain/vo/user-id.vo';
+import { ChannelId } from 'src/modules/channels/domain/vo/channel-id.vo';
 import { randomUUID } from 'crypto';
 
 export class VideoFactory {
@@ -8,14 +8,14 @@ export class VideoFactory {
     description,
     url,
     thumbnailUrl,
-    ownerId,
+    channelId,
     isPublic,
   }: {
     title: string;
     description: string;
     url: string;
     thumbnailUrl?: string;
-    ownerId: UserId;
+    channelId: ChannelId;
     isPublic?: boolean;
   }): Video {
     return Video.create({
@@ -25,7 +25,7 @@ export class VideoFactory {
       url,
       thumbnailUrl,
       createdAt: new Date(),
-      ownerId,
+      channelId,
       isPublic,
     });
   }
@@ -36,7 +36,7 @@ export class VideoFactory {
     description,
     url,
     thumbnailUrl,
-    ownerId,
+    channelId,
     isPublic,
     published,
     views,
@@ -50,7 +50,7 @@ export class VideoFactory {
     description: string;
     url: string;
     thumbnailUrl: string;
-    ownerId: UserId;
+    channelId: ChannelId;
     isPublic: boolean;
     published?: Date;
     views: number;
@@ -66,7 +66,7 @@ export class VideoFactory {
       url,
       thumbnailUrl,
       createdAt,
-      ownerId,
+      channelId,
       isPublic,
       published,
       views,

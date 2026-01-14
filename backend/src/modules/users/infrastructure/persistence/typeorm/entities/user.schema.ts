@@ -1,4 +1,4 @@
-import { VideoSchema } from 'src/modules/videos/infrastructure/persistence/typeorm/entities/video.schema';
+import { ChannelSchema } from 'src/modules/channels/infrastructure/persistence/typeorm/entities/channel.schema';
 import {
   Entity,
   PrimaryColumn,
@@ -31,8 +31,8 @@ export class UserSchema {
   @UpdateDateColumn({ nullable: true })
   updatedAt?: Date;
 
-  @OneToMany(() => VideoSchema, (video) => video.owner, {
+  @OneToMany(() => ChannelSchema, (channel) => channel.owner, {
     cascade: false,
   })
-  videos: VideoSchema[];
+  channels: ChannelSchema[];
 }

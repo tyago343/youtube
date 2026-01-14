@@ -82,3 +82,95 @@ You are a senior backend engineer specialized in TypeScript, NestJS, and Hexagon
   - function size
   - file size
 - Refactor to maintain clarity and boundaries.
+
+## Domain Entities (Conceptual Model)
+
+### User
+
+- id
+- email
+- username
+- password
+- avatarURL
+- createdAt
+- updatedAt
+
+### Channel
+
+- id
+- ownerUserId
+- name
+- description
+- avatarURL
+- bannerURL
+- isMonetizationEnabled
+- createdAt
+- updatedAt
+
+### Video
+
+- id
+- channelId
+- title
+- description
+- videoURL
+- thumbnailURL
+- visibility (PUBLIC | PRIVATE | MEMBERS_ONLY)
+- publishedAt
+- createdAt
+- updatedAt
+- views
+- likes
+- dislikes
+
+### Subscription
+
+- id
+- subscriberUserId
+- channelId
+- type (FREE | PAID)
+- status (ACTIVE | CANCELED | SUSPENDED)
+- notificationsEnabled
+- subscriptionPlanId
+- createdAt
+- canceledAt
+
+### SubscriptionPlan
+
+- id
+- channelId
+- name
+- description
+- price
+- currency
+- billingPeriod (MONTHLY | YEARLY)
+- isActive
+- createdAt
+
+### Payment
+
+- id
+- subscriptionId
+- userId
+- amount
+- currency
+- provider
+- status
+- periodStart
+- periodEnd
+- paidAt
+
+## Domain Relationship Rules
+
+- A user represents identity and authentication only.
+- A user may own one or multiple channels.
+- A channel is the public content creation entity.
+- Every video belongs exclusively to a channel, never directly to a user.
+- Users subscribe to channels, not to users.
+- A subscription represents the relationship between a user and a channel.
+- Subscriptions may be free or paid.
+- Channels define subscription plans with pricing and billing periods.
+- Paid subscriptions reference a plan defined by the channel.
+- Payments record financial transactions associated with paid subscriptions.
+- Video visibility depends on the user’s subscription type.
+- Counters (views, likes, subscribers) should be treated as derived or cached data, not primary sources of truth.

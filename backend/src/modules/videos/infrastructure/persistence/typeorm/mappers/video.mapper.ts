@@ -1,8 +1,8 @@
 import { Video } from 'src/modules/videos/domain/video.entity';
 import { VideoSchema } from '../entities/video.schema';
-import { UserId } from 'src/modules/users/domain/vo/user-id.vo';
-import { User } from 'src/modules/users/domain/user.entity';
-import { UserMapper } from 'src/modules/users/infrastructure/persistence/typeorm/mappers/user.mapper';
+import { ChannelId } from 'src/modules/channels/domain/vo/channel-id.vo';
+import { Channel } from 'src/modules/channels/domain/channel.entity';
+import { ChannelMapper } from 'src/modules/channels/infrastructure/persistence/typeorm/mappers/channel.mapper';
 
 export class VideoMapper {
   static toPersistence(video: Video): VideoSchema {
@@ -14,7 +14,7 @@ export class VideoMapper {
     schema.description = primitives.description;
     schema.url = primitives.url;
     schema.thumbnailUrl = primitives.thumbnailUrl;
-    schema.ownerId = primitives.ownerId;
+    schema.channelId = primitives.channelId;
     schema.views = primitives.views ?? 0;
     schema.likes = primitives.likes ?? 0;
     schema.dislikes = primitives.dislikes ?? 0;
@@ -33,7 +33,7 @@ export class VideoMapper {
       description: schema.description,
       url: schema.url,
       thumbnailUrl: schema.thumbnailUrl,
-      ownerId: UserId.create(schema.ownerId),
+      channelId: ChannelId.create(schema.channelId),
       views: schema.views,
       likes: schema.likes,
       dislikes: schema.dislikes,
@@ -44,9 +44,12 @@ export class VideoMapper {
     });
   }
 
-  static toDomainWithOwner(schema: VideoSchema): { video: Video; owner: User } {
+  static toDomainWithChannel(schema: VideoSchema): {
+    video: Video;
+    channel: Channel;
+  } {
     const video = this.toDomain(schema);
-    const owner = UserMapper.toDomain(schema.owner);
-    return { video, owner };
+    const channel = ChannelMapper.toDomain(schema.channel);
+    return { video, channel };
   }
 }

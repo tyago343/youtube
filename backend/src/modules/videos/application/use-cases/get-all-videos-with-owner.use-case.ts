@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { VideosRepository, VideoWithOwner } from '../ports/videos.repository';
+import { VideosRepository, VideoWithChannel } from '../ports/videos.repository';
 
 @Injectable()
-export class GetAllVideosWithOwnerUseCase {
+export class GetAllVideosWithChannelUseCase {
   constructor(private readonly videosRepository: VideosRepository) {}
 
-  async execute(): Promise<VideoWithOwner[]> {
-    return await this.videosRepository.findAllWithOwner();
+  async execute(): Promise<VideoWithChannel[]> {
+    return await this.videosRepository.findAllWithChannel();
   }
 }

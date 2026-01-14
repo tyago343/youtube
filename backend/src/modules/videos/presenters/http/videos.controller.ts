@@ -83,14 +83,12 @@ export class VideosController {
       );
     }
 
-    // Validar tamaño de video
     if (video.size > this.MAX_VIDEO_SIZE) {
       throw new BadRequestException(
         `Video file size exceeds maximum allowed size of ${this.MAX_VIDEO_SIZE / 1024 / 1024}MB`,
       );
     }
 
-    // Validar thumbnail si está presente
     if (thumbnail) {
       if (!this.ALLOWED_IMAGE_TYPES.includes(thumbnail.mimetype)) {
         throw new BadRequestException(
@@ -109,12 +107,12 @@ export class VideosController {
       createVideoDto,
       thumbnail,
     );
-    const videoWithOwner = await this.videosService.getWithOwner(
+    const videoWithChannel = await this.videosService.getWithChannel(
       newVideo.id.value,
     );
     return VideoResponseDto.fromDomain(
-      videoWithOwner.video,
-      videoWithOwner.owner,
+      videoWithChannel.video,
+      videoWithChannel.channel,
     );
   }
 
@@ -129,9 +127,9 @@ export class VideosController {
   })
   @Get()
   async getAll(): Promise<VideoResponseDto[]> {
-    const videosWithOwner = await this.videosService.getAllWithOwner();
-    return videosWithOwner.map(({ video, owner }) =>
-      VideoResponseDto.fromDomain(video, owner),
+    const videosWithChannel = await this.videosService.getAllWithChannel();
+    return videosWithChannel.map(({ video, channel }) =>
+      VideoResponseDto.fromDomain(video, channel),
     );
   }
 
@@ -148,7 +146,7 @@ export class VideosController {
   async get(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ): Promise<VideoResponseDto> {
-    const { video, owner } = await this.videosService.getWithOwner(id);
-    return VideoResponseDto.fromDomain(video, owner);
+    const { video, channel } = await this.videosService.getWithChannel(id);
+    return VideoResponseDto.fromDomain(video, channel);
   }
 }

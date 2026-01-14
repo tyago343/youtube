@@ -3,9 +3,9 @@ import { CreateVideoUseCase } from '../use-cases/create-video.use-case';
 import { Video } from '../../domain/video.entity';
 import { GetAllVideosUseCase } from '../use-cases/get-all-videos.use-case';
 import { GetVideoUseCase } from '../use-cases/get-video.use-case';
-import { VideoWithOwner } from '../ports/videos.repository';
-import { GetAllVideosWithOwnerUseCase } from '../use-cases/get-all-videos-with-owner.use-case';
-import { GetVideoWithOwnerUseCase } from '../use-cases/get-video-with-owner.use-case';
+import { VideoWithChannel } from '../ports/videos.repository';
+import { GetAllVideosWithChannelUseCase } from '../use-cases/get-all-videos-with-owner.use-case';
+import { GetVideoWithChannelUseCase } from '../use-cases/get-video-with-owner.use-case';
 
 @Injectable()
 export class VideosService {
@@ -13,8 +13,8 @@ export class VideosService {
     private readonly createVideoUseCase: CreateVideoUseCase,
     private readonly getAllVideosUseCase: GetAllVideosUseCase,
     private readonly getVideoUseCase: GetVideoUseCase,
-    private readonly getAllVideosWithOwnerUseCase: GetAllVideosWithOwnerUseCase,
-    private readonly getVideoWithOwnerUseCase: GetVideoWithOwnerUseCase,
+    private readonly getAllVideosWithChannelUseCase: GetAllVideosWithChannelUseCase,
+    private readonly getVideoWithChannelUseCase: GetVideoWithChannelUseCase,
   ) {}
 
   async create(
@@ -22,7 +22,7 @@ export class VideosService {
     data: {
       title: string;
       description: string;
-      ownerId: string;
+      channelId: string;
       isPublic?: boolean;
     },
     thumbnail?: Express.Multer.File,
@@ -35,10 +35,10 @@ export class VideosService {
   async get(id: string): Promise<Video> {
     return await this.getVideoUseCase.execute(id);
   }
-  async getAllWithOwner(): Promise<VideoWithOwner[]> {
-    return await this.getAllVideosWithOwnerUseCase.execute();
+  async getAllWithChannel(): Promise<VideoWithChannel[]> {
+    return await this.getAllVideosWithChannelUseCase.execute();
   }
-  async getWithOwner(id: string): Promise<VideoWithOwner> {
-    return await this.getVideoWithOwnerUseCase.execute(id);
+  async getWithChannel(id: string): Promise<VideoWithChannel> {
+    return await this.getVideoWithChannelUseCase.execute(id);
   }
 }

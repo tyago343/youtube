@@ -1,9 +1,9 @@
 import { Video } from '../../domain/video.entity';
-import { User } from 'src/modules/users/domain/user.entity';
+import { Channel } from 'src/modules/channels/domain/channel.entity';
 
-export type VideoWithOwner = {
+export type VideoWithChannel = {
   video: Video;
-  owner: User;
+  channel: Channel;
 };
 
 export abstract class VideosRepository {
@@ -13,6 +13,6 @@ export abstract class VideosRepository {
   abstract findAll(): Promise<Video[]>;
   abstract delete(id: string): Promise<void>;
 
-  abstract findByIdWithOwner(id: string): Promise<VideoWithOwner | null>;
-  abstract findAllWithOwner(): Promise<VideoWithOwner[]>;
+  abstract findByIdWithChannel(id: string): Promise<VideoWithChannel | null>;
+  abstract findAllWithChannel(): Promise<VideoWithChannel[]>;
 }
