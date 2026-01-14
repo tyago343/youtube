@@ -6,6 +6,8 @@ import { OrmChannelRepository } from './persistence/typeorm/repositories/orm-cha
 import { OrmChannelStatusChangeRepository } from './persistence/typeorm/repositories/orm-channel-status-change.repository';
 import { ChannelRepository } from '../application/ports/channel.repository';
 import { ChannelStatusChangeRepository } from '../application/ports/channel-status-change.repository';
+import { ChannelSuspensionScheduler } from './schedulers/channel-suspension.scheduler';
+import { ProcessExpiredSuspensionsUseCase } from '../application/use-cases/process-expired-suspensions.use-case';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { ChannelStatusChangeRepository } from '../application/ports/channel-stat
       provide: ChannelStatusChangeRepository,
       useClass: OrmChannelStatusChangeRepository,
     },
+    ProcessExpiredSuspensionsUseCase,
+    ChannelSuspensionScheduler,
   ],
   exports: [ChannelRepository, ChannelStatusChangeRepository],
 })
