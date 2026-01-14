@@ -29,7 +29,7 @@ export class VideosService {
       title: string;
       description: string;
       channelId: string;
-      isPublic?: boolean;
+      visibility?: string;
     },
     thumbnail?: Express.Multer.File,
   ): Promise<Video> {

@@ -1,5 +1,6 @@
 import { ChannelId } from 'src/modules/channels/domain/vo/channel-id.vo';
 import { VideoId } from './vo/video-id.vo';
+import { VideoVisibility } from './vo/video-visibility.vo';
 
 export class Video {
   public constructor(
@@ -13,7 +14,7 @@ export class Video {
     public views: number,
     public likes: number,
     public dislikes: number,
-    public isPublic: boolean,
+    public visibility: VideoVisibility,
     public updatedAt?: Date,
     public published?: Date,
   ) {}
@@ -25,7 +26,7 @@ export class Video {
     thumbnailUrl = 'no-thumbnail.png',
     createdAt = new Date(),
     channelId,
-    isPublic = false,
+    visibility = VideoVisibility.PRIVATE,
   }: {
     id: string;
     title: string;
@@ -34,7 +35,7 @@ export class Video {
     createdAt: Date;
     channelId: ChannelId;
     thumbnailUrl?: string;
-    isPublic?: boolean;
+    visibility?: VideoVisibility;
   }) {
     const views = 0;
     const likes = 0;
@@ -50,7 +51,7 @@ export class Video {
       views,
       likes,
       dislikes,
-      isPublic,
+      visibility,
     );
   }
 
@@ -66,7 +67,7 @@ export class Video {
     views,
     likes,
     dislikes,
-    isPublic,
+    visibility,
     published,
   }: {
     id: string;
@@ -79,7 +80,7 @@ export class Video {
     views: number;
     likes: number;
     dislikes: number;
-    isPublic: boolean;
+    visibility: string;
     updatedAt?: Date;
     published?: Date;
   }) {
@@ -94,7 +95,7 @@ export class Video {
       views,
       likes,
       dislikes,
-      isPublic,
+      VideoVisibility.fromString(visibility),
       updatedAt,
       published,
     );
@@ -112,7 +113,7 @@ export class Video {
       views: this.views,
       likes: this.likes,
       dislikes: this.dislikes,
-      isPublic: this.isPublic,
+      visibility: this.visibility.value,
       published: this.published,
     };
   }

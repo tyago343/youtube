@@ -45,8 +45,8 @@ export class VideoSchema {
   @Column({ default: 0 })
   dislikes: number;
 
-  @Column({ default: false })
-  isPublic: boolean;
+  @Column({ default: 'PRIVATE' })
+  visibility: string;
 
   @Column({ nullable: true })
   published?: Date;

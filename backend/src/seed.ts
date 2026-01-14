@@ -11,6 +11,7 @@ import { UserId } from './modules/users/domain/vo/user-id.vo';
 import { User } from './modules/users/domain/user.entity';
 import { Channel } from './modules/channels/domain/channel.entity';
 import { ChannelId } from './modules/channels/domain/vo/channel-id.vo';
+import { VideoVisibility } from './modules/videos/domain/vo/video-visibility.vo';
 
 const PASSWORD = '123123123';
 const AVATAR_URL =
@@ -250,7 +251,12 @@ async function seed() {
       const thumbnailUrl = THUMBNAIL_URLS[i % THUMBNAIL_URLS.length];
 
       // Randomize some properties
-      const isPublic = Math.random() > 0.2; // 80% public
+      const visibilityOptions = ['PUBLIC', 'PRIVATE', 'MEMBERS'] as const;
+      const visibilityIndex =
+        Math.random() > 0.2 ? 0 : Math.random() > 0.5 ? 1 : 2;
+      const visibility = VideoVisibility.fromString(
+        visibilityOptions[visibilityIndex],
+      );
       const views = Math.floor(Math.random() * 10000);
       const likes = Math.floor(Math.random() * 500);
       const dislikes = Math.floor(Math.random() * 50);
@@ -261,7 +267,7 @@ async function seed() {
         url: VIDEO_URL,
         thumbnailUrl,
         channelId: ChannelId.create(channel.id.value),
-        isPublic,
+        visibility,
       });
 
       // Set views, likes, dislikes (they are public properties)

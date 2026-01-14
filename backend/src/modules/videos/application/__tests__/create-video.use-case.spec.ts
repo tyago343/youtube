@@ -198,7 +198,7 @@ describe('CreateVideoUseCase', () => {
     expect(videosRepositoryMocks.create).not.toHaveBeenCalled();
   });
 
-  it('should create a video with isPublic flag', async () => {
+  it('should create a video with visibility', async () => {
     const channel = Channel.create({
       id: channelId,
       ownerId: UserId.create(ownerId),
@@ -213,7 +213,6 @@ describe('CreateVideoUseCase', () => {
       url: videoUrl,
       createdAt: new Date(),
       channelId: ChannelId.create(channelId),
-      isPublic: true,
     });
 
     fileStorageMocks.uploadFile.mockResolvedValue({ url: videoUrl });
@@ -225,13 +224,13 @@ describe('CreateVideoUseCase', () => {
       title: 'Test Video',
       description: 'Test Description',
       channelId,
-      isPublic: true,
+      visibility: 'PUBLIC',
     });
 
     expect(result).toBe(createdVideo);
     expect(videoFactoryMocks.create).toHaveBeenCalledWith(
       expect.objectContaining({
-        isPublic: true,
+        visibility: expect.any(Object),
       }),
     );
   });

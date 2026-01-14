@@ -59,10 +59,11 @@ export class VideoResponseDto {
   dislikes: number;
 
   @ApiProperty({
-    description: 'Whether the video is public',
-    example: true,
+    description: 'The visibility of the video',
+    example: 'PUBLIC',
+    enum: ['PUBLIC', 'PRIVATE', 'MEMBERS'],
   })
-  isPublic: boolean;
+  visibility: string;
 
   @ApiProperty({
     description: 'The channel id of the video',
@@ -104,7 +105,7 @@ export class VideoResponseDto {
     dto.views = video.views;
     dto.likes = video.likes;
     dto.dislikes = video.dislikes;
-    dto.isPublic = video.isPublic;
+    dto.visibility = video.visibility.value;
     dto.published = video.published;
     dto.channelId = video.channelId.value;
     dto.channel = ChannelSummaryDto.fromDomain(channel);

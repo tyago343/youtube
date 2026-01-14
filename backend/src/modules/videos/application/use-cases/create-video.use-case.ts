@@ -6,6 +6,8 @@ import { ChannelId } from 'src/modules/channels/domain/vo/channel-id.vo';
 import { ChannelRepository } from 'src/modules/channels/application/ports/channel.repository';
 import { ChannelNotFoundException } from 'src/modules/channels/domain/exceptions/channel-not-found.exception';
 import { VideoFactory } from '../../domain/factories/video.factory';
+import { VideoVisibility } from '../../domain/vo/video-visibility.vo';
+
 @Injectable()
 export class CreateVideoUseCase {
   private readonly VIDEO_FOLDER = 'videos';
@@ -17,13 +19,14 @@ export class CreateVideoUseCase {
     private readonly channelRepository: ChannelRepository,
     private readonly videoFactory: VideoFactory,
   ) {}
+
   async execute(
     video: Express.Multer.File,
     data: {
       title: string;
       description: string;
       channelId: string;
-      isPublic?: boolean;
+      visibility?: string;
     },
     thumbnail?: Express.Multer.File,
   ): Promise<Video> {
@@ -45,13 +48,16 @@ export class CreateVideoUseCase {
     if (!channel) {
       throw new ChannelNotFoundException(data.channelId);
     }
+    const visibility = data.visibility
+      ? VideoVisibility.fromString(data.visibility)
+      : undefined;
     const newVideo = this.videoFactory.create({
       title: data.title,
       description: data.description,
       url: videoUrl.url,
       thumbnailUrl,
       channelId,
-      isPublic: data.isPublic,
+      visibility,
     });
     return this.videoRepository.create(newVideo);
   }

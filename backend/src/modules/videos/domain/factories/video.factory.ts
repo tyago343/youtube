@@ -1,6 +1,7 @@
 import { Video } from '../video.entity';
 import { ChannelId } from 'src/modules/channels/domain/vo/channel-id.vo';
 import { randomUUID } from 'crypto';
+import { VideoVisibility } from '../vo/video-visibility.vo';
 
 export class VideoFactory {
   create({
@@ -9,14 +10,14 @@ export class VideoFactory {
     url,
     thumbnailUrl,
     channelId,
-    isPublic,
+    visibility,
   }: {
     title: string;
     description: string;
     url: string;
     thumbnailUrl?: string;
     channelId: ChannelId;
-    isPublic?: boolean;
+    visibility?: VideoVisibility;
   }): Video {
     return Video.create({
       id: randomUUID(),
@@ -26,7 +27,7 @@ export class VideoFactory {
       thumbnailUrl,
       createdAt: new Date(),
       channelId,
-      isPublic,
+      visibility,
     });
   }
 
@@ -37,7 +38,7 @@ export class VideoFactory {
     url,
     thumbnailUrl,
     channelId,
-    isPublic,
+    visibility,
     published,
     views,
     likes,
@@ -51,7 +52,7 @@ export class VideoFactory {
     url: string;
     thumbnailUrl: string;
     channelId: ChannelId;
-    isPublic: boolean;
+    visibility: string;
     published?: Date;
     views: number;
     likes: number;
@@ -67,7 +68,7 @@ export class VideoFactory {
       thumbnailUrl,
       createdAt,
       channelId,
-      isPublic,
+      visibility,
       published,
       views,
       updatedAt,

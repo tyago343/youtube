@@ -1,12 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsBoolean,
+  IsIn,
   IsNotEmpty,
   IsOptional,
   IsString,
   IsUUID,
 } from 'class-validator';
-import { Transform } from 'class-transformer';
 
 export class CreateVideoDto {
   @ApiProperty({
@@ -34,23 +33,14 @@ export class CreateVideoDto {
   channelId: string;
 
   @ApiProperty({
-    description: 'Whether the video is public',
-    example: true,
+    description: 'The visibility of the video',
+    example: 'PUBLIC',
+    enum: ['PUBLIC', 'PRIVATE', 'MEMBERS'],
     required: false,
+    default: 'PRIVATE',
   })
   @IsOptional()
-  @Transform(({ value }) => {
-    if (value === undefined || value === null) {
-      return undefined;
-    }
-    if (typeof value === 'boolean') {
-      return value;
-    }
-    if (typeof value === 'string') {
-      return value.toLowerCase() === 'true';
-    }
-    return Boolean(value);
-  })
-  @IsBoolean()
-  isPublic?: boolean;
+  @IsString()
+  @IsIn(['PUBLIC', 'PRIVATE', 'MEMBERS'])
+  visibility?: string;
 }
