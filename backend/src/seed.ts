@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { UserRepository } from './modules/users/application/ports/user.repository';
@@ -143,6 +144,7 @@ const CHANNEL_DATA = [
   },
 ];
 
+// eslint-disable-next-line complexity
 async function seed() {
   const app = await NestFactory.createApplicationContext(AppModule);
   const userRepository = app.get<UserRepository>(UserRepository);

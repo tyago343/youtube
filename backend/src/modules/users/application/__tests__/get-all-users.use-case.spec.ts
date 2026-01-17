@@ -35,18 +35,18 @@ describe('GetAllUsersUseCase', () => {
   });
 
   it('should return all users', async () => {
-    const user1 = User.create(
-      randomUUID(),
-      'user1@example.com',
-      'user1',
-      '$2b$10$hashedpasswordstringhere',
-    );
-    const user2 = User.create(
-      randomUUID(),
-      'user2@example.com',
-      'user2',
-      '$2b$10$hashedpasswordstringhere',
-    );
+    const user1 = User.create({
+      id: randomUUID(),
+      email: 'user1@example.com',
+      username: 'user1',
+      hashedPassword: '$2b$10$hashedpasswordstringhere',
+    });
+    const user2 = User.create({
+      id: randomUUID(),
+      email: 'user2@example.com',
+      username: 'user2',
+      hashedPassword: '$2b$10$hashedpasswordstringhere',
+    });
     const users = [user1, user2];
 
     userRepositoryMocks.findAll.mockResolvedValue(users);
@@ -60,24 +60,24 @@ describe('GetAllUsersUseCase', () => {
 
   it('should return the correct list of users', async () => {
     const users = [
-      User.create(
-        randomUUID(),
-        'user1@example.com',
-        'user1',
-        '$2b$10$hashedpasswordstringhere',
-      ),
-      User.create(
-        randomUUID(),
-        'user2@example.com',
-        'user2',
-        '$2b$10$hashedpasswordstringhere',
-      ),
-      User.create(
-        randomUUID(),
-        'user3@example.com',
-        'user3',
-        '$2b$10$hashedpasswordstringhere',
-      ),
+      User.create({
+        id: randomUUID(),
+        email: 'user1@example.com',
+        username: 'user1',
+        hashedPassword: '$2b$10$hashedpasswordstringhere',
+      }),
+      User.create({
+        id: randomUUID(),
+        email: 'user2@example.com',
+        username: 'user2',
+        hashedPassword: '$2b$10$hashedpasswordstringhere',
+      }),
+      User.create({
+        id: randomUUID(),
+        email: 'user3@example.com',
+        username: 'user3',
+        hashedPassword: '$2b$10$hashedpasswordstringhere',
+      }),
     ];
 
     userRepositoryMocks.findAll.mockResolvedValue(users);

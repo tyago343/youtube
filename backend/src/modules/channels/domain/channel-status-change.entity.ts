@@ -5,17 +5,47 @@ import { InfractionSeverity } from './vo/infraction-severity.vo';
 import { UserId } from 'src/modules/users/domain/vo/user-id.vo';
 
 export class ChannelStatusChange {
-  private constructor(
-    public readonly id: ChannelStatusChangeId,
-    public readonly channelId: ChannelId,
-    public readonly fromStatus: ChannelStatus,
-    public readonly toStatus: ChannelStatus,
-    public readonly reason: string,
-    public readonly severity: InfractionSeverity | null,
-    public readonly expiresAt: Date | null,
-    public readonly createdAt: Date,
-    public readonly createdBy: UserId | null,
-  ) {}
+  private constructor({
+    id,
+    channelId,
+    fromStatus,
+    toStatus,
+    reason,
+    severity,
+    expiresAt,
+    createdAt,
+    createdBy,
+  }: {
+    id: ChannelStatusChangeId;
+    channelId: ChannelId;
+    fromStatus: ChannelStatus;
+    toStatus: ChannelStatus;
+    reason: string;
+    severity: InfractionSeverity | null;
+    expiresAt: Date | null;
+    createdAt: Date;
+    createdBy: UserId | null;
+  }) {
+    this.id = id;
+    this.channelId = channelId;
+    this.fromStatus = fromStatus;
+    this.toStatus = toStatus;
+    this.reason = reason;
+    this.severity = severity;
+    this.expiresAt = expiresAt;
+    this.createdAt = createdAt;
+    this.createdBy = createdBy;
+  }
+
+  public readonly id: ChannelStatusChangeId;
+  public readonly channelId: ChannelId;
+  public readonly fromStatus: ChannelStatus;
+  public readonly toStatus: ChannelStatus;
+  public readonly reason: string;
+  public readonly severity: InfractionSeverity | null;
+  public readonly expiresAt: Date | null;
+  public readonly createdAt: Date;
+  public readonly createdBy: UserId | null;
 
   static create({
     id,
@@ -36,17 +66,17 @@ export class ChannelStatusChange {
     expiresAt?: Date | null;
     createdBy?: UserId | null;
   }): ChannelStatusChange {
-    return new ChannelStatusChange(
-      ChannelStatusChangeId.create(id),
+    return new ChannelStatusChange({
+      id: ChannelStatusChangeId.create(id),
       channelId,
       fromStatus,
       toStatus,
       reason,
       severity,
       expiresAt,
-      new Date(),
+      createdAt: new Date(),
       createdBy,
-    );
+    });
   }
 
   static fromPersistence({
@@ -70,17 +100,17 @@ export class ChannelStatusChange {
     createdAt: Date;
     createdBy: UserId | null;
   }): ChannelStatusChange {
-    return new ChannelStatusChange(
-      ChannelStatusChangeId.create(id),
+    return new ChannelStatusChange({
+      id: ChannelStatusChangeId.create(id),
       channelId,
-      ChannelStatus.fromString(fromStatus),
-      ChannelStatus.fromString(toStatus),
+      fromStatus: ChannelStatus.fromString(fromStatus),
+      toStatus: ChannelStatus.fromString(toStatus),
       reason,
-      severity ? InfractionSeverity.fromString(severity) : null,
+      severity: severity ? InfractionSeverity.fromString(severity) : null,
       expiresAt,
       createdAt,
       createdBy,
-    );
+    });
   }
 
   isExpired(): boolean {

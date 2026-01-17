@@ -34,7 +34,12 @@ describe('UploadAvatarUseCase', () => {
   });
 
   it('should update avatar successfully', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
     userRepositoryMocks.findById.mockResolvedValue(user);
     userRepositoryMocks.save.mockResolvedValue(user);
 
@@ -57,7 +62,12 @@ describe('UploadAvatarUseCase', () => {
   });
 
   it('should throw InvalidAvatarUrlException when URL is empty', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
     userRepositoryMocks.findById.mockResolvedValue(user);
 
     await expect(useCase.execute(userId, '')).rejects.toThrow(
@@ -68,7 +78,12 @@ describe('UploadAvatarUseCase', () => {
   });
 
   it('should throw InvalidAvatarUrlException when URL is invalid', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
     userRepositoryMocks.findById.mockResolvedValue(user);
 
     await expect(useCase.execute(userId, 'not-a-url')).rejects.toThrow(
@@ -79,7 +94,12 @@ describe('UploadAvatarUseCase', () => {
   });
 
   it('should save changes to repository after updating avatar', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
     userRepositoryMocks.findById.mockResolvedValue(user);
     userRepositoryMocks.save.mockResolvedValue(user);
 
@@ -98,7 +118,12 @@ describe('UploadAvatarUseCase', () => {
 
     for (const url of urls) {
       const testUserId = randomUUID();
-      const user = User.create(testUserId, email, username, hashedPassword);
+      const user = User.create({
+        id: testUserId,
+        email: email,
+        username: username,
+        hashedPassword: hashedPassword,
+      });
       userRepositoryMocks.findById.mockResolvedValue(user);
       userRepositoryMocks.save.mockResolvedValue(user);
 

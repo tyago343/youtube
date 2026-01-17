@@ -3,21 +3,63 @@ import { VideoId } from './vo/video-id.vo';
 import { VideoVisibility } from './vo/video-visibility.vo';
 
 export class Video {
-  public constructor(
-    public readonly id: VideoId,
-    public title: string,
-    public description: string,
-    public url: string,
-    public thumbnailUrl: string,
-    public readonly channelId: ChannelId,
-    public readonly createdAt: Date,
-    public views: number,
-    public likes: number,
-    public dislikes: number,
-    public visibility: VideoVisibility,
-    public updatedAt?: Date,
-    public published?: Date,
-  ) {}
+  public constructor({
+    id,
+    title,
+    description,
+    url,
+    thumbnailUrl,
+    channelId,
+    createdAt,
+    views,
+    likes,
+    dislikes,
+    visibility,
+    updatedAt,
+    published,
+  }: {
+    id: VideoId;
+    title: string;
+    description: string;
+    url: string;
+    thumbnailUrl: string;
+    channelId: ChannelId;
+    createdAt: Date;
+    views: number;
+    likes: number;
+    dislikes: number;
+    visibility: VideoVisibility;
+    updatedAt?: Date;
+    published?: Date;
+  }) {
+    this.id = id;
+    this.title = title;
+    this.description = description;
+    this.url = url;
+    this.thumbnailUrl = thumbnailUrl;
+    this.channelId = channelId;
+    this.createdAt = createdAt;
+    this.views = views;
+    this.likes = likes;
+    this.dislikes = dislikes;
+    this.visibility = visibility;
+    this.updatedAt = updatedAt;
+    this.published = published;
+  }
+
+  public readonly id: VideoId;
+  public title: string;
+  public description: string;
+  public url: string;
+  public thumbnailUrl: string;
+  public readonly channelId: ChannelId;
+  public readonly createdAt: Date;
+  public views: number;
+  public likes: number;
+  public dislikes: number;
+  public visibility: VideoVisibility;
+  public updatedAt?: Date;
+  public published?: Date;
   static create({
     id,
     title,
@@ -40,8 +82,8 @@ export class Video {
     const views = 0;
     const likes = 0;
     const dislikes = 0;
-    return new Video(
-      VideoId.create(id),
+    return new Video({
+      id: VideoId.create(id),
       title,
       description,
       url,
@@ -52,7 +94,7 @@ export class Video {
       likes,
       dislikes,
       visibility,
-    );
+    });
   }
 
   static fromPersistence({
@@ -84,8 +126,8 @@ export class Video {
     updatedAt?: Date;
     published?: Date;
   }) {
-    return new Video(
-      VideoId.create(id),
+    return new Video({
+      id: VideoId.create(id),
       title,
       description,
       url,
@@ -95,10 +137,10 @@ export class Video {
       views,
       likes,
       dislikes,
-      VideoVisibility.fromString(visibility),
+      visibility: VideoVisibility.fromString(visibility),
       updatedAt,
       published,
-    );
+    });
   }
   toPrimitives() {
     return {

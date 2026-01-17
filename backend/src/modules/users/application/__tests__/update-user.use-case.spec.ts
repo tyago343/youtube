@@ -33,7 +33,12 @@ describe('UpdateUserUseCase', () => {
   });
 
   it('should update email successfully', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
     const newEmail = 'newemail@example.com';
 
     userRepositoryMocks.findById.mockResolvedValue(user);
@@ -49,7 +54,12 @@ describe('UpdateUserUseCase', () => {
   });
 
   it('should update username successfully', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
     const newUsername = 'newusername';
 
     userRepositoryMocks.findById.mockResolvedValue(user);
@@ -65,7 +75,12 @@ describe('UpdateUserUseCase', () => {
   });
 
   it('should update both fields when provided', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
     const newEmail = 'newemail@example.com';
     const newUsername = 'newusername';
 
@@ -96,7 +111,12 @@ describe('UpdateUserUseCase', () => {
   });
 
   it('should throw UserAlreadyExistsException when email already exists in another user', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
     const newEmail = 'existing@example.com';
 
     userRepositoryMocks.findById.mockResolvedValue(user);
@@ -110,7 +130,12 @@ describe('UpdateUserUseCase', () => {
   });
 
   it('should throw UserAlreadyExistsException when username already exists in another user', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
     const newUsername = 'existinguser';
 
     userRepositoryMocks.findById.mockResolvedValue(user);
@@ -124,7 +149,12 @@ describe('UpdateUserUseCase', () => {
   });
 
   it('should allow updating to the same email of the user', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
 
     userRepositoryMocks.findById.mockResolvedValue(user);
     userRepositoryMocks.existsByEmail.mockResolvedValue(true);
@@ -137,7 +167,12 @@ describe('UpdateUserUseCase', () => {
   });
 
   it('should allow updating to the same username of the user', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
 
     userRepositoryMocks.findById.mockResolvedValue(user);
     userRepositoryMocks.existsByUsername.mockResolvedValue(true);
@@ -150,7 +185,12 @@ describe('UpdateUserUseCase', () => {
   });
 
   it('should not update anything when no data is provided', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
 
     userRepositoryMocks.findById.mockResolvedValue(user);
     userRepositoryMocks.save.mockResolvedValue(user);

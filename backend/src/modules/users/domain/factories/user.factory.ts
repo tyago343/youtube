@@ -3,8 +3,12 @@ import { User } from '../user.entity';
 
 export class UserFactory {
   create(email: string, username: string, hashedPassword: string): User {
-    const userId = randomUUID();
-    return User.create(userId, email, username, hashedPassword);
+    return User.create({
+      id: randomUUID(),
+      email,
+      username,
+      hashedPassword,
+    });
   }
 
   reconstitute({

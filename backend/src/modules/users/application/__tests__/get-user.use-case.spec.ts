@@ -34,7 +34,12 @@ describe('GetUserUseCase', () => {
   });
 
   it('should get a user by UUID', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
     userRepositoryMocks.findById.mockResolvedValue(user);
 
     const result = await useCase.execute(userId);
@@ -47,7 +52,12 @@ describe('GetUserUseCase', () => {
   });
 
   it('should get a user by email when not found by UUID', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
     userRepositoryMocks.findById.mockResolvedValue(null);
     userRepositoryMocks.findByEmail.mockResolvedValue(user);
 
@@ -85,7 +95,12 @@ describe('GetUserUseCase', () => {
   });
 
   it('should prioritize UUID search over email search', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
     userRepositoryMocks.findById.mockResolvedValue(user);
 
     const result = await useCase.execute(userId);
@@ -96,7 +111,12 @@ describe('GetUserUseCase', () => {
   });
 
   it('should attempt to search by email when UUID is not valid but string is a valid email', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
     userRepositoryMocks.findById.mockResolvedValue(null);
     userRepositoryMocks.findByEmail.mockResolvedValue(user);
 

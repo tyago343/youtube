@@ -8,45 +8,83 @@ const MAX_CHANNEL_NAME_LENGTH = 100;
 const MAX_DESCRIPTION_LENGTH = 5000;
 
 export class Channel {
-  public constructor(
-    public readonly id: ChannelId,
-    public readonly ownerId: UserId,
-    public name: string,
-    public description: string,
-    public readonly createdAt: Date,
-    public status: ChannelStatus,
-    public avatarUrl?: string,
-    public bannerUrl?: string,
-    public isMonetizationEnabled: boolean = false,
-    public updatedAt?: Date,
-  ) {}
+  public constructor({
+    id,
+    ownerId,
+    name,
+    description,
+    createdAt,
+    status,
+    avatarUrl,
+    bannerUrl,
+    isMonetizationEnabled = false,
+    updatedAt,
+  }: {
+    id: ChannelId;
+    ownerId: UserId;
+    name: string;
+    description: string;
+    createdAt: Date;
+    status: ChannelStatus;
+    avatarUrl?: string;
+    bannerUrl?: string;
+    isMonetizationEnabled?: boolean;
+    updatedAt?: Date;
+  }) {
+    this.id = id;
+    this.ownerId = ownerId;
+    this.name = name;
+    this.description = description;
+    this.createdAt = createdAt;
+    this.status = status;
+    this.avatarUrl = avatarUrl;
+    this.bannerUrl = bannerUrl;
+    this.isMonetizationEnabled = isMonetizationEnabled;
+    this.updatedAt = updatedAt;
+  }
+
+  public readonly id: ChannelId;
+  public readonly ownerId: UserId;
+  public name: string;
+  public description: string;
+  public readonly createdAt: Date;
+  public status: ChannelStatus;
+  public avatarUrl?: string;
+  public bannerUrl?: string;
+  public isMonetizationEnabled: boolean;
+  public updatedAt?: Date;
 
   static create({
     id,
     ownerId,
     name,
     description = '',
+    avatarUrl,
+    bannerUrl,
+    isMonetizationEnabled,
   }: {
     id: string;
     ownerId: UserId;
     name: string;
     description?: string;
+    avatarUrl?: string;
+    bannerUrl?: string;
+    isMonetizationEnabled?: boolean;
   }): Channel {
     Channel.validateName(name);
     Channel.validateDescription(description);
 
-    return new Channel(
-      ChannelId.create(id),
+    return new Channel({
+      id: ChannelId.create(id),
       ownerId,
       name,
       description,
-      new Date(),
-      ChannelStatus.ACTIVE,
-      undefined,
-      undefined,
-      false,
-      undefined,
-    );
+      createdAt: new Date(),
+      status: ChannelStatus.ACTIVE,
+      avatarUrl,
+      bannerUrl,
+      isMonetizationEnabled,
+    });
   }
 
   static fromPersistence({
@@ -72,18 +110,18 @@ export class Channel {
     isMonetizationEnabled: boolean;
     updatedAt?: Date;
   }): Channel {
-    return new Channel(
-      ChannelId.create(id),
+    return new Channel({
+      id: ChannelId.create(id),
       ownerId,
       name,
       description,
       createdAt,
-      ChannelStatus.fromString(status),
+      status: ChannelStatus.fromString(status),
       avatarUrl,
       bannerUrl,
       isMonetizationEnabled,
       updatedAt,
-    );
+    });
   }
 
   private static validateName(name: string): void {

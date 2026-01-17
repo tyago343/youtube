@@ -32,7 +32,12 @@ describe('DeleteUserUseCase', () => {
   });
 
   it('should delete a user successfully', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
     userRepositoryMocks.findById.mockResolvedValue(user);
     userRepositoryMocks.delete.mockResolvedValue(undefined);
 
@@ -54,7 +59,12 @@ describe('DeleteUserUseCase', () => {
   });
 
   it('should call repository delete method with correct UserId', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
     userRepositoryMocks.findById.mockResolvedValue(user);
     userRepositoryMocks.delete.mockResolvedValue(undefined);
 

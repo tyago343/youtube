@@ -5,30 +5,59 @@ import { Password } from './vo/password.vo';
 import { InvalidAvatarUrlException } from './exceptions/invalid-avatar-url.exception';
 
 export class User {
-  public constructor(
-    public readonly id: UserId,
-    public email: Email,
-    public username: Username,
-    public password: Password,
-    public readonly createdAt: Date,
-    public avatarUrl?: string,
-    public updatedAt?: Date,
-  ) {}
+  public constructor({
+    id,
+    email,
+    username,
+    password,
+    createdAt,
+    avatarUrl,
+    updatedAt,
+  }: {
+    id: UserId;
+    email: Email;
+    username: Username;
+    password: Password;
+    createdAt: Date;
+    avatarUrl?: string;
+    updatedAt?: Date;
+  }) {
+    this.id = id;
+    this.email = email;
+    this.username = username;
+    this.password = password;
+    this.createdAt = createdAt;
+    this.avatarUrl = avatarUrl;
+    this.updatedAt = updatedAt;
+  }
 
-  static create(
-    id: string,
-    email: string,
-    username: string,
-    hashedPassword: string,
-  ): User {
-    return new User(
-      UserId.create(id),
-      Email.create(email),
-      Username.create(username),
-      Password.fromHashed(hashedPassword),
-      new Date(),
-      undefined,
-    );
+  public readonly id: UserId;
+  public email: Email;
+  public username: Username;
+  public password: Password;
+  public readonly createdAt: Date;
+  public avatarUrl?: string;
+  public updatedAt?: Date;
+
+  static create({
+    id,
+    email,
+    username,
+    hashedPassword,
+  }: {
+    id: string;
+    email: string;
+    username: string;
+    hashedPassword: string;
+  }): User {
+    return new User({
+      id: UserId.create(id),
+      email: Email.create(email),
+      username: Username.create(username),
+      password: Password.fromHashed(hashedPassword),
+      createdAt: new Date(),
+      avatarUrl: undefined,
+    });
   }
 
   static fromPersistence({
@@ -48,15 +77,15 @@ export class User {
     avatarUrl?: string;
     updatedAt?: Date;
   }): User {
-    return new User(
-      UserId.create(id),
-      Email.create(email),
-      Username.create(username),
-      Password.fromHashed(hashedPassword),
+    return new User({
+      id: UserId.create(id),
+      email: Email.create(email),
+      username: Username.create(username),
+      password: Password.fromHashed(hashedPassword),
       createdAt,
       avatarUrl,
       updatedAt,
-    );
+    });
   }
 
   changeAvatar(newAvatarUrl: string): void {

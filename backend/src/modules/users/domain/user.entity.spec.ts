@@ -10,12 +10,12 @@ describe('User', () => {
 
   describe('create', () => {
     it('should create a user correctly', () => {
-      const user = User.create(
-        validId,
-        validEmail,
-        validUsername,
-        validHashedPassword,
-      );
+      const user = User.create({
+        id: validId,
+        email: validEmail,
+        username: validUsername,
+        hashedPassword: validHashedPassword,
+      });
 
       expect(user.id.value).toBe(validId);
       expect(user.email.value).toBe(validEmail);
@@ -69,12 +69,12 @@ describe('User', () => {
 
   describe('changeAvatar', () => {
     it('should update avatar with a valid URL', () => {
-      const user = User.create(
-        validId,
-        validEmail,
-        validUsername,
-        validHashedPassword,
-      );
+      const user = User.create({
+        id: validId,
+        email: validEmail,
+        username: validUsername,
+        hashedPassword: validHashedPassword,
+      });
       const avatarUrl = 'https://example.com/avatar.jpg';
 
       user.changeAvatar(avatarUrl);
@@ -83,24 +83,24 @@ describe('User', () => {
     });
 
     it('should throw InvalidAvatarUrlException when URL is empty', () => {
-      const user = User.create(
-        validId,
-        validEmail,
-        validUsername,
-        validHashedPassword,
-      );
+      const user = User.create({
+        id: validId,
+        email: validEmail,
+        username: validUsername,
+        hashedPassword: validHashedPassword,
+      });
 
       expect(() => user.changeAvatar('')).toThrow(InvalidAvatarUrlException);
       expect(() => user.changeAvatar('   ')).toThrow(InvalidAvatarUrlException);
     });
 
     it('should throw InvalidAvatarUrlException when URL is invalid', () => {
-      const user = User.create(
-        validId,
-        validEmail,
-        validUsername,
-        validHashedPassword,
-      );
+      const user = User.create({
+        id: validId,
+        email: validEmail,
+        username: validUsername,
+        hashedPassword: validHashedPassword,
+      });
 
       expect(() => user.changeAvatar('not-a-url')).toThrow(
         InvalidAvatarUrlException,
@@ -111,12 +111,12 @@ describe('User', () => {
     });
 
     it('should accept different valid URL formats', () => {
-      const user = User.create(
-        validId,
-        validEmail,
-        validUsername,
-        validHashedPassword,
-      );
+      const user = User.create({
+        id: validId,
+        email: validEmail,
+        username: validUsername,
+        hashedPassword: validHashedPassword,
+      });
 
       expect(() =>
         user.changeAvatar('https://example.com/avatar.jpg'),
@@ -132,12 +132,12 @@ describe('User', () => {
 
   describe('updateEmail', () => {
     it('should update the email', () => {
-      const user = User.create(
-        validId,
-        validEmail,
-        validUsername,
-        validHashedPassword,
-      );
+      const user = User.create({
+        id: validId,
+        email: validEmail,
+        username: validUsername,
+        hashedPassword: validHashedPassword,
+      });
       const newEmail = 'newemail@example.com';
 
       user.updateEmail(newEmail);
@@ -148,12 +148,12 @@ describe('User', () => {
 
   describe('updateUsername', () => {
     it('should update the username', () => {
-      const user = User.create(
-        validId,
-        validEmail,
-        validUsername,
-        validHashedPassword,
-      );
+      const user = User.create({
+        id: validId,
+        email: validEmail,
+        username: validUsername,
+        hashedPassword: validHashedPassword,
+      });
       const newUsername = 'newusername';
 
       user.updateUsername(newUsername);
@@ -164,23 +164,23 @@ describe('User', () => {
 
   describe('isOwnerOf', () => {
     it('should return true when ID matches', () => {
-      const user = User.create(
-        validId,
-        validEmail,
-        validUsername,
-        validHashedPassword,
-      );
+      const user = User.create({
+        id: validId,
+        email: validEmail,
+        username: validUsername,
+        hashedPassword: validHashedPassword,
+      });
 
       expect(user.isOwnerOf(validId)).toBe(true);
     });
 
     it('should return false when ID does not match', () => {
-      const user = User.create(
-        validId,
-        validEmail,
-        validUsername,
-        validHashedPassword,
-      );
+      const user = User.create({
+        id: validId,
+        email: validEmail,
+        username: validUsername,
+        hashedPassword: validHashedPassword,
+      });
       const otherId = randomUUID();
 
       expect(user.isOwnerOf(otherId)).toBe(false);
@@ -189,23 +189,23 @@ describe('User', () => {
 
   describe('hasAvatar', () => {
     it('should return false when there is no avatar', () => {
-      const user = User.create(
-        validId,
-        validEmail,
-        validUsername,
-        validHashedPassword,
-      );
+      const user = User.create({
+        id: validId,
+        email: validEmail,
+        username: validUsername,
+        hashedPassword: validHashedPassword,
+      });
 
       expect(user.hasAvatar()).toBe(false);
     });
 
     it('should return true when there is an avatar', () => {
-      const user = User.create(
-        validId,
-        validEmail,
-        validUsername,
-        validHashedPassword,
-      );
+      const user = User.create({
+        id: validId,
+        email: validEmail,
+        username: validUsername,
+        hashedPassword: validHashedPassword,
+      });
       user.changeAvatar('https://example.com/avatar.jpg');
 
       expect(user.hasAvatar()).toBe(true);
@@ -256,12 +256,12 @@ describe('User', () => {
     });
 
     it('should return primitives without optional fields when they do not exist', () => {
-      const user = User.create(
-        validId,
-        validEmail,
-        validUsername,
-        validHashedPassword,
-      );
+      const user = User.create({
+        id: validId,
+        email: validEmail,
+        username: validUsername,
+        hashedPassword: validHashedPassword,
+      });
 
       const primitives = user.toPrimitives();
 

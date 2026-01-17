@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/unbound-method */
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthenticationService } from '../services/authentication.service';
 import { SignUpUseCase } from '../use-cases/sign-up.use-case';
@@ -81,7 +80,12 @@ describe('AuthenticationService', () => {
 
   describe('signUp', () => {
     it('should create a user and return tokens', async () => {
-      const user = User.create(userId, email, username, hashedPassword);
+      const user = User.create({
+        id: userId,
+        email: email,
+        username: username,
+        hashedPassword: hashedPassword,
+      });
       const accessToken = AccessToken.create('access-token');
       const refreshToken = RefreshToken.create('refresh-token');
 
@@ -147,7 +151,12 @@ describe('AuthenticationService', () => {
 
   describe('login', () => {
     it('should validate user and return tokens', async () => {
-      const user = User.create(userId, email, username, hashedPassword);
+      const user = User.create({
+        id: userId,
+        email: email,
+        username: username,
+        hashedPassword: hashedPassword,
+      });
       const accessToken = AccessToken.create('access-token');
       const refreshToken = RefreshToken.create('refresh-token');
 
@@ -180,7 +189,12 @@ describe('AuthenticationService', () => {
     });
 
     it('should propagate login errors', async () => {
-      const user = User.create(userId, email, username, hashedPassword);
+      const user = User.create({
+        id: userId,
+        email: email,
+        username: username,
+        hashedPassword: hashedPassword,
+      });
       const error = new Error('Login failed');
 
       validateUserUseCase.execute.mockResolvedValue(user);
@@ -231,7 +245,12 @@ describe('AuthenticationService', () => {
 
   describe('validateUser', () => {
     it('should validate user credentials', async () => {
-      const user = User.create(userId, email, username, hashedPassword);
+      const user = User.create({
+        id: userId,
+        email: email,
+        username: username,
+        hashedPassword: hashedPassword,
+      });
 
       validateUserUseCase.execute.mockResolvedValue(user);
 
@@ -255,7 +274,12 @@ describe('AuthenticationService', () => {
 
   describe('getUser', () => {
     it('should get user by identifier', async () => {
-      const user = User.create(userId, email, username, hashedPassword);
+      const user = User.create({
+        id: userId,
+        email: email,
+        username: username,
+        hashedPassword: hashedPassword,
+      });
       const identifier = userId;
 
       getUserUseCase.execute.mockResolvedValue(user);

@@ -41,7 +41,12 @@ describe('ValidateUserUseCase', () => {
   });
 
   it('should return user when credentials are valid', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
 
     usersServiceMocks.findOne.mockResolvedValue(user);
     passwordHashingMocks.verify.mockResolvedValue(true);
@@ -67,7 +72,12 @@ describe('ValidateUserUseCase', () => {
   });
 
   it('should throw InvalidCredentialsException when password is invalid', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
 
     usersServiceMocks.findOne.mockResolvedValue(user);
     passwordHashingMocks.verify.mockResolvedValue(false);
@@ -83,7 +93,12 @@ describe('ValidateUserUseCase', () => {
   });
 
   it('should use the hashed password from user entity for verification', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
 
     usersServiceMocks.findOne.mockResolvedValue(user);
     passwordHashingMocks.verify.mockResolvedValue(true);
@@ -107,7 +122,12 @@ describe('ValidateUserUseCase', () => {
   });
 
   it('should propagate errors from password hashing service', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
     const error = new Error('Hashing service error');
 
     usersServiceMocks.findOne.mockResolvedValue(user);
@@ -122,7 +142,12 @@ describe('ValidateUserUseCase', () => {
   });
 
   it('should call services in correct order', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
 
     usersServiceMocks.findOne.mockResolvedValue(user);
     passwordHashingMocks.verify.mockResolvedValue(true);

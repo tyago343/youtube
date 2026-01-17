@@ -7,16 +7,25 @@ export class ChannelFactory {
     ownerId,
     name,
     description,
+    avatarUrl,
+    bannerUrl,
+    isMonetizationEnabled,
   }: {
     ownerId: UserId;
     name: string;
     description?: string;
+    avatarUrl?: string;
+    bannerUrl?: string;
+    isMonetizationEnabled?: boolean;
   }): Channel {
     return Channel.create({
       id: randomUUID(),
       ownerId,
       name,
       description,
+      avatarUrl,
+      bannerUrl,
+      isMonetizationEnabled,
     });
   }
 

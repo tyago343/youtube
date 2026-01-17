@@ -53,12 +53,12 @@ describe('CreateUserUseCase', () => {
 
   it('should create a user successfully', async () => {
     const userId = randomUUID();
-    const createdUser = User.create(
-      userId,
-      validEmail,
-      validUsername,
-      hashedPassword,
-    );
+    const createdUser = User.create({
+      id: userId,
+      email: validEmail,
+      username: validUsername,
+      hashedPassword: hashedPassword,
+    });
 
     userRepositoryMocks.existsByEmail.mockResolvedValue(false);
     userRepositoryMocks.existsByUsername.mockResolvedValue(false);
@@ -119,12 +119,12 @@ describe('CreateUserUseCase', () => {
 
   it('should hash the password before creating the user', async () => {
     const userId = randomUUID();
-    const createdUser = User.create(
-      userId,
-      validEmail,
-      validUsername,
-      hashedPassword,
-    );
+    const createdUser = User.create({
+      id: userId,
+      email: validEmail,
+      username: validUsername,
+      hashedPassword: hashedPassword,
+    });
 
     userRepositoryMocks.existsByEmail.mockResolvedValue(false);
     userRepositoryMocks.existsByUsername.mockResolvedValue(false);

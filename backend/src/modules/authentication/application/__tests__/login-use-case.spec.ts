@@ -34,7 +34,12 @@ describe('LoginUseCase', () => {
   });
 
   it('should generate access and refresh tokens for a valid user', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
     const accessToken = AccessToken.create('access-token');
     const refreshToken = RefreshToken.create('refresh-token');
 
@@ -59,7 +64,12 @@ describe('LoginUseCase', () => {
   });
 
   it('should create TokenPayload with correct user id and email', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
     const accessToken = AccessToken.create('access-token');
     const refreshToken = RefreshToken.create('refresh-token');
 
@@ -85,7 +95,12 @@ describe('LoginUseCase', () => {
   });
 
   it('should return the same user object passed as parameter', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
     const accessToken = AccessToken.create('access-token');
     const refreshToken = RefreshToken.create('refresh-token');
 
@@ -98,7 +113,12 @@ describe('LoginUseCase', () => {
   });
 
   it('should handle token generation errors', async () => {
-    const user = User.create(userId, email, username, hashedPassword);
+    const user = User.create({
+      id: userId,
+      email: email,
+      username: username,
+      hashedPassword: hashedPassword,
+    });
     const error = new Error('Token generation failed');
 
     tokenServiceMocks.generateToken.mockRejectedValue(error);

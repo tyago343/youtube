@@ -328,6 +328,7 @@ describe('Channel', () => {
         description: validDescription,
         avatarUrl,
         bannerUrl,
+        status: ChannelStatus.ACTIVE.value,
         isMonetizationEnabled: true,
         createdAt,
         updatedAt,

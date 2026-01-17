@@ -1,5 +1,3 @@
-import { AuthGuard } from '@nestjs/passport';
-
 /**
  * Mocks the parent class's canActivate method for a guard that extends AuthGuard
  * @param guardPrototype The prototype of the guard class

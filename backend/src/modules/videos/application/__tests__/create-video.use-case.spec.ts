@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateVideoUseCase } from '../use-cases/create-video.use-case';
 import { VideosRepository } from '../ports/videos.repository';
