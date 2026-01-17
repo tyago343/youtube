@@ -76,9 +76,12 @@ export class ChannelResponseDto {
     dto.ownerId = primitives.ownerId;
     dto.name = primitives.name;
     dto.description = primitives.description;
+    dto.status = primitives.status;
     dto.avatarUrl = primitives.avatarUrl;
     dto.bannerUrl = primitives.bannerUrl;
+    dto.isMonetizationEnabled = primitives.isMonetizationEnabled;
     dto.createdAt = primitives.createdAt;
+    dto.updatedAt = primitives.updatedAt;
     return dto;
   }
 }

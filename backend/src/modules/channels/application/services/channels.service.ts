@@ -18,10 +18,13 @@ import { GetChannelStatusHistoryUseCase } from '../use-cases/get-channel-status-
 import { Channel } from '../../domain/channel.entity';
 import { ChannelStatusChange } from '../../domain/channel-status-change.entity';
 import { ChannelNotFoundException } from '../../domain/exceptions/channel-not-found.exception';
+import { CreateChannelUseCase } from '../use-cases/create-channel.use-case';
+import { UserId } from 'src/modules/users/domain/vo/user-id.vo';
 
 @Injectable()
 export class ChannelsService {
   constructor(
+    private readonly createChannelUseCase: CreateChannelUseCase,
     private readonly getActiveChannelsUseCase: GetActiveChannelsUseCase,
     private readonly suspendChannelUseCase: SuspendChannelUseCase,
     private readonly reactivateChannelUseCase: ReactivateChannelUseCase,
@@ -29,6 +32,16 @@ export class ChannelsService {
     private readonly getChannelStatusHistoryUseCase: GetChannelStatusHistoryUseCase,
   ) {}
 
+  async create(data: {
+    ownerId: UserId;
+    name: string;
+    description?: string;
+    avatarUrl?: string;
+    bannerUrl?: string;
+    isMonetizationEnabled?: boolean;
+  }): Promise<Channel> {
+    return await this.createChannelUseCase.execute(data);
+  }
   async getActiveChannels(): Promise<Channel[]> {
     return await this.getActiveChannelsUseCase.execute();
   }

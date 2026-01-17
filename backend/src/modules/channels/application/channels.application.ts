@@ -9,8 +9,10 @@ import { ProcessExpiredSuspensionsUseCase } from './use-cases/process-expired-su
 import { GetChannelStatusHistoryUseCase } from './use-cases/get-channel-status-history.use-case';
 // Services
 import { ChannelsService } from './services/channels.service';
+import { CreateChannelUseCase } from './use-cases/create-channel.use-case';
 
 const useCases = [
+  CreateChannelUseCase,
   GetActiveChannelsUseCase,
   SuspendChannelUseCase,
   ReactivateChannelUseCase,
