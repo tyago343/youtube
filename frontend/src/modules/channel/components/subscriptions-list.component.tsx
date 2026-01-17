@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router";
-import { ChevronDown, User } from "lucide-react";
+import { ChevronDown, ChevronUp, User } from "lucide-react";
 import { cn } from "@shared/lib/utils";
 import Button from "@shared/ui/button/button";
 import { useGetActiveChannelsQuery } from "../model/channel.api";
@@ -61,6 +61,18 @@ function SubscriptionsList() {
           >
             <ChevronDown className="size-4" />
             <span>Show more</span>
+          </Button>
+        </li>
+      )}
+      {showAll && (
+        <li>
+          <Button
+            variant="ghost"
+            className={BASE_BUTTON_CLASSES}
+            onClick={() => setShowAll(false)}
+          >
+            <ChevronUp className="size-4" />
+            <span>Show less</span>
           </Button>
         </li>
       )}

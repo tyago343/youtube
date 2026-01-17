@@ -8,12 +8,10 @@ export type NormalizedVideo = Pick<
   | "url"
   | "thumbnailUrl"
   | "createdAt"
-  | "channelId"
   | "channel"
   | "views"
   | "likes"
   | "dislikes"
-  | "visibility"
   | "updatedAt"
   | "published"
 >;
