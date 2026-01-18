@@ -1,15 +1,16 @@
 import { lazy } from "react";
 import type { RouteObject } from "react-router";
-import MainLayout from "@/shared/layouts/main.layout";
+import MainLayout from "@shared/layouts/main.layout";
 import { PublicGuard } from "./guards/public.guard";
 
-const Home = lazy(() => import("@/core/pages/Home"));
-const NotFound = lazy(() => import("@/core/pages/NotFound"));
+const Home = lazy(() => import("@core/pages/Home"));
+const NotFound = lazy(() => import("@core/pages/NotFound"));
 
 import { authRoutes } from "@auth/routes";
 import { videoRoutes } from "@video/routes";
 import { searchRoutes } from "@search/routes";
 import { userRoutes } from "@user/routes";
+import { channelRoutes } from "@channel/routes";
 
 export const routes: RouteObject[] = [
   {
@@ -35,6 +36,8 @@ export const routes: RouteObject[] = [
   ...videoRoutes,
 
   ...userRoutes,
+
+  ...channelRoutes,
 
   {
     path: "*",

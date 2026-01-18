@@ -83,8 +83,10 @@ export class ChannelsController {
     type: ChannelResponseDto,
   })
   @Get(':id')
-  async getChannel(@Param('id') id: string): Promise<ChannelResponseDto> {
-    const channel = await this.channelsService.getChannel(id);
-    return ChannelResponseDto.fromDomain(channel);
+  async getChannelByOwnerId(
+    @Param('id') ownerId: string,
+  ): Promise<ChannelResponseDto> {
+    const channels = await this.channelsService.getChannelByOwnerId(ownerId);
+    return ChannelResponseDto.fromDomain(channels[0]);
   }
 }

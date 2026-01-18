@@ -20,6 +20,7 @@ import { ChannelStatusChange } from '../../domain/channel-status-change.entity';
 import { CreateChannelUseCase } from '../use-cases/create-channel.use-case';
 import { UserId } from 'src/modules/users/domain/vo/user-id.vo';
 import { GetChannelUseCase } from '../use-cases/get-channel.use-case';
+import { GetChannelByOwnerIdUseCase } from '../use-cases/get-channel-by-owner-id.use-case';
 
 @Injectable()
 export class ChannelsService {
@@ -31,6 +32,7 @@ export class ChannelsService {
     private readonly reactivateChannelUseCase: ReactivateChannelUseCase,
     private readonly processExpiredSuspensionsUseCase: ProcessExpiredSuspensionsUseCase,
     private readonly getChannelStatusHistoryUseCase: GetChannelStatusHistoryUseCase,
+    private readonly getChannelByOwnerIdUseCase: GetChannelByOwnerIdUseCase,
   ) {}
 
   async create(data: {
@@ -71,5 +73,8 @@ export class ChannelsService {
     channelId: string,
   ): Promise<ChannelStatusChange[]> {
     return this.getChannelStatusHistoryUseCase.execute(channelId);
+  }
+  async getChannelByOwnerId(ownerId: string): Promise<Channel[]> {
+    return this.getChannelByOwnerIdUseCase.execute(ownerId);
   }
 }

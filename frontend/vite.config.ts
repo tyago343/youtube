@@ -18,6 +18,7 @@ export default defineConfig({
       "@video": path.resolve(__dirname, "./src/modules/video"),
       "@auth": path.resolve(__dirname, "./src/modules/auth"),
       "@search": path.resolve(__dirname, "./src/modules/search"),
+      "@channel": path.resolve(__dirname, "./src/modules/channel"),
     },
   },
   test: {

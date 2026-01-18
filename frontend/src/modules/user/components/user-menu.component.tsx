@@ -37,9 +37,12 @@ function UserMenuComponent({ user }: { user: User }) {
             </Avatar>
           </NavigationMenuTrigger>
           <NavigationMenuContent className="min-w-[180px] left-auto right-0 z-50">
-              <NavigationMenuLink asChild>
-                <Link to="/profile">Profile</Link>
-              </NavigationMenuLink>
+            <NavigationMenuLink asChild>
+              <Link to="/profile">Profile</Link>
+            </NavigationMenuLink>
+            <NavigationMenuLink asChild>
+              <Link to={`/channel/${user.username}`}>My Channel</Link>
+            </NavigationMenuLink>
             <NavigationMenuLink className="cursor-pointer" onClick={onLogout}>
               Logout
             </NavigationMenuLink>

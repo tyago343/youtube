@@ -11,10 +11,12 @@ import { GetChannelStatusHistoryUseCase } from './use-cases/get-channel-status-h
 import { ChannelsService } from './services/channels.service';
 import { CreateChannelUseCase } from './use-cases/create-channel.use-case';
 import { GetChannelUseCase } from './use-cases/get-channel.use-case';
+import { GetChannelByOwnerIdUseCase } from './use-cases/get-channel-by-owner-id.use-case';
 
 const useCases = [
   CreateChannelUseCase,
   GetChannelUseCase,
+  GetChannelByOwnerIdUseCase,
   GetActiveChannelsUseCase,
   SuspendChannelUseCase,
   ReactivateChannelUseCase,

@@ -33,6 +33,7 @@
       "@video/*": ["src/modules/video/*"],
       "@auth/*": ["src/modules/auth/*"],
       "@search/*": ["src/modules/search/*"],
+      "@channel/*": ["src/modules/channel/*"]
     }
   },
   "include": ["src"]
