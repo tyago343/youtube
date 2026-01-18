@@ -37,9 +37,9 @@ function UserMenuComponent({ user }: { user: User }) {
             </Avatar>
           </NavigationMenuTrigger>
           <NavigationMenuContent className="min-w-[180px] left-auto right-0 z-50">
-            <Link to="/profile">
-              <NavigationMenuLink>Profile</NavigationMenuLink>
-            </Link>
+              <NavigationMenuLink asChild>
+                <Link to="/profile">Profile</Link>
+              </NavigationMenuLink>
             <NavigationMenuLink className="cursor-pointer" onClick={onLogout}>
               Logout
             </NavigationMenuLink>

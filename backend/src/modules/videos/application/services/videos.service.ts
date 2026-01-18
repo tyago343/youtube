@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateVideoUseCase } from '../use-cases/create-video.use-case';
 import { Video } from '../../domain/video.entity';
 import { GetAllVideosUseCase } from '../use-cases/get-all-videos.use-case';
@@ -12,8 +8,6 @@ import { GetVideoWithChannelUseCase } from '../use-cases/get-video-with-owner.us
 import { GetAllPublicVideosUseCase } from '../use-cases/get-all-public-videos.use-case';
 import { GetPublicVideoUseCase } from '../use-cases/get-public-video.use-case';
 import { GetUserVideosUseCase } from '../use-cases/get-user-videos.use-case';
-import { VideoNotFoundException } from '../../domain/exceptions/video-not-found.exception';
-import { ChannelNotFoundException } from 'src/modules/channels/domain/exceptions/channel-not-found.exception';
 
 @Injectable()
 export class VideosService {
@@ -37,54 +31,30 @@ export class VideosService {
     },
     thumbnail?: Express.Multer.File,
   ): Promise<Video> {
-    try {
-      return await this.createVideoUseCase.execute(video, data, thumbnail);
-    } catch (error) {
-      if (error instanceof ChannelNotFoundException) {
-        throw new BadRequestException(error.message);
-      }
-      throw error;
-    }
+    return this.createVideoUseCase.execute(video, data, thumbnail);
   }
+
   async getAll(): Promise<Video[]> {
-    return await this.getAllVideosUseCase.execute();
+    return this.getAllVideosUseCase.execute();
   }
+
   async get(id: string): Promise<Video> {
-    try {
-      return await this.getVideoUseCase.execute(id);
-    } catch (error) {
-      if (error instanceof VideoNotFoundException) {
-        throw new NotFoundException(error.message);
-      }
-      throw error;
-    }
+    return this.getVideoUseCase.execute(id);
   }
+
   async getAllPublicVideos(): Promise<VideoWithChannel[]> {
-    return await this.getAllPublicVideosUseCase.execute();
+    return this.getAllPublicVideosUseCase.execute();
   }
+
   async getPublicVideo(id: string): Promise<VideoWithChannel> {
-    try {
-      return await this.getPublicVideoUseCase.execute(id);
-    } catch (error) {
-      if (error instanceof VideoNotFoundException) {
-        throw new NotFoundException(error.message);
-      }
-      throw error;
-    }
+    return this.getPublicVideoUseCase.execute(id);
   }
 
   async getWithChannel(id: string): Promise<VideoWithChannel> {
-    try {
-      return await this.getVideoWithChannelUseCase.execute(id);
-    } catch (error) {
-      if (error instanceof VideoNotFoundException) {
-        throw new NotFoundException(error.message);
-      }
-      throw error;
-    }
+    return this.getVideoWithChannelUseCase.execute(id);
   }
 
   async getUserVideos(userId: string): Promise<VideoWithChannel[]> {
-    return await this.getUserVideosUseCase.execute(userId);
+    return this.getUserVideosUseCase.execute(userId);
   }
 }

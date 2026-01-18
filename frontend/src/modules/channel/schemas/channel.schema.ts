@@ -5,10 +5,9 @@ export const channelSchema = z.object({
   ownerId: z.uuid(),
   name: z.string().min(1),
   description: z.string(),
-
   avatarUrl: z.url().nullish(),
   bannerUrl: z.url().nullish(),
-  createdAt: z.coerce.date(),
+  createdAt: z.iso.datetime().or(z.date()),
 });
 
 export const channelsResponseSchema = z.array(channelSchema);

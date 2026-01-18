@@ -1,14 +1,9 @@
-import {
-  Injectable,
-  ConflictException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { SignUpUseCase } from '../use-cases/sign-up.use-case';
 import { LoginUseCase } from '../use-cases/login-use-case';
 import { RefreshTokenUseCase } from '../use-cases/refresh-token.use-case';
 import { ValidateUserUseCase } from '../use-cases/validate-user.use-case';
 import { User } from 'src/modules/users/domain/user.entity';
-import { UserAlreadyExistsException } from 'src/modules/users/domain/exceptions/user-already-exists.exceptions';
 import { UserNotFoundException } from 'src/modules/users/domain/exceptions/user-not-found.exception';
 import { AccessToken } from '../../domain/vo/access-token.vo';
 import { RefreshToken } from '../../domain/vo/refresh-token.vo';
@@ -33,14 +28,7 @@ export class AuthenticationService {
     refreshToken: RefreshToken;
     user: User;
   }> {
-    try {
-      return await this.signUpUseCase.execute(email, username, password);
-    } catch (error) {
-      if (error instanceof UserAlreadyExistsException) {
-        throw new ConflictException(error.message);
-      }
-      throw error;
-    }
+    return this.signUpUseCase.execute(email, username, password);
   }
 
   async login(
@@ -52,17 +40,17 @@ export class AuthenticationService {
     user: User;
   }> {
     const user = await this.validateUser(email, password);
-    return await this.loginUseCase.execute(user);
+    return this.loginUseCase.execute(user);
   }
 
   async refreshToken(
     refreshToken: string,
   ): Promise<{ accessToken: AccessToken; refreshToken: RefreshToken }> {
-    return await this.refreshTokenUseCase.execute(refreshToken);
+    return this.refreshTokenUseCase.execute(refreshToken);
   }
 
   async validateUser(email: string, password: string): Promise<User> {
-    return await this.validateUserUseCase.execute(email, password);
+    return this.validateUserUseCase.execute(email, password);
   }
 
   async getUser(identifier: string): Promise<User> {

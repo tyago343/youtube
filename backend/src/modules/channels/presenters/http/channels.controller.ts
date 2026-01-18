@@ -6,6 +6,7 @@ import {
   Request,
   HttpCode,
   HttpStatus,
+  Param,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -70,5 +71,20 @@ export class ChannelsController {
   async getActiveChannels(): Promise<ChannelResponseDto[]> {
     const channels = await this.channelsService.getActiveChannels();
     return channels.map((channel) => ChannelResponseDto.fromDomain(channel));
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Get a channel by id',
+    description: 'Returns a channel by id.',
+  })
+  @ApiOkResponse({
+    description: 'Channel fetched successfully',
+    type: ChannelResponseDto,
+  })
+  @Get(':id')
+  async getChannel(@Param('id') id: string): Promise<ChannelResponseDto> {
+    const channel = await this.channelsService.getChannel(id);
+    return ChannelResponseDto.fromDomain(channel);
   }
 }
