@@ -22,7 +22,7 @@ export class UserSchema {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ nullable: true })
   avatarUrl?: string;
 
   @CreateDateColumn()

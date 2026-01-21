@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { UserFactory } from '../../domain/factories/user.factory';
 import { User } from '../../domain/user.entity';
 import { PasswordHashingService } from '../../../shared/application/ports/password-hashing.interface';
+import { EventBus } from '../../../shared/application/ports/event-bus.interface';
+import { UserCreatedEvent } from '../../../shared/domain/events';
 import { UserRepository } from '../ports/user.repository';
 import { Email } from '../../domain/vo/email.vo';
 import { Username } from '../../domain/vo/username.vo';
@@ -9,12 +11,11 @@ import { UserAlreadyExistsException } from '../../domain/exceptions/user-already
 
 @Injectable()
 export class CreateUserUseCase {
-  //   private readonly logger = new Logger(CreateUserUseCase.name);
-
   constructor(
     private readonly userFactory: UserFactory,
     private readonly userRepository: UserRepository,
     private readonly passwordHashingService: PasswordHashingService,
+    private readonly eventBus: EventBus,
   ) {}
 
   async execute(
@@ -42,6 +43,15 @@ export class CreateUserUseCase {
 
     const user = this.userFactory.create(email, username, hashedPassword);
 
-    return this.userRepository.save(user);
+    const savedUser = await this.userRepository.save(user);
+
+    this.eventBus.publish(
+      new UserCreatedEvent({
+        email: savedUser.email.value,
+        username: savedUser.username.value,
+      }),
+    );
+
+    return savedUser;
   }
 }

@@ -3,6 +3,8 @@ import { CreateUserUseCase } from '../use-cases/create-user.use-case';
 import { UserFactory } from '../../domain/factories/user.factory';
 import { UserRepository } from '../ports/user.repository';
 import { PasswordHashingService } from '../../../shared/application/ports/password-hashing.interface';
+import { EventBus } from '../../../shared/application/ports/event-bus.interface';
+import { EventCatalog } from '../../../shared/domain/events';
 import { User } from '../../domain/user.entity';
 import { UserAlreadyExistsException } from '../../domain/exceptions/user-already-exists.exceptions';
 import { Email } from '../../domain/vo/email.vo';
@@ -12,6 +14,7 @@ import {
   createUserRepositoryMocks,
   createPasswordHashingMocks,
   createUserFactoryMocks,
+  createEventBusMock,
 } from './mocks';
 
 describe('CreateUserUseCase', () => {
@@ -19,6 +22,7 @@ describe('CreateUserUseCase', () => {
   let userRepositoryMocks: ReturnType<typeof createUserRepositoryMocks>;
   let passwordHashingMocks: ReturnType<typeof createPasswordHashingMocks>;
   let userFactoryMocks: ReturnType<typeof createUserFactoryMocks>;
+  let eventBusMocks: ReturnType<typeof createEventBusMock>;
 
   const validEmail = 'test@example.com';
   const validUsername = 'testuser';
@@ -29,6 +33,7 @@ describe('CreateUserUseCase', () => {
     userRepositoryMocks = createUserRepositoryMocks();
     passwordHashingMocks = createPasswordHashingMocks();
     userFactoryMocks = createUserFactoryMocks();
+    eventBusMocks = createEventBusMock();
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -44,6 +49,10 @@ describe('CreateUserUseCase', () => {
         {
           provide: PasswordHashingService,
           useValue: passwordHashingMocks.service,
+        },
+        {
+          provide: EventBus,
+          useValue: eventBusMocks.eventBus,
         },
       ],
     }).compile();
@@ -168,5 +177,44 @@ describe('CreateUserUseCase', () => {
     ).rejects.toThrow();
 
     expect(userRepositoryMocks.existsByEmail).not.toHaveBeenCalled();
+  });
+
+  it('should emit UserCreatedEvent after successfully creating a user', async () => {
+    const userId = randomUUID();
+    const createdUser = User.create({
+      id: userId,
+      email: validEmail,
+      username: validUsername,
+      hashedPassword: hashedPassword,
+    });
+
+    userRepositoryMocks.existsByEmail.mockResolvedValue(false);
+    userRepositoryMocks.existsByUsername.mockResolvedValue(false);
+    passwordHashingMocks.hash.mockResolvedValue(hashedPassword);
+    userFactoryMocks.create.mockReturnValue(createdUser);
+    userRepositoryMocks.save.mockResolvedValue(createdUser);
+
+    await useCase.execute(validEmail, validUsername, validPassword);
+
+    expect(eventBusMocks.publish).toHaveBeenCalledTimes(1);
+    expect(eventBusMocks.publish).toHaveBeenCalledWith(
+      expect.objectContaining({
+        eventName: EventCatalog.User.Created,
+        payload: {
+          email: validEmail,
+          username: validUsername,
+        },
+      }),
+    );
+  });
+
+  it('should not emit event when user creation fails', async () => {
+    userRepositoryMocks.existsByEmail.mockResolvedValue(true);
+
+    await expect(
+      useCase.execute(validEmail, validUsername, validPassword),
+    ).rejects.toThrow(UserAlreadyExistsException);
+
+    expect(eventBusMocks.publish).not.toHaveBeenCalled();
   });
 });

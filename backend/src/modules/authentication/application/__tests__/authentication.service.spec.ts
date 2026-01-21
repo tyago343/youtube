@@ -8,7 +8,6 @@ import { GetUserUseCase } from 'src/modules/users/application/use-cases/get-user
 import { User } from 'src/modules/users/domain/user.entity';
 import { AccessToken } from '../../domain/vo/access-token.vo';
 import { RefreshToken } from '../../domain/vo/refresh-token.vo';
-import { ConflictException } from '@nestjs/common';
 import { UserAlreadyExistsException } from 'src/modules/users/domain/exceptions/user-already-exists.exceptions';
 import { InvalidCredentialsException } from '../../domain/exceptions/invalid-crendetials.exception';
 import { randomUUID } from 'crypto';
@@ -118,7 +117,7 @@ describe('AuthenticationService', () => {
       signUpUseCase.execute.mockRejectedValue(error);
 
       await expect(service.signUp(email, username, password)).rejects.toThrow(
-        ConflictException,
+        UserAlreadyExistsException,
       );
       expect(signUpUseCase.execute).toHaveBeenCalledWith(
         email,
