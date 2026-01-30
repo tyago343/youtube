@@ -4,6 +4,7 @@ import { PassportModule } from '@nestjs/passport';
 import { ConfigModule } from '@nestjs/config';
 import jwtConfig from './config/jwt.config';
 import { JwtAuthGuard } from './guards/jwt-authentication.guard';
+import { RolesGuard } from './guards/roles.guard';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 import { TokenService } from '../application/ports/token.service.interface';
@@ -37,12 +38,14 @@ import { BcryptPasswordHashingService } from 'src/modules/shared/infrastructure/
     JwtStrategy,
     LocalAuthenticationGuard,
     JwtAuthGuard,
+    RolesGuard,
   ],
   exports: [
     TokenService,
     PasswordHashingService,
     LocalAuthenticationGuard,
     JwtAuthGuard,
+    RolesGuard,
   ],
 })
 export class AuthenticationInfrastructureModule {}

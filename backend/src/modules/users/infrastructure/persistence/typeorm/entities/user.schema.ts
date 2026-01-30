@@ -22,6 +22,9 @@ export class UserSchema {
   @Column()
   password: string;
 
+  @Column({ default: 'USER' })
+  role: string;
+
   @Column({ nullable: true })
   avatarUrl?: string;
 

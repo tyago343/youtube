@@ -21,12 +21,13 @@ function ChannelDescription({ description }: { description: string }) {
   return (
     <p className="text-sm text-muted-foreground">
       {displayText}
-      <button
+      <Button
+        variant="ghost"
         onClick={() => setIsExpanded(!isExpanded)}
         className="ml-1 text-primary hover:underline font-medium cursor-pointer"
       >
         {isExpanded ? "menos" : "más"}
-      </button>
+      </Button>
     </p>
   );
 }
@@ -115,10 +116,10 @@ function MyChannel() {
           )}
 
           <div className="flex flex-wrap gap-2 mt-2">
-            <Button variant="secondary" className="rounded-full">
+            <Button variant="secondary" className="rounded-full cursor-pointer">
               Personalizar canal
             </Button>
-            <Button variant="secondary" className="rounded-full">
+            <Button variant="secondary" className="rounded-full cursor-pointer">
               Gestionar vídeos
             </Button>
           </div>

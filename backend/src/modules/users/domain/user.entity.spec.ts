@@ -248,10 +248,10 @@ describe('User', () => {
         email: validEmail,
         username: validUsername,
         password: validHashedPassword,
+        role: 'USER',
         avatarUrl,
         createdAt,
         updatedAt,
-        videos: undefined,
       });
     });
 

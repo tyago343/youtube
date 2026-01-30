@@ -6,8 +6,6 @@ import { RefreshToken } from '../../domain/vo/refresh-token.vo';
 import { TokenPayload } from '../../domain/vo/token-payload.vo';
 import { JwtService } from '@nestjs/jwt';
 import { TokenExpiredException } from '../../domain/exceptions/token-expired.exception';
-import { UserId } from 'src/modules/users/domain/vo/user-id.vo';
-import { Email } from 'src/modules/users/domain/vo/email.vo';
 
 @Injectable()
 export class JwtTokenService implements TokenService {
@@ -23,6 +21,7 @@ export class JwtTokenService implements TokenService {
       {
         sub: payload.userId,
         email: payload.email,
+        role: payload.role,
       },
       {
         expiresIn: `${accessTokenTtl}s`,
@@ -38,6 +37,7 @@ export class JwtTokenService implements TokenService {
       {
         sub: payload.userId,
         email: payload.email,
+        role: payload.role,
         type: 'refresh',
       },
       {
@@ -52,6 +52,7 @@ export class JwtTokenService implements TokenService {
       const decoded = await this.jwtService.verifyAsync<{
         sub: string;
         email: string;
+        role?: string;
         type?: string;
       }>(token);
 
@@ -60,10 +61,7 @@ export class JwtTokenService implements TokenService {
         throw new UnauthorizedException('Invalid token type');
       }
 
-      return TokenPayload.create(
-        UserId.create(decoded.sub),
-        Email.create(decoded.email),
-      );
+      return TokenPayload.fromDecoded(decoded);
     } catch (error) {
       if (error instanceof TokenExpiredException) {
         throw new UnauthorizedException(error.message);
@@ -77,6 +75,7 @@ export class JwtTokenService implements TokenService {
       const decoded = await this.jwtService.verifyAsync<{
         sub: string;
         email: string;
+        role?: string;
         type?: string;
       }>(token);
 
@@ -85,10 +84,7 @@ export class JwtTokenService implements TokenService {
         throw new UnauthorizedException('Invalid token type');
       }
 
-      return TokenPayload.create(
-        UserId.create(decoded.sub),
-        Email.create(decoded.email),
-      );
+      return TokenPayload.fromDecoded(decoded);
     } catch (error) {
       if (error instanceof TokenExpiredException) {
         throw new UnauthorizedException('Refresh token expired');

@@ -10,6 +10,7 @@ export class UserMapper {
     schema.email = primitives.email;
     schema.username = primitives.username;
     schema.password = primitives.password;
+    schema.role = primitives.role;
     schema.avatarUrl = primitives.avatarUrl;
     schema.createdAt = primitives.createdAt || new Date();
     return schema;
@@ -21,6 +22,7 @@ export class UserMapper {
       email: schema.email,
       username: schema.username,
       hashedPassword: schema.password,
+      role: schema.role,
       createdAt: schema.createdAt,
       avatarUrl: schema.avatarUrl,
       updatedAt: schema.updatedAt,

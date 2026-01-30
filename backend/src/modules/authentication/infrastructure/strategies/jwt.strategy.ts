@@ -3,6 +3,12 @@ import { PassportStrategy } from '@nestjs/passport';
 import { TokenService } from '../../application/ports/token.service.interface';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
+export interface JwtPayload {
+  userId: string;
+  email: string;
+  role: string;
+}
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly tokenService: TokenService) {
@@ -13,7 +19,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(payload: { sub: string; email: string }) {
-    return { userId: payload.sub, email: payload.email };
+  validate(payload: { sub: string; email: string; role?: string }): JwtPayload {
+    return {
+      userId: payload.sub,
+      email: payload.email,
+      role: payload.role ?? 'USER',
+    };
   }
 }

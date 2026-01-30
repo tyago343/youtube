@@ -2,6 +2,7 @@ import { UserId } from './vo/user-id.vo';
 import { Email } from './vo/email.vo';
 import { Username } from './vo/username.vo';
 import { Password } from './vo/password.vo';
+import { UserRole } from './vo/user-role.vo';
 import { InvalidAvatarUrlException } from './exceptions/invalid-avatar-url.exception';
 
 export class User {
@@ -10,6 +11,7 @@ export class User {
     email,
     username,
     password,
+    role,
     createdAt,
     avatarUrl,
     updatedAt,
@@ -18,6 +20,7 @@ export class User {
     email: Email;
     username: Username;
     password: Password;
+    role: UserRole;
     createdAt: Date;
     avatarUrl?: string;
     updatedAt?: Date;
@@ -26,6 +29,7 @@ export class User {
     this.email = email;
     this.username = username;
     this.password = password;
+    this.role = role;
     this.createdAt = createdAt;
     this.avatarUrl = avatarUrl;
     this.updatedAt = updatedAt;
@@ -35,6 +39,7 @@ export class User {
   public email: Email;
   public username: Username;
   public password: Password;
+  public readonly role: UserRole;
   public readonly createdAt: Date;
   public avatarUrl?: string;
   public updatedAt?: Date;
@@ -44,17 +49,20 @@ export class User {
     email,
     username,
     hashedPassword,
+    role = UserRole.USER,
   }: {
     id: string;
     email: string;
     username: string;
     hashedPassword: string;
+    role?: UserRole;
   }): User {
     return new User({
       id: UserId.create(id),
       email: Email.create(email),
       username: Username.create(username),
       password: Password.fromHashed(hashedPassword),
+      role,
       createdAt: new Date(),
       avatarUrl: undefined,
     });
@@ -65,6 +73,7 @@ export class User {
     email,
     username,
     hashedPassword,
+    role,
     createdAt,
     avatarUrl,
     updatedAt,
@@ -73,6 +82,7 @@ export class User {
     email: string;
     username: string;
     hashedPassword: string;
+    role?: string;
     createdAt: Date;
     avatarUrl?: string;
     updatedAt?: Date;
@@ -82,6 +92,7 @@ export class User {
       email: Email.create(email),
       username: Username.create(username),
       password: Password.fromHashed(hashedPassword),
+      role: role ? UserRole.fromString(role) : UserRole.USER,
       createdAt,
       avatarUrl,
       updatedAt,
@@ -120,12 +131,21 @@ export class User {
     return this.avatarUrl !== undefined && this.avatarUrl.length > 0;
   }
 
+  isModerator(): boolean {
+    return this.role.isModerator();
+  }
+
+  isLegal(): boolean {
+    return this.role.isLegal();
+  }
+
   toPrimitives() {
     return {
       id: this.id.value,
       email: this.email.value,
       username: this.username.value,
       password: this.password.value,
+      role: this.role.value,
       avatarUrl: this.avatarUrl,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,

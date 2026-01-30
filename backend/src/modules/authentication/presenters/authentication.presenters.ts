@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AuthenticationController } from './http/authentication.controller';
+import { ModerationAuthController } from './http/moderation-auth.controller';
 import { AuthenticationApplicationModule } from '../application/authentication.application';
 import { AuthenticationInfrastructureModule } from '../infrastructure/authentication.infrastructure';
 import { AuthenticationService } from '../application/services/authentication.service';
@@ -10,7 +11,7 @@ import { AuthenticationService } from '../application/services/authentication.se
       AuthenticationInfrastructureModule,
     ),
   ],
-  controllers: [AuthenticationController],
+  controllers: [AuthenticationController, ModerationAuthController],
   providers: [AuthenticationService],
 })
 export class AuthenticationPresentersModule {}

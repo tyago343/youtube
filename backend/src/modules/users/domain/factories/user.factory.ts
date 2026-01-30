@@ -16,6 +16,7 @@ export class UserFactory {
     email,
     username,
     hashedPassword,
+    role,
     createdAt,
     avatarUrl,
     updatedAt,
@@ -24,6 +25,7 @@ export class UserFactory {
     email: string;
     username: string;
     hashedPassword: string;
+    role?: string;
     createdAt: Date;
     avatarUrl?: string;
     updatedAt?: Date;
@@ -33,6 +35,7 @@ export class UserFactory {
       email,
       username,
       hashedPassword,
+      role,
       createdAt,
       avatarUrl,
       updatedAt,

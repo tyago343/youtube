@@ -33,6 +33,12 @@ export class UserResponseDto {
   })
   createdAt: Date;
 
+  @ApiProperty({
+    description: 'The user role (USER, MODERATOR, LEGAL)',
+    example: 'USER',
+  })
+  role: string;
+
   static fromDomain(user: User): UserResponseDto {
     const dto = new UserResponseDto();
     dto.id = user.id.value;
@@ -40,6 +46,7 @@ export class UserResponseDto {
     dto.username = user.username.value;
     dto.avatarUrl = user.avatarUrl;
     dto.createdAt = user.createdAt || new Date();
+    dto.role = user.role.value;
     return dto;
   }
 }
