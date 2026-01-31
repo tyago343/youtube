@@ -1,6 +1,7 @@
 import { ChannelId } from 'src/modules/channels/domain/vo/channel-id.vo';
 import { VideoId } from './vo/video-id.vo';
 import { VideoVisibility } from './vo/video-visibility.vo';
+import { VideoStatus } from './vo/video-status.vo';
 
 export class Video {
   public constructor({
@@ -15,6 +16,7 @@ export class Video {
     likes,
     dislikes,
     visibility,
+    status,
     updatedAt,
     published,
   }: {
@@ -29,6 +31,7 @@ export class Video {
     likes: number;
     dislikes: number;
     visibility: VideoVisibility;
+    status: VideoStatus;
     updatedAt?: Date;
     published?: Date;
   }) {
@@ -43,6 +46,7 @@ export class Video {
     this.likes = likes;
     this.dislikes = dislikes;
     this.visibility = visibility;
+    this.status = status;
     this.updatedAt = updatedAt;
     this.published = published;
   }
@@ -58,6 +62,7 @@ export class Video {
   public likes: number;
   public dislikes: number;
   public visibility: VideoVisibility;
+  public status: VideoStatus;
   public updatedAt?: Date;
   public published?: Date;
   static create({
@@ -69,6 +74,7 @@ export class Video {
     createdAt = new Date(),
     channelId,
     visibility = VideoVisibility.PRIVATE,
+    status = VideoStatus.VISIBLE,
   }: {
     id: string;
     title: string;
@@ -78,6 +84,7 @@ export class Video {
     channelId: ChannelId;
     thumbnailUrl?: string;
     visibility?: VideoVisibility;
+    status?: VideoStatus;
   }) {
     const views = 0;
     const likes = 0;
@@ -94,6 +101,7 @@ export class Video {
       likes,
       dislikes,
       visibility,
+      status,
     });
   }
 
@@ -110,6 +118,7 @@ export class Video {
     likes,
     dislikes,
     visibility,
+    status,
     published,
   }: {
     id: string;
@@ -123,6 +132,7 @@ export class Video {
     likes: number;
     dislikes: number;
     visibility: string;
+    status?: string;
     updatedAt?: Date;
     published?: Date;
   }) {
@@ -138,10 +148,28 @@ export class Video {
       likes,
       dislikes,
       visibility: VideoVisibility.fromString(visibility),
+      status: status ? VideoStatus.fromString(status) : VideoStatus.VISIBLE,
       updatedAt,
       published,
     });
   }
+
+  hide(): void {
+    this.status = VideoStatus.HIDDEN;
+  }
+
+  show(): void {
+    this.status = VideoStatus.VISIBLE;
+  }
+
+  isVisible(): boolean {
+    return this.status.isVisible();
+  }
+
+  isHidden(): boolean {
+    return this.status.isHidden();
+  }
+
   toPrimitives() {
     return {
       id: this.id.value,
@@ -156,6 +184,7 @@ export class Video {
       likes: this.likes,
       dislikes: this.dislikes,
       visibility: this.visibility.value,
+      status: this.status.value,
       published: this.published,
     };
   }

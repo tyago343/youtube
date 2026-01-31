@@ -25,6 +25,9 @@ export class UserSchema {
   @Column({ default: 'USER' })
   role: string;
 
+  @Column({ default: 'ACTIVE' })
+  status: string;
+
   @Column({ nullable: true })
   avatarUrl?: string;
 

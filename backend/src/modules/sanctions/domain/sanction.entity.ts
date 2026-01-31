@@ -1,5 +1,6 @@
 import { UserId } from 'src/modules/users/domain/vo/user-id.vo';
 import { InvalidSanctionTargetException } from './exceptions/invalid-sanction-target.exception';
+import { SanctionId } from './vo/sanction-id.vo';
 import { SanctionTargetType } from './vo/sanction-target-type.vo';
 import { SanctionType } from './vo/sanction-type.vo';
 
@@ -15,7 +16,7 @@ export class Sanction {
     appliedAt,
     expiresAt,
   }: {
-    id: string;
+    id: SanctionId;
     reportIds: string[];
     sanctionType: SanctionType;
     targetType: SanctionTargetType | null;
@@ -36,7 +37,7 @@ export class Sanction {
     this.expiresAt = expiresAt;
   }
 
-  public readonly id: string;
+  public readonly id: SanctionId;
   public readonly reportIds: readonly string[];
   public readonly sanctionType: SanctionType;
   public readonly targetType: SanctionTargetType | null;
@@ -69,7 +70,7 @@ export class Sanction {
     Sanction.validateTargetForType(sanctionType, targetType, targetId);
 
     return new Sanction({
-      id,
+      id: SanctionId.create(id),
       reportIds: [...reportIds],
       sanctionType,
       targetType,
@@ -98,7 +99,7 @@ export class Sanction {
     targetType: string | null;
     targetId: string | null;
     messageBody: string;
-    appliedByUserId: UserId;
+    appliedByUserId: string;
     appliedAt: Date;
     expiresAt: Date | null;
   }): Sanction {
@@ -109,13 +110,13 @@ export class Sanction {
     Sanction.validateTargetForType(type, resolvedTargetType, targetId);
 
     return new Sanction({
-      id,
+      id: SanctionId.create(id),
       reportIds: [...reportIds],
       sanctionType: type,
       targetType: resolvedTargetType,
       targetId,
       messageBody,
-      appliedByUserId,
+      appliedByUserId: UserId.create(appliedByUserId),
       appliedAt,
       expiresAt,
     });
@@ -180,7 +181,7 @@ export class Sanction {
     expiresAt: Date | null;
   } {
     return {
-      id: this.id,
+      id: this.id.value,
       reportIds: [...this.reportIds],
       sanctionType: this.sanctionType.value,
       targetType: this.targetType?.value ?? null,

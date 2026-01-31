@@ -3,6 +3,7 @@ import { ChannelStatus } from './vo/channel-status.vo';
 import { ChannelStatusChangeId } from './vo/channel-status-change-id.vo';
 import { InfractionSeverity } from './vo/infraction-severity.vo';
 import { UserId } from 'src/modules/users/domain/vo/user-id.vo';
+import { SanctionId } from 'src/modules/sanctions/domain/vo/sanction-id.vo';
 
 export class ChannelStatusChange {
   private constructor({
@@ -15,6 +16,7 @@ export class ChannelStatusChange {
     expiresAt,
     createdAt,
     createdBy,
+    sanctionId,
   }: {
     id: ChannelStatusChangeId;
     channelId: ChannelId;
@@ -25,6 +27,7 @@ export class ChannelStatusChange {
     expiresAt: Date | null;
     createdAt: Date;
     createdBy: UserId | null;
+    sanctionId: SanctionId | null;
   }) {
     this.id = id;
     this.channelId = channelId;
@@ -35,6 +38,7 @@ export class ChannelStatusChange {
     this.expiresAt = expiresAt;
     this.createdAt = createdAt;
     this.createdBy = createdBy;
+    this.sanctionId = sanctionId;
   }
 
   public readonly id: ChannelStatusChangeId;
@@ -46,6 +50,7 @@ export class ChannelStatusChange {
   public readonly expiresAt: Date | null;
   public readonly createdAt: Date;
   public readonly createdBy: UserId | null;
+  public readonly sanctionId: SanctionId | null;
 
   static create({
     id,
@@ -56,6 +61,7 @@ export class ChannelStatusChange {
     severity = null,
     expiresAt = null,
     createdBy = null,
+    sanctionId = null,
   }: {
     id: string;
     channelId: ChannelId;
@@ -65,6 +71,7 @@ export class ChannelStatusChange {
     severity?: InfractionSeverity | null;
     expiresAt?: Date | null;
     createdBy?: UserId | null;
+    sanctionId?: SanctionId | null;
   }): ChannelStatusChange {
     return new ChannelStatusChange({
       id: ChannelStatusChangeId.create(id),
@@ -76,6 +83,7 @@ export class ChannelStatusChange {
       expiresAt,
       createdAt: new Date(),
       createdBy,
+      sanctionId,
     });
   }
 
@@ -89,6 +97,7 @@ export class ChannelStatusChange {
     expiresAt,
     createdAt,
     createdBy,
+    sanctionId,
   }: {
     id: string;
     channelId: ChannelId;
@@ -99,6 +108,7 @@ export class ChannelStatusChange {
     expiresAt: Date | null;
     createdAt: Date;
     createdBy: UserId | null;
+    sanctionId: string | null;
   }): ChannelStatusChange {
     return new ChannelStatusChange({
       id: ChannelStatusChangeId.create(id),
@@ -110,6 +120,7 @@ export class ChannelStatusChange {
       expiresAt,
       createdAt,
       createdBy,
+      sanctionId: sanctionId ? SanctionId.create(sanctionId) : null,
     });
   }
 
@@ -137,6 +148,10 @@ export class ChannelStatusChange {
     return this.severity !== null && this.severity.requiresManualReview();
   }
 
+  isSanctionRelated(): boolean {
+    return this.sanctionId !== null;
+  }
+
   toPrimitives() {
     return {
       id: this.id.value,
@@ -148,6 +163,7 @@ export class ChannelStatusChange {
       expiresAt: this.expiresAt,
       createdAt: this.createdAt,
       createdBy: this.createdBy?.value ?? null,
+      sanctionId: this.sanctionId?.value ?? null,
     };
   }
 }

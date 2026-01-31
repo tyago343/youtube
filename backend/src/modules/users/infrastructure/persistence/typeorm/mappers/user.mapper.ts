@@ -11,6 +11,7 @@ export class UserMapper {
     schema.username = primitives.username;
     schema.password = primitives.password;
     schema.role = primitives.role;
+    schema.status = primitives.status;
     schema.avatarUrl = primitives.avatarUrl;
     schema.createdAt = primitives.createdAt || new Date();
     return schema;
@@ -23,6 +24,7 @@ export class UserMapper {
       username: schema.username,
       hashedPassword: schema.password,
       role: schema.role,
+      status: schema.status,
       createdAt: schema.createdAt,
       avatarUrl: schema.avatarUrl,
       updatedAt: schema.updatedAt,

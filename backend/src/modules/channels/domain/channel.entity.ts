@@ -187,6 +187,11 @@ export class Channel {
     this.markAsUpdated();
   }
 
+  sanction(): void {
+    this.status = ChannelStatus.SANCTIONED;
+    this.markAsUpdated();
+  }
+
   terminate(): void {
     this.status = ChannelStatus.TERMINATED;
     this.markAsUpdated();
@@ -213,6 +218,10 @@ export class Channel {
 
   isSuspended(): boolean {
     return this.status.equals(ChannelStatus.SUSPENDED);
+  }
+
+  isSanctioned(): boolean {
+    return this.status.equals(ChannelStatus.SANCTIONED);
   }
 
   isTerminated(): boolean {

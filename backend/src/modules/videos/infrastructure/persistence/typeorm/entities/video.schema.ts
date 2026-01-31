@@ -48,6 +48,9 @@ export class VideoSchema {
   @Column({ default: 'PRIVATE' })
   visibility: string;
 
+  @Column({ default: 'VISIBLE' })
+  status: string;
+
   @Column({ nullable: true })
   published?: Date;
 

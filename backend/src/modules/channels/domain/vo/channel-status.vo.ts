@@ -3,6 +3,7 @@ import { InvalidChannelStatusException } from '../exceptions/invalid-channel-sta
 export class ChannelStatus {
   public static readonly ACTIVE = new ChannelStatus('ACTIVE');
   public static readonly SUSPENDED = new ChannelStatus('SUSPENDED');
+  public static readonly SANCTIONED = new ChannelStatus('SANCTIONED');
   public static readonly TERMINATED = new ChannelStatus('TERMINATED');
   public static readonly INACTIVE = new ChannelStatus('INACTIVE');
   public static readonly PENDING_REVIEW = new ChannelStatus('PENDING_REVIEW');
@@ -10,6 +11,7 @@ export class ChannelStatus {
   private static readonly VALID_VALUES = [
     'ACTIVE',
     'SUSPENDED',
+    'SANCTIONED',
     'TERMINATED',
     'INACTIVE',
     'PENDING_REVIEW',
@@ -23,6 +25,8 @@ export class ChannelStatus {
         return ChannelStatus.ACTIVE;
       case 'SUSPENDED':
         return ChannelStatus.SUSPENDED;
+      case 'SANCTIONED':
+        return ChannelStatus.SANCTIONED;
       case 'TERMINATED':
         return ChannelStatus.TERMINATED;
       case 'INACTIVE':
@@ -41,11 +45,19 @@ export class ChannelStatus {
   }
 
   canBeReactivated(): boolean {
-    return this.value === 'SUSPENDED' || this.value === 'INACTIVE';
+    return (
+      this.value === 'SUSPENDED' ||
+      this.value === 'SANCTIONED' ||
+      this.value === 'INACTIVE'
+    );
   }
 
   canBeSuspended(): boolean {
     return this.value === 'ACTIVE';
+  }
+
+  canBeSanctioned(): boolean {
+    return this.value === 'ACTIVE' || this.value === 'SUSPENDED';
   }
 
   canBeTerminated(): boolean {
@@ -54,6 +66,10 @@ export class ChannelStatus {
 
   requiresReview(): boolean {
     return this.value === 'PENDING_REVIEW';
+  }
+
+  isSanctioned(): boolean {
+    return this.value === 'SANCTIONED';
   }
 
   equals(other: ChannelStatus): boolean {

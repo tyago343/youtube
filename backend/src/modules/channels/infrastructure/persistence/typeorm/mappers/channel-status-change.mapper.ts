@@ -19,6 +19,7 @@ export class ChannelStatusChangeMapper {
     schema.expiresAt = primitives.expiresAt ?? undefined;
     schema.createdAt = primitives.createdAt;
     schema.createdBy = primitives.createdBy ?? undefined;
+    schema.sanctionId = primitives.sanctionId ?? undefined;
 
     return schema;
   }
@@ -34,6 +35,7 @@ export class ChannelStatusChangeMapper {
       expiresAt: schema.expiresAt ?? null,
       createdAt: schema.createdAt,
       createdBy: schema.createdBy ? UserId.create(schema.createdBy) : null,
+      sanctionId: schema.sanctionId ?? null,
     });
   }
 }

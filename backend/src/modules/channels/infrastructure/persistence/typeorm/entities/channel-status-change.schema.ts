@@ -45,4 +45,7 @@ export class ChannelStatusChangeSchema {
   @ManyToOne(() => UserSchema, { nullable: true })
   @JoinColumn({ name: 'createdBy' })
   createdByUser?: UserSchema;
+
+  @Column({ nullable: true })
+  sanctionId?: string;
 }

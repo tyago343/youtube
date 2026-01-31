@@ -4,6 +4,7 @@ import { ChannelId } from 'src/modules/channels/domain/vo/channel-id.vo';
 import { Channel } from 'src/modules/channels/domain/channel.entity';
 import { ChannelMapper } from 'src/modules/channels/infrastructure/persistence/typeorm/mappers/channel.mapper';
 import { VideoVisibility } from 'src/modules/videos/domain/vo/video-visibility.vo';
+import { VideoStatus } from 'src/modules/videos/domain/vo/video-status.vo';
 
 export class VideoMapper {
   static toPersistence(video: Video): VideoSchema {
@@ -20,6 +21,7 @@ export class VideoMapper {
     schema.likes = primitives.likes ?? 0;
     schema.dislikes = primitives.dislikes ?? 0;
     schema.visibility = primitives.visibility ?? VideoVisibility.PRIVATE.value;
+    schema.status = primitives.status ?? VideoStatus.VISIBLE.value;
     schema.createdAt = primitives.createdAt ?? new Date();
     schema.published = primitives.published;
     schema.updatedAt = primitives.updatedAt;
@@ -39,6 +41,7 @@ export class VideoMapper {
       likes: schema.likes,
       dislikes: schema.dislikes,
       visibility: schema.visibility,
+      status: schema.status,
       createdAt: schema.createdAt,
       updatedAt: schema.updatedAt,
       published: schema.published,
