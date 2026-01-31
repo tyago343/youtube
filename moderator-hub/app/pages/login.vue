@@ -2,7 +2,7 @@
 import type { FormSubmitEvent } from "@nuxt/ui";
 import * as z from "zod";
 import { useUserStore } from "~/stores/user";
-
+const toast = useToast();
 const schema = z.object({
   email: z.email("Invalid email"),
   password: z
@@ -16,13 +16,24 @@ const state = reactive<Partial<Schema>>({
   password: undefined,
 });
 const { login } = useUserStore();
-function onSubmit(formData: FormSubmitEvent<Schema>) {
-  login(formData.data);
+async function onSubmit(formData: FormSubmitEvent<Schema>) {
+  try {
+    await login(formData.data);
+    navigateTo("/");
+  } catch (error) {
+    toast.add({
+      title: "Invalid credentials",
+      description: "Please check your email and password",
+      color: "error",
+    });
+    console.error(error);
+  }
 }
 </script>
 
 <template>
   <UContainer class="h-screen flex items-center justify-center">
+    <NuxtLink to="/">hoem</NuxtLink>
     <UForm
       :schema="schema"
       :state="state"
