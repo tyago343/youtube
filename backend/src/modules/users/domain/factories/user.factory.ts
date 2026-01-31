@@ -1,13 +1,25 @@
 import { randomUUID } from 'crypto';
 import { User } from '../user.entity';
+import { UserRole } from '../vo/user-role.vo';
 
 export class UserFactory {
-  create(email: string, username: string, hashedPassword: string): User {
+  create({
+    email,
+    username,
+    hashedPassword,
+    role,
+  }: {
+    email: string;
+    username: string;
+    hashedPassword: string;
+    role?: UserRole;
+  }): User {
     return User.create({
       id: randomUUID(),
       email,
       username,
       hashedPassword,
+      role,
     });
   }
 

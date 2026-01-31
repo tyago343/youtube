@@ -13,6 +13,7 @@ import { User } from './modules/users/domain/user.entity';
 import { Channel } from './modules/channels/domain/channel.entity';
 import { ChannelId } from './modules/channels/domain/vo/channel-id.vo';
 import { VideoVisibility } from './modules/videos/domain/vo/video-visibility.vo';
+import { UserRole } from './modules/users/domain/vo/user-role.vo';
 
 const PASSWORD = '123123123';
 const AVATAR_URL =
@@ -24,9 +25,13 @@ const THUMBNAIL_URLS = [
   'http://localhost:9000/opentube/thumbnails/ffe44d5b-2ced-4c5c-b6a7-a97aed815f7e.jpg',
 ];
 
-const USERS = [
+const USERS: Array<{
+  username: string;
+  email: string;
+  role?: UserRole;
+}> = [
   { username: 'alice_dev', email: 'alice@example.com' },
-  { username: 'santi', email: 'santi@test.com' },
+  { username: 'santi', email: 'santi@test.com', role: UserRole.MODERATOR },
   { username: 'bob_coder', email: 'bob@example.com' },
   { username: 'charlie_tech', email: 'charlie@example.com' },
   { username: 'diana_creator', email: 'diana@example.com' },
@@ -167,11 +172,12 @@ async function seed() {
   const createdUsers: User[] = [];
   for (const userData of USERS) {
     try {
-      const user = userFactory.create(
-        userData.email,
-        userData.username,
+      const user = userFactory.create({
+        email: userData.email,
+        username: userData.username,
         hashedPassword,
-      );
+        role: userData.role,
+      });
       // Set avatar URL
       user.changeAvatar(AVATAR_URL);
       const savedUser = await userRepository.save(user);

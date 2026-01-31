@@ -90,7 +90,11 @@ describe('CreateUserUseCase', () => {
     );
     expect(passwordHashingMocks.hash).toHaveBeenCalledWith(validPassword);
     expect(userFactoryMocks.create).toHaveBeenCalledWith(
-      validEmail,
+      {
+        email: validEmail,
+        username: validUsername,
+        hashedPassword,
+      },
       validUsername,
       hashedPassword,
     );

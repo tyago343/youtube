@@ -7,7 +7,6 @@ import { AuthenticationService } from './services/authentication.service';
 import { UsersModule } from 'src/modules/users/users.module';
 import { GetUserUseCase } from 'src/modules/users/application/use-cases/get-user.use-case';
 import { RefreshTokenUseCase } from './use-cases/refresh-token.use-case';
-import { TokenService } from './ports/token.service.interface';
 
 const useCases = [
   SignUpUseCase,
@@ -31,7 +30,7 @@ export class AuthenticationApplicationModule {
       module: AuthenticationApplicationModule,
       imports: [infrastructureModule, UsersModule],
       providers: [...useCases, AuthenticationService],
-      exports: [...useCases, AuthenticationService, TokenService],
+      exports: [...useCases, AuthenticationService],
     };
   }
 }

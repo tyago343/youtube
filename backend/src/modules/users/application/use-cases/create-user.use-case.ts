@@ -41,7 +41,11 @@ export class CreateUserUseCase {
 
     const hashedPassword = await this.passwordHashingService.hash(password);
 
-    const user = this.userFactory.create(email, username, hashedPassword);
+    const user = this.userFactory.create({
+      email,
+      username,
+      hashedPassword,
+    });
 
     const savedUser = await this.userRepository.save(user);
 
