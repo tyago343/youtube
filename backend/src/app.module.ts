@@ -7,6 +7,7 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { VideosModule } from './modules/videos/videos.module';
 import { ChannelsModule } from './modules/channels/channels.module';
+import { ReportsModule } from './modules/reports/reports.module';
 import { NotificationModule } from './modules/notification/notification.module';
 import { JwtAuthGuard } from './modules/authentication/infrastructure/guards/jwt-authentication.guard';
 import { DatabaseConfigService } from './modules/shared/application/ports/database-config.interface';
@@ -33,6 +34,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     AuthenticationModule,
     VideosModule,
     ChannelsModule,
+    ReportsModule,
     NotificationModule,
   ],
   providers: [

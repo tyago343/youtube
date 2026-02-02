@@ -1,9 +1,11 @@
 /* eslint-disable max-lines-per-function */
+import { randomUUID } from 'crypto';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { UserRepository } from './modules/users/application/ports/user.repository';
 import { VideosRepository } from './modules/videos/application/ports/videos.repository';
 import { ChannelRepository } from './modules/channels/application/ports/channel.repository';
+import { ReportRepository } from './modules/reports/application/ports/report.repository';
 import { PasswordHashingService } from './modules/shared/application/ports/password-hashing.interface';
 import { UserFactory } from './modules/users/domain/factories/user.factory';
 import { VideoFactory } from './modules/videos/domain/factories/video.factory';
@@ -14,6 +16,10 @@ import { Channel } from './modules/channels/domain/channel.entity';
 import { ChannelId } from './modules/channels/domain/vo/channel-id.vo';
 import { VideoVisibility } from './modules/videos/domain/vo/video-visibility.vo';
 import { UserRole } from './modules/users/domain/vo/user-role.vo';
+import { Report } from './modules/reports/domain/report.entity';
+import { ReportableType } from './modules/reports/domain/vo/reportable-type.vo';
+import { ReportSeverity } from './modules/reports/domain/vo/report-severity.vo';
+import { REPORT_REPOSITORY } from './modules/reports/application/ports/report.repository';
 
 const PASSWORD = '123123123';
 const AVATAR_URL =
@@ -149,12 +155,28 @@ const CHANNEL_DATA = [
   },
 ];
 
+const REPORT_REASONS = [
+  'Spam',
+  'Contenido inapropiado',
+  'Violación de derechos de autor',
+  'Acoso',
+  'Desinformación',
+];
+
+const REPORT_SEVERITIES = [
+  ReportSeverity.LOW,
+  ReportSeverity.MEDIUM,
+  ReportSeverity.HIGH,
+  ReportSeverity.CRITICAL,
+];
+
 // eslint-disable-next-line complexity
 async function seed() {
   const app = await NestFactory.createApplicationContext(AppModule);
   const userRepository = app.get<UserRepository>(UserRepository);
   const videoRepository = app.get<VideosRepository>(VideosRepository);
   const channelRepository = app.get<ChannelRepository>(ChannelRepository);
+  const reportRepository = app.get<ReportRepository>(REPORT_REPOSITORY);
   const passwordHashingService = app.get<PasswordHashingService>(
     PasswordHashingService,
   );
@@ -233,6 +255,7 @@ async function seed() {
     userToChannel.has(user.id.value),
   );
   const usersWithVideos = usersWithChannels.slice(0, 10); // First 10 users with channels
+  const createdVideos: Array<{ id: string; ownerUserId: string }> = [];
 
   if (usersWithVideos.length === 0) {
     console.error('No users with channels available to create videos');
@@ -285,6 +308,10 @@ async function seed() {
       video.dislikes = dislikes;
 
       const savedVideo = await videoRepository.create(video);
+      createdVideos.push({
+        id: savedVideo.id.value,
+        ownerUserId: owner.id.value,
+      });
       console.log(
         `Created video: "${savedVideo.title}" on channel "${channel.name}"`,
       );
@@ -296,7 +323,109 @@ async function seed() {
     }
   }
 
-  console.log(`Created ${videoCount} videos`);
+  console.log(`Created ${createdVideos.length} videos`);
+
+  // Build channel list for reports (id + ownerUserId)
+  const createdChannels = Array.from(userToChannel.entries()).map(
+    ([ownerUserId, channel]) => ({
+      id: channel.id.value,
+      ownerUserId,
+    }),
+  );
+
+  if (createdVideos.length === 0 || createdChannels.length === 0) {
+    console.error('Need videos and channels to create reports');
+    await app.close();
+    return;
+  }
+
+  // 30 reports: 18 on videos, 12 on channels (some resources get multiple reports)
+  const videoReportTargets = Array.from({ length: 18 }, () => {
+    const v = createdVideos[Math.floor(Math.random() * createdVideos.length)];
+    return {
+      type: 'VIDEO' as const,
+      reportableId: v.id,
+      ownerUserId: v.ownerUserId,
+    };
+  });
+  const channelReportTargets = Array.from({ length: 12 }, () => {
+    const c =
+      createdChannels[Math.floor(Math.random() * createdChannels.length)];
+    return {
+      type: 'CHANNEL' as const,
+      reportableId: c.id,
+      ownerUserId: c.ownerUserId,
+    };
+  });
+  const reportTargets = [...videoReportTargets, ...channelReportTargets];
+
+  const moderatorUser = createdUsers.find((u) => u.username.value === 'santi');
+  const moderatorUserId = moderatorUser
+    ? UserId.create(moderatorUser.id.value)
+    : null;
+
+  // Status: ≥50% PENDING (15), then ASSIGNED (5), IN_REVIEW (4), RESOLVED (3), DISMISSED (3)
+  const REPORT_STATUS_ACTIONS: Array<
+    ((report: Report, moderatorId: UserId) => void) | null
+  > = [
+    ...Array(15).fill(null), // 0-14: keep PENDING
+    ...Array(5).fill((r: Report, mid: UserId) => r.assignTo(mid)), // 15-19: ASSIGNED
+    ...Array(4).fill((r: Report, mid: UserId) => {
+      r.assignTo(mid);
+      r.startReview();
+    }), // 20-23: IN_REVIEW
+    ...Array(3).fill((r: Report) => r.resolve()), // 24-26: RESOLVED
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    ...Array(3).fill((r: Report) => r.dismiss()), // 27-29: DISMISSED
+  ];
+
+  console.log('Creating reports...');
+  let reportsCreated = 0;
+  for (let i = 0; i < reportTargets.length; i++) {
+    try {
+      const target = reportTargets[i];
+      const possibleReporters = createdUsers.filter(
+        (u) => u.id.value !== target.ownerUserId,
+      );
+      if (possibleReporters.length === 0) continue;
+      const reporter =
+        possibleReporters[Math.floor(Math.random() * possibleReporters.length)];
+      const reason =
+        REPORT_REASONS[Math.floor(Math.random() * REPORT_REASONS.length)];
+      const severity =
+        REPORT_SEVERITIES[Math.floor(Math.random() * REPORT_SEVERITIES.length)];
+
+      const report = Report.create({
+        id: randomUUID(),
+        reporterUserId: UserId.create(reporter.id.value),
+        reportableType:
+          target.type === 'VIDEO'
+            ? ReportableType.VIDEO
+            : ReportableType.CHANNEL,
+        reportableId: target.reportableId,
+        reason,
+        severity,
+      });
+
+      const action = REPORT_STATUS_ACTIONS[i];
+      if (action && moderatorUserId) {
+        action(report, moderatorUserId);
+      }
+
+      await reportRepository.save(report);
+      reportsCreated++;
+      console.log(
+        `Created report #${reportsCreated} (${target.type} ${target.reportableId.slice(0, 8)}...) status=${report.status.value}`,
+      );
+    } catch (error) {
+      console.error(
+        `Error creating report ${i + 1}:`,
+        error instanceof Error ? error.message : String(error),
+      );
+    }
+  }
+
+  console.log(`Created ${reportsCreated} reports`);
   console.log('Seed completed successfully!');
 
   await app.close();
