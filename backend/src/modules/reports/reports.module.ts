@@ -4,21 +4,25 @@ import { ReportSchema } from './infrastructure/persistence/typeorm/entities/repo
 import { ReportWatcherSchema } from './infrastructure/persistence/typeorm/entities/report-watcher.schema';
 import { OrmReportRepository } from './infrastructure/persistence/typeorm/repositories/orm-report.repository';
 import { OrmReportWatcherRepository } from './infrastructure/persistence/typeorm/repositories/orm-report-watcher.repository';
-import { REPORT_REPOSITORY } from './application/ports/report.repository';
-import { REPORT_WATCHER_REPOSITORY } from './application/ports/report-watcher.repository';
+import { ReportsPresentersModule } from './presenters/reports.presenters';
+import { ReportsRepository } from './application/ports/reports.repository';
+import { ReportWatcherRepository } from './application/ports/report-watcher.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ReportSchema, ReportWatcherSchema])],
+  imports: [
+    TypeOrmModule.forFeature([ReportSchema, ReportWatcherSchema]),
+    ReportsPresentersModule,
+  ],
   providers: [
     {
-      provide: REPORT_REPOSITORY,
+      provide: ReportsRepository,
       useClass: OrmReportRepository,
     },
     {
-      provide: REPORT_WATCHER_REPOSITORY,
+      provide: ReportWatcherRepository,
       useClass: OrmReportWatcherRepository,
     },
   ],
-  exports: [REPORT_REPOSITORY, REPORT_WATCHER_REPOSITORY],
+  exports: [ReportsRepository, ReportWatcherRepository],
 })
 export class ReportsModule {}

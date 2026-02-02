@@ -5,7 +5,7 @@ import { AppModule } from './app.module';
 import { UserRepository } from './modules/users/application/ports/user.repository';
 import { VideosRepository } from './modules/videos/application/ports/videos.repository';
 import { ChannelRepository } from './modules/channels/application/ports/channel.repository';
-import { ReportRepository } from './modules/reports/application/ports/report.repository';
+import { ReportsRepository } from './modules/reports/application/ports/reports.repository';
 import { PasswordHashingService } from './modules/shared/application/ports/password-hashing.interface';
 import { UserFactory } from './modules/users/domain/factories/user.factory';
 import { VideoFactory } from './modules/videos/domain/factories/video.factory';
@@ -19,8 +19,6 @@ import { UserRole } from './modules/users/domain/vo/user-role.vo';
 import { Report } from './modules/reports/domain/report.entity';
 import { ReportableType } from './modules/reports/domain/vo/reportable-type.vo';
 import { ReportSeverity } from './modules/reports/domain/vo/report-severity.vo';
-import { REPORT_REPOSITORY } from './modules/reports/application/ports/report.repository';
-
 const PASSWORD = '123123123';
 const AVATAR_URL =
   'http://localhost:9000/opentube/avatars/9112edb2-2198-42c3-8142-0d63ee0fbd76.jpg';
@@ -176,7 +174,7 @@ async function seed() {
   const userRepository = app.get<UserRepository>(UserRepository);
   const videoRepository = app.get<VideosRepository>(VideosRepository);
   const channelRepository = app.get<ChannelRepository>(ChannelRepository);
-  const reportRepository = app.get<ReportRepository>(REPORT_REPOSITORY);
+  const reportRepository = app.get<ReportsRepository>(ReportsRepository);
   const passwordHashingService = app.get<PasswordHashingService>(
     PasswordHashingService,
   );

@@ -4,12 +4,12 @@ import { Repository } from 'typeorm';
 import { Report } from 'src/modules/reports/domain/report.entity';
 import { ReportId } from 'src/modules/reports/domain/vo/report-id.vo';
 import { UserId } from 'src/modules/users/domain/vo/user-id.vo';
-import { ReportRepository } from 'src/modules/reports/application/ports/report.repository';
+import { ReportsRepository } from 'src/modules/reports/application/ports/reports.repository';
 import { ReportSchema } from '../entities/report.schema';
 import { ReportMapper } from '../mappers/report.mapper';
 
 @Injectable()
-export class OrmReportRepository implements ReportRepository {
+export class OrmReportRepository implements ReportsRepository {
   constructor(
     @InjectRepository(ReportSchema)
     private readonly repository: Repository<ReportSchema>,
@@ -52,6 +52,13 @@ export class OrmReportRepository implements ReportRepository {
       order: { createdAt: 'ASC' },
     });
 
+    return schemas.map((schema) => ReportMapper.toDomain(schema));
+  }
+
+  async findAll(): Promise<Report[]> {
+    const schemas = await this.repository.find({
+      order: { createdAt: 'DESC' },
+    });
     return schemas.map((schema) => ReportMapper.toDomain(schema));
   }
 
