@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useUserSession } from "#imports";
-const { clear } = useUserSession();
+
+const { clear, user } = useUserSession();
 const logout = async () => {
   await clear();
   navigateTo("login");
@@ -8,6 +9,11 @@ const logout = async () => {
 </script>
 
 <template>
-  <h1>Index page</h1>
-  <UButton @click="logout">Logout</UButton>
+  <div class="flex flex-col items-center justify-center h-full">
+    <h1 class="text-2xl font-bold">Welcome to Moderator Hub</h1>
+    <p class="mt-2 text-gray-600 dark:text-gray-400">
+      You are logged in as {{ user?.email }}.
+    </p>
+    <UButton class="mt-4" @click="logout">Logout</UButton>
+  </div>
 </template>

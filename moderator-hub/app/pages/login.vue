@@ -2,6 +2,10 @@
 import type { FormSubmitEvent, AuthFormField } from "@nuxt/ui";
 import { loginSchema, type LoginSchema } from "#shared/schemas/auth";
 
+definePageMeta({
+  layout: "auth",
+});
+
 const { fetch: fetchSession } = useUserSession();
 
 const toast = useToast();
