@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, Request } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -13,6 +13,7 @@ import { ModerationLoginUseCase } from '../../application/use-cases/moderation-l
 import { UserResponseDto } from 'src/modules/users/presenters/http/dto/user-response.dto';
 import { AuthResponseDto } from './dto/auth.response.dto';
 import { Public } from './decorators/public.decorator';
+import { AuthenticationService } from '../../application/services/authentication.service';
 
 @ApiTags('Moderation Authentication')
 @Controller('moderation/auth')
@@ -20,6 +21,7 @@ export class ModerationAuthController {
   constructor(
     private readonly validateUserUseCase: ValidateUserUseCase,
     private readonly moderationLoginUseCase: ModerationLoginUseCase,
+    private readonly authenticationService: AuthenticationService,
   ) {}
 
   @Public()
@@ -56,5 +58,25 @@ export class ModerationAuthController {
       refreshToken,
       user: UserResponseDto.fromDomain(authenticatedUser),
     });
+  }
+
+  @Get('me')
+  @ApiOperation({
+    summary: 'Get current moderator user',
+    description:
+      'Returns the current authenticated user. Requires a valid JWT access token.',
+  })
+  @ApiOkResponse({
+    description: 'User retrieved successfully',
+    type: UserResponseDto,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Invalid or missing token',
+  })
+  async getMe(
+    @Request() req: Request & { user: { userId: string; email: string } },
+  ) {
+    const user = await this.authenticationService.getUser(req.user.userId);
+    return UserResponseDto.fromDomain(user);
   }
 }

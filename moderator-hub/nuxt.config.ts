@@ -9,9 +9,10 @@ export default defineNuxtConfig({
     },
   },
   devtools: { enabled: true },
-  modules: ["@nuxt/ui", "@pinia/nuxt"],
+  modules: ["@nuxt/ui", "@pinia/nuxt", "nuxt-auth-utils"],
   css: ["~/assets/css/main.css"],
   hooks: {
+    // This activates the authentication middleware for all pages except the login page
     "pages:extend"(pages) {
       function setMiddleware(pages: NuxtPage[]) {
         for (const page of pages) {

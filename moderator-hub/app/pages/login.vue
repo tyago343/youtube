@@ -1,24 +1,34 @@
 <script setup lang="ts">
-import type { FormSubmitEvent } from "@nuxt/ui";
-import * as z from "zod";
-import { useUserStore } from "~/stores/user";
-const toast = useToast();
-const schema = z.object({
-  email: z.email("Invalid email"),
-  password: z
-    .string("Password is required")
-    .min(8, "Must be at least 8 characters"),
-});
-type Schema = z.output<typeof schema>;
+import type { FormSubmitEvent, AuthFormField } from "@nuxt/ui";
+import { loginSchema, type LoginSchema } from "#shared/schemas/auth";
 
-const state = reactive<Partial<Schema>>({
-  email: undefined,
-  password: undefined,
-});
-const { login } = useUserStore();
-async function onSubmit(formData: FormSubmitEvent<Schema>) {
+const { fetch: fetchSession } = useUserSession();
+
+const toast = useToast();
+
+const fields: AuthFormField[] = [
+  {
+    name: "email",
+    type: "email",
+    label: "Email",
+    placeholder: "Enter your email",
+    required: true,
+  },
+  {
+    name: "password",
+    label: "Password",
+    type: "password",
+    placeholder: "Enter your password",
+    required: true,
+  },
+];
+async function onSubmit(formData: FormSubmitEvent<LoginSchema>) {
   try {
-    await login(formData.data);
+    await $fetch("/api/auth/login", {
+      method: "POST",
+      body: formData.data,
+    });
+    await fetchSession();
     navigateTo("/");
   } catch (error) {
     toast.add({
@@ -26,29 +36,27 @@ async function onSubmit(formData: FormSubmitEvent<Schema>) {
       description: "Please check your email and password",
       color: "error",
     });
-    console.error(error);
   }
 }
+
+onMounted(async () => {
+  await fetchSession();
+  const { loggedIn } = useUserSession();
+  if (loggedIn.value) navigateTo("/");
+});
 </script>
 
 <template>
-  <UContainer class="h-screen flex items-center justify-center">
-    <NuxtLink to="/">hoem</NuxtLink>
-    <UForm
-      :schema="schema"
-      :state="state"
-      class="space-y-4 w-full max-w-md"
-      @submit="onSubmit"
-    >
-      <UFormField label="Email" name="email">
-        <UInput v-model="state.email" />
-      </UFormField>
-
-      <UFormField label="Password" name="password">
-        <UInput v-model="state.password" type="password" />
-      </UFormField>
-
-      <UButton type="submit">Submit</UButton>
-    </UForm>
-  </UContainer>
+  <div class="flex flex-col items-center justify-center gap-4 p-4">
+    <UPageCard class="w-full max-w-md">
+      <UAuthForm
+        :schema="loginSchema"
+        title="Login"
+        description="Enter your credentials to access your account."
+        icon="i-lucide-user"
+        :fields="fields"
+        @submit.prevent="onSubmit"
+      />
+    </UPageCard>
+  </div>
 </template>

@@ -1,16 +1,9 @@
-import { useUserStore } from "~/stores/user";
+export default defineNuxtRouteMiddleware(async () => {
+  const { loggedIn, fetch } = useUserSession();
 
-export default defineNuxtRouteMiddleware((to, from) => {
-  const userStore = useUserStore();
+  await fetch();
 
-  console.log("[Auth Middleware]", {
-    to: to.path,
-    from: from.path,
-    user: userStore.user,
-    hasToken: !!userStore.accessToken,
-  });
-
-  if (!userStore.user) {
+  if (!loggedIn.value) {
     return navigateTo("/login");
   }
 });
