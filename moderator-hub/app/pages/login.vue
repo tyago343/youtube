@@ -4,6 +4,7 @@ import { loginSchema, type LoginSchema } from "#shared/schemas/auth";
 
 definePageMeta({
   layout: "auth",
+  title: "Login",
 });
 
 const { fetch: fetchSession } = useUserSession();

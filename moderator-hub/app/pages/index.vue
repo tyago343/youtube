@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { useUserSession } from "#imports";
+definePageMeta({
+  title: "Dashboard",
+});
 
 const { clear, user } = useUserSession();
 const logout = async () => {
