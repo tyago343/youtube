@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const colorMode = useColorMode();
 const { pageTitle } = usePageTitle();
-
+const { clear } = useUserSession();
 const themeMenuItems = [
   {
     label: "System",
@@ -22,6 +22,14 @@ const themeMenuItems = [
     icon: "i-ph-moon",
     onSelect: () => {
       colorMode.preference = "dark";
+    },
+  },
+  {
+    label: "Logout",
+    icon: "i-ph-sign-out",
+    onSelect: () => {
+      clear();
+      navigateTo("/login");
     },
   },
 ];
@@ -74,7 +82,15 @@ const themeMenuItems = [
         class="flex w-56 shrink-0 flex-col border-r border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-900/50"
       >
         <slot name="sidebar">
-          <nav class="flex flex-col gap-1 p-3"></nav>
+          <nav class="flex flex-col gap-1 p-3">
+            <NuxtLink
+              to="/"
+              class="rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+              active-class="bg-primary/10 text-primary dark:bg-primary/20"
+            >
+              Informes
+            </NuxtLink>
+          </nav>
         </slot>
       </aside>
 

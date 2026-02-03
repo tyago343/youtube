@@ -1,21 +1,15 @@
 <script setup lang="ts">
+import type { Report } from "~/types/report";
+
 definePageMeta({
   title: "Dashboard",
 });
 
-const { clear, user } = useUserSession();
-const logout = async () => {
-  await clear();
-  navigateTo("login");
-};
+const { data: reports, status } = await useFetch<Report[]>("/api/reports", {
+  key: "reports",
+});
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center h-full">
-    <h1 class="text-2xl font-bold">Welcome to Moderator Hub</h1>
-    <p class="mt-2 text-gray-600 dark:text-gray-400">
-      You are logged in as {{ user?.email }}.
-    </p>
-    <UButton class="mt-4" @click="logout">Logout</UButton>
-  </div>
+  <ReportsTable :reports="reports ?? []" :loading="status === 'pending'" />
 </template>

@@ -1,0 +1,200 @@
+<script setup lang="ts">
+import { h, resolveComponent } from "vue";
+import type { TableColumn } from "@nuxt/ui";
+import type { Report, ReportStatus, ReportSeverity } from "~/types/report";
+
+const UBadge = resolveComponent("UBadge");
+
+const props = defineProps<{
+  reports: Report[];
+  loading?: boolean;
+}>();
+
+const {
+  statusFilter,
+  sortField,
+  sortOrder,
+  filterAndSort,
+  setStatusFilter,
+  setSort,
+} = useReportsFilters();
+
+const tableData = computed(() => {
+  const list = props.reports ?? [];
+  return filterAndSort(list);
+});
+
+const statusFilters: { label: string; value: ReportStatus | null }[] = [
+  { label: "Todos", value: null },
+  { label: "Pendientes", value: "PENDING" },
+  { label: "En Revisión", value: "IN_REVIEW" },
+  { label: "Escalado a Legales", value: "ESCALATED_TO_LEGAL" },
+  { label: "Resueltos", value: "RESOLVED" },
+];
+
+function reportableTypeLabel(type: string): string {
+  const map: Record<string, string> = {
+    VIDEO: "Video",
+    CHANNEL: "Canal",
+    COMMENT: "Comentario",
+    PLAYLIST: "Lista",
+    USER: "Usuario",
+  };
+  return map[type] ?? type;
+}
+
+function severityDotColor(severity: ReportSeverity): string {
+  const map: Record<ReportSeverity, string> = {
+    LOW: "bg-success",
+    MEDIUM: "bg-warning",
+    HIGH: "bg-error",
+    CRITICAL: "bg-error",
+  };
+  return map[severity] ?? "bg-muted";
+}
+
+function statusLabel(s: string): string {
+  const map: Record<string, string> = {
+    PENDING: "Pendiente",
+    ASSIGNED: "Asignado",
+    IN_REVIEW: "En Revisión",
+    ESCALATED_TO_LEGAL: "Escalado a Legales",
+    RESOLVED: "Resuelto",
+    DISMISSED: "Descartado",
+  };
+  return map[s] ?? s;
+}
+
+function statusBadgeColor(
+  s: string
+): "success" | "warning" | "error" | "info" | "neutral" {
+  const map: Record<
+    string,
+    "success" | "warning" | "error" | "info" | "neutral"
+  > = {
+    PENDING: "success",
+    ASSIGNED: "info",
+    IN_REVIEW: "warning",
+    ESCALATED_TO_LEGAL: "info",
+    RESOLVED: "neutral",
+    DISMISSED: "neutral",
+  };
+  return map[s] ?? "neutral";
+}
+
+function formatDate(iso: string): string {
+  const d = new Date(iso);
+  return d.toLocaleDateString("es-ES", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+}
+
+const columns: TableColumn<Report>[] = [
+  {
+    accessorKey: "reportableType",
+    header: "Tipo",
+    cell: ({ row }) => {
+      const r = row.original;
+      const typeLabel = reportableTypeLabel(r.reportableType);
+      const dotClass = severityDotColor(r.severity as ReportSeverity);
+      return h("div", { class: "flex items-center gap-2" }, [
+        h("span", {
+          class: `size-2.5 rounded-full shrink-0 ${dotClass}`,
+          "aria-hidden": "true",
+        }),
+        h("span", {}, `${typeLabel}: ${r.reason}`),
+      ]);
+    },
+  },
+  {
+    accessorKey: "reason",
+    header: "Título / Descripción",
+    cell: ({ row }) => row.original.reason,
+  },
+  {
+    accessorKey: "createdAt",
+    header: () => {
+      const isSorted = sortField.value === "createdAt";
+      const isAsc = sortOrder.value === "asc";
+      return h(
+        "button",
+        {
+          type: "button",
+          class:
+            "flex items-center gap-1 font-semibold text-highlighted hover:opacity-80",
+          onClick: () =>
+            setSort("createdAt", isSorted && isAsc ? "desc" : "asc"),
+        },
+        ["Fecha", isSorted ? (isAsc ? " ↑" : " ↓") : ""]
+      );
+    },
+    cell: ({ row }) => formatDate(row.original.createdAt),
+  },
+  {
+    accessorKey: "status",
+    header: () => {
+      const isSorted = sortField.value === "status";
+      const isAsc = sortOrder.value === "asc";
+      return h(
+        "button",
+        {
+          type: "button",
+          class:
+            "flex items-center gap-1 font-semibold text-highlighted hover:opacity-80",
+          onClick: () => setSort("status", isSorted && isAsc ? "desc" : "asc"),
+        },
+        ["Estado", isSorted ? (isAsc ? " ↑" : " ↓") : ""]
+      );
+    },
+    cell: ({ row }) => {
+      const s = row.original.status;
+      const color = statusBadgeColor(s);
+      return h(
+        UBadge,
+        {
+          class: "capitalize",
+          variant: "subtle",
+          color,
+        },
+        () => statusLabel(s)
+      );
+    },
+  },
+];
+</script>
+
+<template>
+  <div class="flex flex-1 flex-col gap-4">
+    <div class="flex flex-wrap items-center gap-2">
+      <UButton
+        v-for="f in statusFilters"
+        :key="f.value ?? 'all'"
+        :color="statusFilter === f.value ? 'primary' : 'neutral'"
+        :variant="statusFilter === f.value ? 'solid' : 'outline'"
+        size="sm"
+        :label="f.label"
+        @click="setStatusFilter(f.value)"
+      />
+    </div>
+
+    <div
+      class="min-w-0 flex-1 divide-y divide-accented rounded-lg border border-default bg-default"
+    >
+      <UTable
+        :data="tableData"
+        :columns="columns"
+        :loading="loading"
+        sticky
+        class="min-w-full"
+      >
+        <template #empty>
+          <p class="py-6 text-center text-muted">
+            No hay informes que coincidan con los filtros.
+          </p>
+        </template>
+      </UTable>
+    </div>
+  </div>
+</template>
