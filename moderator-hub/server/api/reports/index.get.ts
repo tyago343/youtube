@@ -1,4 +1,4 @@
-import type { Report } from "~/types/report";
+import type { Report } from "#shared/schemas/report";
 import { reportsResponseSchema } from "#shared/schemas/report";
 
 export default defineEventHandler(async (event): Promise<Report[]> => {

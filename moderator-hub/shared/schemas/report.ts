@@ -36,3 +36,7 @@ export const reportSchema = z.object({
 export const reportsResponseSchema = z.array(reportSchema);
 
 export type ReportSchema = z.infer<typeof reportSchema>;
+export type Report = ReportSchema;
+export type ReportableType = z.infer<typeof reportableType>;
+export type ReportSeverity = z.infer<typeof severity>;
+export type ReportStatus = z.infer<typeof status>;

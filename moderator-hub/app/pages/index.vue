@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import type { Report } from "~/types/report";
+import { useReports } from "~/composables/useReports";
 
 definePageMeta({
   title: "Dashboard",
 });
 
-const { data: reports, status } = await useFetch<Report[]>("/api/reports", {
-  key: "reports",
-});
+const { data: reports, status } = await useReports();
 </script>
 
 <template>
-  <ReportsTable :reports="reports ?? []" :loading="status === 'pending'" />
+  <ReportsTable :reports="reports" :loading="status === 'pending'" />
 </template>

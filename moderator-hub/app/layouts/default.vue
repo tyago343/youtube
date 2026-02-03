@@ -88,7 +88,7 @@ const themeMenuItems = [
               class="rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
               active-class="bg-primary/10 text-primary dark:bg-primary/20"
             >
-              Informes
+              Dashboard
             </NuxtLink>
           </nav>
         </slot>
