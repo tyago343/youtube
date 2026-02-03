@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import { h, resolveComponent } from "vue";
 import type { TableColumn } from "@nuxt/ui";
-import type { Report, ReportStatus, ReportSeverity } from "~/types/report";
+import type {
+  Report,
+  ReportStatus,
+  ReportSeverity,
+} from "#shared/schemas/report";
 
 const UBadge = resolveComponent("UBadge");
 
 const props = defineProps<{
   reports: Report[];
   loading?: boolean;
+  error?: unknown;
 }>();
 
 const {
@@ -180,6 +185,16 @@ const columns: TableColumn<Report>[] = [
     </div>
 
     <div
+      v-if="error"
+      class="flex min-h-[200px] flex-1 items-center justify-center rounded-lg border border-default bg-default p-6"
+    >
+      <p class="text-center text-muted">
+        No se pudieron cargar los reportes. Revisa la notificación o vuelve a
+        intentar.
+      </p>
+    </div>
+    <div
+      v-else
       class="min-w-0 flex-1 divide-y divide-accented rounded-lg border border-default bg-default"
     >
       <UTable
