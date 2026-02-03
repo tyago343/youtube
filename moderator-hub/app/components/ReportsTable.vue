@@ -213,3 +213,35 @@ const columns: TableColumn<Report>[] = [
     </div>
   </div>
 </template>
+
+<style scoped>
+:deep(tbody tr:nth-child(odd)) {
+  background-color: transparent;
+}
+
+:deep(tbody tr:nth-child(even)) {
+  background-color: rgb(248 250 252);
+}
+
+:deep(tbody tr:hover) {
+  background-color: rgb(226 232 240);
+}
+
+@media (prefers-color-scheme: dark) {
+  :deep(tbody tr:nth-child(even)) {
+    background-color: rgb(30 41 59 / 0.4);
+  }
+
+  :deep(tbody tr:hover) {
+    background-color: rgb(51 65 85 / 0.6);
+  }
+}
+
+.dark :deep(tbody tr:nth-child(even)) {
+  background-color: rgb(30 41 59 / 0.4);
+}
+
+.dark :deep(tbody tr:hover) {
+  background-color: rgb(51 65 85 / 0.6);
+}
+</style>
