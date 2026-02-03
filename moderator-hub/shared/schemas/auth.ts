@@ -12,6 +12,16 @@ export type LoginSchema = z.output<typeof loginSchema>;
 export const refreshTokenResponseSchema = z.object({
   accessToken: z.string().min(1),
   refreshToken: z.string().min(1),
+  user: z
+    .object({
+      id: z.string(),
+      email: z.string(),
+      username: z.string(),
+      avatarUrl: z.string().optional(),
+      createdAt: z.string(),
+      role: z.string(),
+    })
+    .optional(),
 });
 
 export type RefreshTokenResponse = z.infer<typeof refreshTokenResponseSchema>;

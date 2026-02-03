@@ -17,11 +17,11 @@ export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, loginSchema.parse);
 
   const config = useRuntimeConfig();
-  const apiUrl = config.public.apiUrl.replace(/\/$/, "") + "/";
+  const apiUrl = config.public.apiUrl.replace(/\/$/, "");
 
   let response: BackendAuthResponse;
   try {
-    response = await $fetch<BackendAuthResponse>(`${apiUrl}auth/login`, {
+    response = await $fetch<BackendAuthResponse>(`${apiUrl}/auth/login`, {
       method: "POST",
       body,
     });

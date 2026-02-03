@@ -8,21 +8,16 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
-import { ValidateUserUseCase } from '../../application/use-cases/validate-user.use-case';
-import { ModerationLoginUseCase } from '../../application/use-cases/moderation-login.use-case';
 import { UserResponseDto } from 'src/modules/users/presenters/http/dto/user-response.dto';
 import { AuthResponseDto } from './dto/auth.response.dto';
 import { Public } from './decorators/public.decorator';
 import { AuthenticationService } from '../../application/services/authentication.service';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @ApiTags('Moderation Authentication')
 @Controller('moderation/auth')
 export class ModerationAuthController {
-  constructor(
-    private readonly validateUserUseCase: ValidateUserUseCase,
-    private readonly moderationLoginUseCase: ModerationLoginUseCase,
-    private readonly authenticationService: AuthenticationService,
-  ) {}
+  constructor(private readonly authenticationService: AuthenticationService) {}
 
   @Public()
   @Post('login')
@@ -35,28 +30,21 @@ export class ModerationAuthController {
     description: 'User logged in successfully to moderation hub',
     type: AuthResponseDto,
   })
-  @ApiUnauthorizedResponse({
-    description: 'Invalid credentials',
-  })
   @ApiForbiddenResponse({
     description: 'User does not have MODERATOR or LEGAL role',
   })
   @ApiBody({ type: LoginDto })
-  async login(@Body() loginDto: LoginDto): Promise<AuthResponseDto> {
-    const user = await this.validateUserUseCase.execute(
-      loginDto.email,
-      loginDto.password,
-    );
-    const {
-      accessToken,
-      refreshToken,
-      user: authenticatedUser,
-    } = await this.moderationLoginUseCase.execute(user);
+  async login(@Body() loginDto: LoginDto) {
+    const { user, accessToken, refreshToken } =
+      await this.authenticationService.loginModeration(
+        loginDto.email,
+        loginDto.password,
+      );
 
     return AuthResponseDto.fromDomain({
       accessToken,
       refreshToken,
-      user: UserResponseDto.fromDomain(authenticatedUser),
+      user: UserResponseDto.fromDomain(user),
     });
   }
 
@@ -78,5 +66,25 @@ export class ModerationAuthController {
   ) {
     const user = await this.authenticationService.getUser(req.user.userId);
     return UserResponseDto.fromDomain(user);
+  }
+
+  @Public()
+  @Post('refresh')
+  @ApiOperation({ summary: 'Refresh access token' })
+  @ApiOkResponse({
+    description: 'Tokens refreshed successfully',
+    type: AuthResponseDto,
+  })
+  @ApiUnauthorizedResponse({ description: 'Invalid or expired refresh token' })
+  @ApiBody({ type: RefreshTokenDto })
+  async refresh(@Body() refreshTokenDto: RefreshTokenDto) {
+    const { accessToken, refreshToken } =
+      await this.authenticationService.refreshToken(
+        refreshTokenDto.refreshToken,
+      );
+    return {
+      accessToken: accessToken.value,
+      refreshToken: refreshToken.value,
+    };
   }
 }

@@ -8,6 +8,7 @@ import { UserNotFoundException } from 'src/modules/users/domain/exceptions/user-
 import { AccessToken } from '../../domain/vo/access-token.vo';
 import { RefreshToken } from '../../domain/vo/refresh-token.vo';
 import { GetUserUseCase } from 'src/modules/users/application/use-cases/get-user.use-case';
+import { ModerationLoginUseCase } from '../use-cases/moderation-login.use-case';
 
 @Injectable()
 export class AuthenticationService {
@@ -17,6 +18,7 @@ export class AuthenticationService {
     private readonly refreshTokenUseCase: RefreshTokenUseCase,
     private readonly validateUserUseCase: ValidateUserUseCase,
     private readonly getUserUseCase: GetUserUseCase,
+    private readonly moderationLoginUseCase: ModerationLoginUseCase,
   ) {}
 
   async signUp(
@@ -41,6 +43,18 @@ export class AuthenticationService {
   }> {
     const user = await this.validateUser(email, password);
     return this.loginUseCase.execute(user);
+  }
+
+  async loginModeration(
+    email: string,
+    password: string,
+  ): Promise<{
+    accessToken: AccessToken;
+    refreshToken: RefreshToken;
+    user: User;
+  }> {
+    const user = await this.validateUser(email, password);
+    return this.moderationLoginUseCase.execute(user);
   }
 
   async refreshToken(

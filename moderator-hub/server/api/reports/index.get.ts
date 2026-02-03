@@ -1,23 +1,18 @@
 import type { Report } from "#shared/schemas/report";
 import { reportsResponseSchema } from "#shared/schemas/report";
+import { callWithAuth } from "../../utils/call-with-auth";
 
 export default defineEventHandler(async (event): Promise<Report[]> => {
-  const session = await requireUserSession(event);
-  const secure = session.secure as { accessToken?: string } | undefined;
-  const token = secure?.accessToken;
-  if (!token) {
-    throw createError({ statusCode: 401, message: "Unauthorized" });
-  }
-
   const config = useRuntimeConfig();
   const apiUrl = config.public.apiUrl.replace(/\/$/, "");
 
-  const raw = await $fetch<unknown>(`${apiUrl}/reports`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
+  const raw = await callWithAuth(event, (accessToken) =>
+    $fetch<unknown>(`${apiUrl}/reports`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+  );
   const parsed = reportsResponseSchema.safeParse(raw);
   if (!parsed.success) {
     throw createError({
