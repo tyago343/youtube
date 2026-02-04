@@ -1,6 +1,6 @@
 import { DynamicModule, Module, Type } from '@nestjs/common';
 import { SignUpUseCase } from './use-cases/sign-up.use-case';
-import { LoginUseCase } from './use-cases/login-use-case';
+import { LoginUseCase } from './use-cases/login.use-case';
 import { ModerationLoginUseCase } from './use-cases/moderation-login.use-case';
 import { ValidateUserUseCase } from './use-cases/validate-user.use-case';
 import { AuthenticationService } from './services/authentication.service';

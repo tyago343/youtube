@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { LoginUseCase } from '../use-cases/login-use-case';
+import { LoginUseCase } from '../use-cases/login.use-case';
 import { TokenService } from '../ports/token.service.interface';
 import { User } from 'src/modules/users/domain/user.entity';
 import { AccessToken } from '../../domain/vo/access-token.vo';

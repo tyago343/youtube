@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { SignUpUseCase } from '../use-cases/sign-up.use-case';
-import { LoginUseCase } from '../use-cases/login-use-case';
+import { LoginUseCase } from '../use-cases/login.use-case';
 import { RefreshTokenUseCase } from '../use-cases/refresh-token.use-case';
 import { ValidateUserUseCase } from '../use-cases/validate-user.use-case';
 import { User } from 'src/modules/users/domain/user.entity';

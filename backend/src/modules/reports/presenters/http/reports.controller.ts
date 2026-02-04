@@ -52,7 +52,7 @@ export class ReportsController {
     type: FullReportResponseDto,
   })
   async getById(@Param('id') id: string): Promise<FullReportResponseDto> {
-    const fullReport = await this.getFullReportUseCase.execute(id);
+    const fullReport = await this.getFullReportUseCase.execute({ id });
     return FullReportResponseDto.fromDomain(fullReport);
   }
 }

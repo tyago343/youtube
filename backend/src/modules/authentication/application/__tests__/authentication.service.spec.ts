@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthenticationService } from '../services/authentication.service';
 import { SignUpUseCase } from '../use-cases/sign-up.use-case';
-import { LoginUseCase } from '../use-cases/login-use-case';
+import { LoginUseCase } from '../use-cases/login.use-case';
 import { RefreshTokenUseCase } from '../use-cases/refresh-token.use-case';
 import { ValidateUserUseCase } from '../use-cases/validate-user.use-case';
 import { GetUserUseCase } from 'src/modules/users/application/use-cases/get-user.use-case';

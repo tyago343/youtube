@@ -1,17 +1,25 @@
 import { Injectable } from '@nestjs/common';
-import { ReportsRepository } from '../ports/reports.repository';
+import {
+  ReportsRepository,
+  type FullReport,
+} from '../ports/reports.repository';
 import { ReportId } from '../../domain/vo/report-id.vo';
 import { ReportNotFoundException } from '../../domain/exceptions/report-not-found.exception';
-import type { FullReport } from '../ports/reports.repository';
+
+export interface GetFullReportInput {
+  id: string;
+}
+
+export type GetFullReportResult = FullReport;
 
 @Injectable()
 export class GetFullReportUseCase {
   constructor(private readonly reportsRepository: ReportsRepository) {}
 
-  async execute(id: string): Promise<FullReport> {
-    const result = await this.reportsRepository.findByIdWithReportable(
-      ReportId.create(id),
-    );
+  async execute(input: GetFullReportInput): Promise<GetFullReportResult> {
+    const reportId = ReportId.create(input.id);
+    const result =
+      await this.reportsRepository.findByIdWithReportable(reportId);
     if (!result) {
       throw new ReportNotFoundException();
     }

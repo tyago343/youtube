@@ -1,4 +1,4 @@
-import { Injectable, ForbiddenException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserUseCase } from '../use-cases/create-user.use-case';
 import { GetUserUseCase } from '../use-cases/get-user.use-case';
 import { GetAllUsersUseCase } from '../use-cases/get-all-users.use-case';
@@ -7,6 +7,7 @@ import { UploadAvatarUseCase } from '../use-cases/upload-avatar.use-case';
 import { DeleteUserUseCase } from '../use-cases/delete-user.use-case';
 import { User } from '../../domain/user.entity';
 import { FileStorageService } from 'src/modules/shared/application/ports/file-storage.interface';
+import { InvalidUserIdException } from '../../domain/exceptions/invalid-user-id.exception';
 
 @Injectable()
 export class UsersService {
@@ -70,7 +71,7 @@ export class UsersService {
 
   private ensureOwnership(resourceId: string, currentUserId: string): void {
     if (currentUserId !== resourceId) {
-      throw new ForbiddenException(
+      throw new InvalidUserIdException(
         'You can only perform this action on your own resource',
       );
     }

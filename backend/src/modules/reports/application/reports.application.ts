@@ -15,6 +15,8 @@ export class ReportsApplicationModule {
     return {
       module: ReportsApplicationModule,
       imports: [infrastructureModule],
+      providers: [...useCases],
+      exports: [...useCases],
     };
   }
 }
