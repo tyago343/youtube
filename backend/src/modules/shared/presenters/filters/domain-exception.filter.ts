@@ -20,6 +20,9 @@ import { VideoNotFoundException } from 'src/modules/videos/domain/exceptions/vid
 import { InvalidVideoIdException } from 'src/modules/videos/domain/exceptions/invalid-video-id.exception';
 import { InvalidVideoVisibilityException } from 'src/modules/videos/domain/exceptions/invalid-video-visibility.exception';
 
+// Report domain exceptions
+import { ReportNotFoundException } from 'src/modules/reports/domain/exceptions/report-not-found.exception';
+
 // User domain exceptions
 import { UserNotFoundException } from 'src/modules/users/domain/exceptions/user-not-found.exception';
 import { UserAlreadyExistsException } from 'src/modules/users/domain/exceptions/user-already-exists.exceptions';
@@ -39,6 +42,7 @@ const NOT_FOUND_EXCEPTIONS: ErrorConstructor[] = [
   ChannelNotFoundException,
   VideoNotFoundException,
   UserNotFoundException,
+  ReportNotFoundException,
 ];
 
 const BAD_REQUEST_EXCEPTIONS: ErrorConstructor[] = [
