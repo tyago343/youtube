@@ -96,7 +96,28 @@ function formatDate(iso: string): string {
   });
 }
 
+const router = useRouter();
+
+function goToReport(id: string) {
+  router.push(`/report/${id}`);
+}
+
 const columns: TableColumn<Report>[] = [
+  {
+    id: "checkbox",
+    accessorKey: "id",
+    header: "",
+    cell: ({ row }) => {
+      const report = row.original;
+      return h("div", { class: "flex items-center justify-center" }, [
+        h("input", {
+          type: "checkbox",
+          class: "size-4 rounded border-default",
+          "aria-label": `Select report ${report.id}`,
+        }),
+      ]);
+    },
+  },
   {
     accessorKey: "reportableType",
     header: "Type",
@@ -164,6 +185,41 @@ const columns: TableColumn<Report>[] = [
           color,
         },
         () => statusLabel(s)
+      );
+    },
+  },
+  {
+    id: "go",
+    accessorKey: "id",
+    header: "",
+    cell: ({ row }) => {
+      const id = row.original.id;
+      return h(
+        "button",
+        {
+          type: "button",
+          class:
+            "arrow-cell inline-flex items-center justify-center rounded p-1 text-muted transition-transform hover:scale-110 hover:text-highlighted focus:outline-none focus:ring-2 focus:ring-primary",
+          "aria-label": `Go to report ${id}`,
+          onClick: () => goToReport(id),
+        },
+        [
+          h("svg", {
+            xmlns: "http://www.w3.org/2000/svg",
+            width: "20",
+            height: "20",
+            viewBox: "0 0 24 24",
+            fill: "none",
+            stroke: "currentColor",
+            "stroke-width": "2",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            class: "size-5",
+          }, [
+            h("path", { d: "M5 12h14" }),
+            h("path", { d: "m12 5 7 7-7 7" }),
+          ]),
+        ]
       );
     },
   },

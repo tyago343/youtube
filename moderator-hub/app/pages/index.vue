@@ -3,13 +3,13 @@ definePageMeta({
   title: "Dashboard",
 });
 
-const { reportList, status, error } = await useReports();
+const { reportList, pending, error } = await useReport();
 </script>
 
 <template>
   <ReportsTable
     :reports-list="reportList"
-    :loading="status === 'pending'"
+    :loading="pending"
     :error="error"
   />
 </template>
