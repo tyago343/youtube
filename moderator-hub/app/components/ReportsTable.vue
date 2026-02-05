@@ -30,20 +30,20 @@ const tableData = computed(() => {
 });
 
 const statusFilters: { label: string; value: ReportStatus | null }[] = [
-  { label: "Todos", value: null },
-  { label: "Pendientes", value: "PENDING" },
-  { label: "En Revisión", value: "IN_REVIEW" },
-  { label: "Escalado a Legales", value: "ESCALATED_TO_LEGAL" },
-  { label: "Resueltos", value: "RESOLVED" },
+  { label: "All", value: null },
+  { label: "Pending", value: "PENDING" },
+  { label: "In Review", value: "IN_REVIEW" },
+  { label: "Escalated to Legal", value: "ESCALATED_TO_LEGAL" },
+  { label: "Resolved", value: "RESOLVED" },
 ];
 
 function reportableTypeLabel(type: string): string {
   const map: Record<string, string> = {
     VIDEO: "Video",
-    CHANNEL: "Canal",
-    COMMENT: "Comentario",
-    PLAYLIST: "Lista",
-    USER: "Usuario",
+    CHANNEL: "Channel",
+    COMMENT: "Comment",
+    PLAYLIST: "Playlist",
+    USER: "User",
   };
   return map[type] ?? type;
 }
@@ -60,12 +60,12 @@ function severityDotColor(severity: ReportSeverity): string {
 
 function statusLabel(s: string): string {
   const map: Record<string, string> = {
-    PENDING: "Pendiente",
-    ASSIGNED: "Asignado",
-    IN_REVIEW: "En Revisión",
-    ESCALATED_TO_LEGAL: "Escalado a Legales",
-    RESOLVED: "Resuelto",
-    DISMISSED: "Descartado",
+    PENDING: "Pending",
+    ASSIGNED: "Assigned",
+    IN_REVIEW: "In Review",
+    ESCALATED_TO_LEGAL: "Escalated to Legal",
+    RESOLVED: "Resolved",
+    DISMISSED: "Dismissed",
   };
   return map[s] ?? s;
 }
@@ -89,7 +89,7 @@ function statusBadgeColor(
 
 function formatDate(iso: string): string {
   const d = new Date(iso);
-  return d.toLocaleDateString("es-ES", {
+  return d.toLocaleDateString("en-US", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
@@ -99,7 +99,7 @@ function formatDate(iso: string): string {
 const columns: TableColumn<Report>[] = [
   {
     accessorKey: "reportableType",
-    header: "Tipo",
+    header: "Type",
     cell: ({ row }) => {
       const r = row.original;
       const typeLabel = reportableTypeLabel(r.reportableType);
@@ -115,7 +115,7 @@ const columns: TableColumn<Report>[] = [
   },
   {
     accessorKey: "reason",
-    header: "Título / Descripción",
+    header: "Title / Description",
     cell: ({ row }) => row.original.reason,
   },
   {
@@ -132,7 +132,7 @@ const columns: TableColumn<Report>[] = [
           onClick: () =>
             setSort("createdAt", isSorted && isAsc ? "desc" : "asc"),
         },
-        ["Fecha", isSorted ? (isAsc ? " ↑" : " ↓") : ""]
+        ["Date", isSorted ? (isAsc ? " ↑" : " ↓") : ""]
       );
     },
     cell: ({ row }) => formatDate(row.original.createdAt),
@@ -150,7 +150,7 @@ const columns: TableColumn<Report>[] = [
             "flex items-center gap-1 font-semibold text-highlighted hover:opacity-80",
           onClick: () => setSort("status", isSorted && isAsc ? "desc" : "asc"),
         },
-        ["Estado", isSorted ? (isAsc ? " ↑" : " ↓") : ""]
+        ["Status", isSorted ? (isAsc ? " ↑" : " ↓") : ""]
       );
     },
     cell: ({ row }) => {
@@ -189,8 +189,7 @@ const columns: TableColumn<Report>[] = [
       class="flex min-h-[200px] flex-1 items-center justify-center rounded-lg border border-default bg-default p-6"
     >
       <p class="text-center text-muted">
-        No se pudieron cargar los reportes. Revisa la notificación o vuelve a
-        intentar.
+        Could not load reports. Check the notification or try again.
       </p>
     </div>
     <div
@@ -206,7 +205,7 @@ const columns: TableColumn<Report>[] = [
       >
         <template #empty>
           <p class="py-6 text-center text-muted">
-            No hay informes que coincidan con los filtros.
+            No reports match the filters.
           </p>
         </template>
       </UTable>
