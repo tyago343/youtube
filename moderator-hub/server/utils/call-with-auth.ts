@@ -1,9 +1,5 @@
 import type { H3Event } from "h3";
-
-type RefreshResponse = {
-  accessToken: string;
-  refreshToken: string;
-};
+import { refreshTokenResponseSchema } from "#shared/schemas/auth";
 
 export async function callWithAuth<T>(
   event: H3Event,
@@ -23,7 +19,10 @@ export async function callWithAuth<T>(
   try {
     return await fn(accessToken);
   } catch (err: unknown) {
-    const status = (err as { statusCode?: number })?.statusCode;
+    const status =
+      err && typeof err === "object" && "statusCode" in err
+        ? (err as { statusCode: number }).statusCode
+        : undefined;
     if (status !== 401 || !refreshToken) {
       throw err;
     }
@@ -31,15 +30,24 @@ export async function callWithAuth<T>(
     const apiUrl = config.public.apiUrl.replace(/\/$/, "");
     const baseUrl = `${apiUrl}`;
 
-    let newTokens: RefreshResponse;
+    let raw: unknown;
     try {
-      newTokens = await $fetch<RefreshResponse>(`${baseUrl}/auth/refresh`, {
+      raw = await $fetch(`${baseUrl}/auth/refresh`, {
         method: "POST",
         body: { refreshToken },
       });
-    } catch (err: unknown) {
+    } catch {
       throw createError({ statusCode: 401, message: "Unauthorized" });
     }
+
+    const parsed = refreshTokenResponseSchema.safeParse(raw);
+    if (!parsed.success) {
+      throw createError({
+        statusCode: 502,
+        message: "Invalid refresh response from API",
+      });
+    }
+    const newTokens = parsed.data;
 
     await setUserSession(event, {
       user: session.user,

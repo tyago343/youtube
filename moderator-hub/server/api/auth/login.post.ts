@@ -1,17 +1,7 @@
-import { loginSchema } from "#shared/schemas/auth";
-
-interface BackendAuthResponse {
-  accessToken: string;
-  refreshToken: string;
-  user: {
-    id: string;
-    email: string;
-    username: string;
-    avatarUrl?: string;
-    createdAt: string;
-    role: string;
-  };
-}
+import {
+  loginSchema,
+  refreshTokenResponseSchema,
+} from "#shared/schemas/auth";
 
 export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, loginSchema.parse);
@@ -19,17 +9,35 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const apiUrl = config.public.apiUrl.replace(/\/$/, "");
 
-  let response: BackendAuthResponse;
+  let raw: unknown;
   try {
-    response = await $fetch<BackendAuthResponse>(`${apiUrl}/auth/login`, {
+    raw = await $fetch(`${apiUrl}/auth/login`, {
       method: "POST",
       body,
     });
   } catch (err: unknown) {
-    const status = (err as { statusCode?: number })?.statusCode ?? 401;
+    const status =
+      err && typeof err === "object" && "statusCode" in err
+        ? (err as { statusCode: number }).statusCode
+        : 401;
     throw createError({
       statusCode: status,
       message: "Invalid credentials",
+    });
+  }
+
+  const parsed = refreshTokenResponseSchema.safeParse(raw);
+  if (!parsed.success) {
+    throw createError({
+      statusCode: 502,
+      message: "Invalid auth response from API",
+    });
+  }
+  const response = parsed.data;
+  if (!response.user) {
+    throw createError({
+      statusCode: 502,
+      message: "Invalid auth response from API",
     });
   }
 

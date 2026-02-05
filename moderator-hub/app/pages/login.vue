@@ -43,12 +43,6 @@ async function onSubmit(formData: FormSubmitEvent<LoginSchema>) {
     });
   }
 }
-
-onMounted(async () => {
-  await fetchSession();
-  const { loggedIn } = useUserSession();
-  if (loggedIn.value) navigateTo("/");
-});
 </script>
 
 <template>

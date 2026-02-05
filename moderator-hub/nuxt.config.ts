@@ -3,6 +3,9 @@ import type { NuxtPage } from "nuxt/schema";
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
+  devServer: {
+    port: 8080,
+  },
   runtimeConfig: {
     public: {
       apiUrl: import.meta.env.NUXT_PUBLIC_API_URL || "http://localhost:3000",
@@ -16,8 +19,10 @@ export default defineNuxtConfig({
     "pages:extend"(pages) {
       function setMiddleware(pages: NuxtPage[]) {
         for (const page of pages) {
-          if (page.path !== "/login") {
-            page.meta ||= {};
+          page.meta ||= {};
+          if (page.path === "/login") {
+            page.meta.middleware = ["guest"];
+          } else {
             page.meta.middleware = ["authentication"];
           }
           if (page.children) {

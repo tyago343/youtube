@@ -1,4 +1,4 @@
-import type { Report, ReportStatus } from "~/types/report";
+import type { Report, ReportStatus } from "#shared/schemas/report";
 
 export type ReportsSortField = "status" | "createdAt";
 export type ReportsSortOrder = "asc" | "desc";
