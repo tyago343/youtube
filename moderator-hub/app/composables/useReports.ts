@@ -1,8 +1,10 @@
-import type { Report } from "#shared/schemas/report";
+export async function useReports() {
+  const { fetchReportList, reportList, error, status } = useReportStore();
+  await callOnce(fetchReportList);
 
-export function useReports() {
-  return useFetch<Report[]>("/api/reports", {
-    key: "reports",
-    default: () => [],
-  });
+  return {
+    reportList: reportList,
+    error: error,
+    status: status,
+  };
 }

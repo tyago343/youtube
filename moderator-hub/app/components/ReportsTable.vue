@@ -10,7 +10,7 @@ import type {
 const UBadge = resolveComponent("UBadge");
 
 const props = defineProps<{
-  reports: Report[];
+  reportsList: Report[];
   loading?: boolean;
   error?: unknown;
 }>();
@@ -25,7 +25,7 @@ const {
 } = useReportsFilters();
 
 const tableData = computed(() => {
-  const list = props.reports ?? [];
+  const list = props.reportsList;
   return filterAndSort(list);
 });
 
