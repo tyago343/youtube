@@ -2,16 +2,14 @@ import {
   loginSchema,
   refreshTokenResponseSchema,
 } from "#shared/schemas/auth";
+import { getApiBase } from "../../utils/api-base";
 
 export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, loginSchema.parse);
 
-  const config = useRuntimeConfig();
-  const apiUrl = config.public.apiUrl.replace(/\/$/, "");
-
   let raw: unknown;
   try {
-    raw = await $fetch(`${apiUrl}/auth/login`, {
+    raw = await $fetch(`${getApiBase(event)}/auth/login`, {
       method: "POST",
       body,
     });

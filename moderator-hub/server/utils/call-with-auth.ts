@@ -1,5 +1,6 @@
 import type { H3Event } from "h3";
 import { refreshTokenResponseSchema } from "#shared/schemas/auth";
+import { getApiBase } from "./api-base";
 
 export async function callWithAuth<T>(
   event: H3Event,
@@ -26,13 +27,10 @@ export async function callWithAuth<T>(
     if (status !== 401 || !refreshToken) {
       throw err;
     }
-    const config = useRuntimeConfig();
-    const apiUrl = config.public.apiUrl.replace(/\/$/, "");
-    const baseUrl = `${apiUrl}`;
 
     let raw: unknown;
     try {
-      raw = await $fetch(`${baseUrl}/auth/refresh`, {
+      raw = await $fetch(`${getApiBase(event)}/auth/refresh`, {
         method: "POST",
         body: { refreshToken },
       });

@@ -1,13 +1,11 @@
 import type { Report } from "#shared/schemas/report";
 import { reportsResponseSchema } from "#shared/schemas/report";
 import { callWithAuth } from "../../utils/call-with-auth";
+import { getApiBase } from "../../utils/api-base";
 
 export default defineEventHandler(async (event): Promise<Report[]> => {
-  const config = useRuntimeConfig();
-  const apiUrl = config.public.apiUrl.replace(/\/$/, "");
-
   const raw = await callWithAuth(event, (accessToken) =>
-    $fetch<unknown>(`${apiUrl}/reports`, {
+    $fetch<unknown>(`${getApiBase(event)}/reports`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

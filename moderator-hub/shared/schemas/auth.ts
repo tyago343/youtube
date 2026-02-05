@@ -9,19 +9,21 @@ export const loginSchema = z.object({
 
 export type LoginSchema = z.output<typeof loginSchema>;
 
+export const userSchema = z.object({
+  id: z.string(),
+  email: z.string(),
+  username: z.string(),
+  avatarUrl: z.string().optional(),
+  createdAt: z.string(),
+  role: z.string(),
+});
+
+export type UserSchema = z.infer<typeof userSchema>;
+
 export const refreshTokenResponseSchema = z.object({
   accessToken: z.string().min(1),
   refreshToken: z.string().min(1),
-  user: z
-    .object({
-      id: z.string(),
-      email: z.string(),
-      username: z.string(),
-      avatarUrl: z.string().optional(),
-      createdAt: z.string(),
-      role: z.string(),
-    })
-    .optional(),
+  user: userSchema.optional(),
 });
 
 export type RefreshTokenResponse = z.infer<typeof refreshTokenResponseSchema>;
