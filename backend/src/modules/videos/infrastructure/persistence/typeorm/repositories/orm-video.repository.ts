@@ -24,9 +24,10 @@ export class OrmVideoRepository extends VideosRepository {
     await this.videoRepository.save(createdVideo);
     return VideoMapper.toDomain(createdVideo);
   }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  update(video: Video): Promise<Video> {
-    throw new Error('Method not implemented.');
+  async update(video: Video): Promise<Video> {
+    const schema = VideoMapper.toPersistence(video);
+    await this.videoRepository.save(schema);
+    return video;
   }
   async findById(id: string): Promise<Video | null> {
     const schema = await this.videoRepository.findOne({

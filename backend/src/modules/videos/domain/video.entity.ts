@@ -161,6 +161,13 @@ export class Video {
   show(): void {
     this.status = VideoStatus.VISIBLE;
   }
+  ban(): void {
+    this.status = VideoStatus.BANNED;
+  }
+
+  unban(): void {
+    this.status = VideoStatus.VISIBLE;
+  }
 
   isVisible(): boolean {
     return this.status.isVisible();
