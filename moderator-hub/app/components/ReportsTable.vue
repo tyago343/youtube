@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { h, resolveComponent } from "vue";
-import type { TableColumn } from "@nuxt/ui";
 import type {
   Report,
   ReportStatus,
   ReportSeverity,
 } from "#shared/schemas/report";
-
+import type { TableColumn } from "@nuxt/ui/components/Table.vue";
 const UBadge = resolveComponent("UBadge");
 
 const props = defineProps<{
@@ -204,21 +203,22 @@ const columns: TableColumn<Report>[] = [
           onClick: () => goToReport(id),
         },
         [
-          h("svg", {
-            xmlns: "http://www.w3.org/2000/svg",
-            width: "20",
-            height: "20",
-            viewBox: "0 0 24 24",
-            fill: "none",
-            stroke: "currentColor",
-            "stroke-width": "2",
-            "stroke-linecap": "round",
-            "stroke-linejoin": "round",
-            class: "size-5",
-          }, [
-            h("path", { d: "M5 12h14" }),
-            h("path", { d: "m12 5 7 7-7 7" }),
-          ]),
+          h(
+            "svg",
+            {
+              xmlns: "http://www.w3.org/2000/svg",
+              width: "20",
+              height: "20",
+              viewBox: "0 0 24 24",
+              fill: "none",
+              stroke: "currentColor",
+              "stroke-width": "2",
+              "stroke-linecap": "round",
+              "stroke-linejoin": "round",
+              class: "size-5",
+            },
+            [h("path", { d: "M5 12h14" }), h("path", { d: "m12 5 7 7-7 7" })]
+          ),
         ]
       );
     },
